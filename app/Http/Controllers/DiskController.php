@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use File;
+use ZipArchive;
 
 class DiskController extends Controller
 {
@@ -14,10 +16,29 @@ class DiskController extends Controller
      */
     public function index()
     {
+        $zip = new ZipArchive;
+
+        $fileName = 'myNewFile.zip';
+
+        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
+        {
+            $files = File::files(public_path('myFiles'));
+
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+
+            $zip->close();
+        }
+
+        return response()->download(public_path($fileName));
+        /*
         $directory = 'public';
         $files = Storage::allFiles($directory);
-        
+
         return Storage::download($files);
+        */
     }
 
     /**

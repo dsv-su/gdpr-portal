@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'DashboardController@index')->name('home');
-Route::get('/test', 'DiskController@index')->name('test');
+Route::get('download-zip', 'DiskController@index')->name('test');
 
 Route::get('/home', function () {
     return view('search.home');
