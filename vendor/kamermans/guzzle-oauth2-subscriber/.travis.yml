@@ -1,0 +1,41 @@
+language: php
+
+dist: trusty
+
+php:
+    - 5.4
+    - 5.5
+    - 5.6
+    - 7.0
+    - 7.1
+    - 7.2
+    - hhvm
+
+install:
+    - cd guzzle_environments/${GUZZLE_VERSION}
+    - composer install
+
+script:
+    - vendor/bin/phpunit -vvvv
+
+env:
+    - GUZZLE_VERSION=4
+    - GUZZLE_VERSION=5
+    - GUZZLE_VERSION=6
+
+matrix:
+    exclude:
+        - php: 5.4
+          env: GUZZLE_VERSION=6
+        - php: 7.0
+          env: GUZZLE_VERSION=4
+        - php: 7.0
+          env: GUZZLE_VERSION=5
+        - php: 7.1
+          env: GUZZLE_VERSION=4
+        - php: 7.1
+          env: GUZZLE_VERSION=5
+        - php: 7.2
+          env: GUZZLE_VERSION=4
+        - php: 7.2
+          env: GUZZLE_VERSION=5

@@ -6,7 +6,7 @@
             <table class="table table-sm">
                 <tbody>
                 <tr>
-                    <td class="small">GDRP-officer: GDPR officer</td><td></td>
+                    <td class="small">GDRP-officer: Test Testuser</td><td></td>
                     <td class="small">Available systems: 2</td><td></td><td></td><td></td>
                     <td><a href="{{ route('new_search') }}" class="btn btn-outline-primary" role="button">New search</a></td>
                 </tr>
