@@ -13,13 +13,15 @@
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('download-zip', 'DiskController@index')->name('test');
+//Request
+Route::post('/search', 'SearchController@search')->name('search');
 
 Route::get('/home', function () {
     return view('search.home');
 })->name('new_search');
 
 //Request
-Route::post('/search', 'SearchController@search')->name('search');
+//Route::post('/search', 'SearchController@search')->name('search');
 //Request plugin 1: Scipro-dev
 Route::get('/oauth/callback', 'SearchController@callbackSciprodev');
 //Request plugin 2: Moodle-dev
