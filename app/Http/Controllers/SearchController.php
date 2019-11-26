@@ -87,13 +87,13 @@ class SearchController extends Controller
             Cache::put('requestid', $id, 60);
         }
 
-
-
-
+//------------------------------------------------------------------------------
         // 5. Start search
 
         //Start GDPR request to scipro-dev
         $scipro->auth();
+
+
 
         //If error show status
         return redirect('/');
