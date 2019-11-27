@@ -85,8 +85,9 @@ class Scipro
                 $this->zip = $this->body->getContents();
                 //Store file on disk
 
-                Storage::disk('public')->put(Cache::get('request').'_scipro-dev.zip', $this->zip);
-                return 200;
+                //Storage::disk('public')->put(Cache::get('request').'_scipro-dev.zip', $this->zip);
+                //return 200;
+                return $this->zip;
             }
             else return 401;
 

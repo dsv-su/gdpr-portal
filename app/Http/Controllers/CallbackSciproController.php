@@ -18,9 +18,9 @@ class CallbackSciproController extends Controller
         //Start Scipro dev job
         $sciproJob = new ProcessSciproDevPlugin();
         dispatch($sciproJob);
-        // Start Moodle dev job
+        // Job end
 
-        dd('Done');
+        return redirect('/');
 
     }
 }
