@@ -3,11 +3,13 @@
 namespace App\Jobs;
 
 use App\Plugin\Scipro;
+use App\Searchcase;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 
 class ProcessSciproDevPlugin implements ShouldQueue
 {
@@ -30,7 +32,23 @@ class ProcessSciproDevPlugin implements ShouldQueue
      */
     public function handle()
     {
+        $code = Cache::get('code');
         //Start GDPR request to scipro-dev
-        //$scipro->auth();
+        $scipro = new Scipro($code);
+        $status = $scipro->gettoken();
+        $update = Searchcase::find(Cache::get('requestid'));
+
+        if ($status == 200) //Request was sucessful
+        {
+            $update->status = $update->status+50; //Temporary flag 50%
+            $update->download =  $update->download+1; //Temporary finished download
+        }
+        else
+        {
+            $update->status = $update->status+0; //Unsucessful request flag 0%
+        }
+        $update->save();
+
+
     }
 }

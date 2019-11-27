@@ -15,6 +15,9 @@ Route::get('/', 'DashboardController@index')->name('home');
 Route::get('download-zip', 'DiskController@index')->name('test');
 //Request
 Route::post('/search', 'SearchController@search')->name('search');
+//Callback plugin 1: Scipro-dev
+Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
+
 
 Route::get('/home', function () {
     return view('search.home');
@@ -22,8 +25,7 @@ Route::get('/home', function () {
 
 //Request
 //Route::post('/search', 'SearchController@search')->name('search');
-//Request plugin 1: Scipro-dev
-Route::get('/oauth/callback', 'SearchController@callbackSciprodev');
+
 //Request plugin 2: Moodle-dev
 Route::get('/moodle', 'SearchController@callMoodle');
 

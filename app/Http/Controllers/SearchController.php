@@ -100,23 +100,7 @@ class SearchController extends Controller
 
     }
 
-    public function callbackSciprodev(Scipro $scipro)
-    {
-        $status = $scipro->gettoken();
-        $update = Searchcase::find(Cache::get('requestid'));
 
-        if ($status == 200) //Request was sucessful
-        {
-            $update->status = $update->status+50; //Temporary flag 50%
-            $update->download =  $update->download+1; //Temporary finished download
-        }
-        else
-        {
-            $update->status = $update->status+0; //Unsucessful request flag 0%
-        }
-        $update->save();
-        return redirect('/moodle');
-    }
 
     public function callMoodle(Moodle $moodle)
     {

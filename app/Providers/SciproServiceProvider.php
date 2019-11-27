@@ -15,7 +15,7 @@ class SciproServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Scipro::class, function ()  {
-            return new Scipro();
+            return new Scipro($code=0);
         });
     }
 
