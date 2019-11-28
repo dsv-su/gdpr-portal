@@ -76,7 +76,7 @@
                     </td>
                     <td>
                         @if ($case->download == 2)
-                            <button class="btn btn-primary" type="button">Dowload</button>
+                            <button class="btn btn-primary" type="button">Download</button>
                         @else
                         <button class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

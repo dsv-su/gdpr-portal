@@ -38,9 +38,10 @@ class ProcessSciproDevPlugin implements ShouldQueue
         $update = Searchcase::find(Cache::get('requestid'));
         if ($status = $scipro->gettoken()) //Request was sucessful
         {
-            Storage::disk('public')->put(Cache::get('request').'_scipro-dev.zip', $status);
-            $update->status = $update->status+50; //Temporary flag 50%
-            $update->download =  $update->download+1; //Temporary finished download
+            Storage::makeDirectory('/public/'.Cache::get('request'));
+            Storage::disk('public')->put(Cache::get('request').'/'.Cache::get('request').'_scipro-dev.zip', $status);
+            $update->status = $update->status+100; //Temporary flag 50%
+            $update->download =  $update->download+2; //Temporary finished download
         }
         else
         {
