@@ -11,6 +11,7 @@
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",
+        "hedii/artisan-log-cleaner": "^2.0",
         "kamermans/guzzle-oauth2-subscriber": "^1.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^1.0"

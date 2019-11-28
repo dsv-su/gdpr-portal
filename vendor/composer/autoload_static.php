@@ -116,6 +116,10 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         array (
             'Illuminate\\' => 11,
         ),
+        'H' => 
+        array (
+            'Hedii\\ArtisanLogCleaner\\' => 24,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -331,6 +335,10 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'Illuminate\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
+        ),
+        'Hedii\\ArtisanLogCleaner\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hedii/artisan-log-cleaner/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -1338,6 +1346,8 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'Hamcrest\\Type\\IsString' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Type/IsString.php',
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
+        'Hedii\\ArtisanLogCleaner\\ArtisanLogCleanerServiceProvider' => __DIR__ . '/..' . '/hedii/artisan-log-cleaner/src/ArtisanLogCleanerServiceProvider.php',
+        'Hedii\\ArtisanLogCleaner\\ClearLogs' => __DIR__ . '/..' . '/hedii/artisan-log-cleaner/src/ClearLogs.php',
         'Highlight\\Autoloader' => __DIR__ . '/..' . '/scrivo/highlight.php/Highlight/Autoloader.php',
         'Highlight\\Highlighter' => __DIR__ . '/..' . '/scrivo/highlight.php/Highlight/Highlighter.php',
         'Highlight\\JsonRef' => __DIR__ . '/..' . '/scrivo/highlight.php/Highlight/JsonRef.php',

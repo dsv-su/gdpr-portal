@@ -978,6 +978,68 @@
         ]
     },
     {
+        "name": "hedii/artisan-log-cleaner",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hedii/artisan-log-cleaner.git",
+            "reference": "3db965a9cfebf155f6a585da40d4fa6fac8e3b06"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/hedii/artisan-log-cleaner/zipball/3db965a9cfebf155f6a585da40d4fa6fac8e3b06",
+            "reference": "3db965a9cfebf155f6a585da40d4fa6fac8e3b06",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/console": "^6.0",
+            "illuminate/filesystem": "^6.0",
+            "illuminate/support": "^6.0",
+            "php": "^7.2"
+        },
+        "require-dev": {
+            "mockery/mockery": "^1.0",
+            "orchestra/testbench": "^4.0",
+            "phpunit/phpunit": "^8.0"
+        },
+        "time": "2019-09-17T08:14:08+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Hedii\\ArtisanLogCleaner\\ArtisanLogCleanerServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Hedii\\ArtisanLogCleaner\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "hedii",
+                "email": "contact@hedichaibi.com",
+                "homepage": "https://hedichaibi.com"
+            }
+        ],
+        "description": "An artisan command to clear laravel log files",
+        "keywords": [
+            "artisan",
+            "artisan-log-cleaner",
+            "hedii",
+            "laravel",
+            "log",
+            "php"
+        ]
+    },
+    {
         "name": "jakub-onderka/php-console-color",
         "version": "v0.2",
         "version_normalized": "0.2.0.0",

@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SciproServiceProvider::class,
         App\Providers\MoodleServiceProvider::class,
+        Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,
 
     ],
 

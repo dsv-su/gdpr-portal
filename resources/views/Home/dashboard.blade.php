@@ -44,7 +44,7 @@
     </form>
 
     <!-- -->
-    <div class="row row-no-gutters">
+    <div class="row row-no-gutters" id="cases">
             <table class="table table-bordered table table-sm">
                 <thead class="table-primary">
                 <tr>
@@ -93,5 +93,13 @@
             <br>
 
     </form>
+<script>
+    $(document).ready(function () {
+        var auto_refresh = setInterval(
+            function() {
+                $('#cases').load('<?php echo url('/status');?>').fadeIn("slow");
+            },1000);
 
+    });
+</script>
 @endsection

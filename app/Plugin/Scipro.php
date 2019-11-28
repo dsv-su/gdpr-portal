@@ -50,7 +50,6 @@ class Scipro
 
             public function gettoken()
         {
-            //$this->code = Cache::get('code');
             // Authorization client - this is used to request OAuth access tokens
             $this->reauth_client = new Client([
                 // URL for access_token request
@@ -83,13 +82,10 @@ class Scipro
                 $this->body = $this->response->getBody();
                 // Read contents of the body
                 $this->zip = $this->body->getContents();
-                //Store file on disk
 
-                //Storage::disk('public')->put(Cache::get('request').'_scipro-dev.zip', $this->zip);
-                //return 200;
                 return $this->zip;
             }
-            else return 401;
+
 
         }
 }

@@ -50,6 +50,7 @@ return array(
     'JakubOnderka\\PhpConsoleHighlighter\\' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor\\' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
+    'Hedii\\ArtisanLogCleaner\\' => array($vendorDir . '/hedii/artisan-log-cleaner/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),

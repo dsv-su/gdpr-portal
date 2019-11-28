@@ -12,4 +12,9 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         return view('home.dashboard', $data);
     }
+    public function status(Searchcase $searchcase)
+    {
+        $data['cases'] = Searchcase::all();
+        return view('home.status', $data);
+    }
 }

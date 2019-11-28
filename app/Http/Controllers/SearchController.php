@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\ProcessSciproDevPlugin;
 use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
@@ -88,10 +89,12 @@ class SearchController extends Controller
         }
 
 //------------------------------------------------------------------------------
-        // 5. Start search
+        // 5. Start JobsPlugins
 
-        //Start GDPR request to scipro-dev
+
+        //Start Scipro dev job
         $scipro->auth();
+        // Job end
 
 
 

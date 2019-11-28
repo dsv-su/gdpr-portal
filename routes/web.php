@@ -10,8 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Endpoint
 Route::get('/', 'DashboardController@index')->name('home');
+Route::get('/status','DashboardController@status');
 Route::get('download-zip', 'DiskController@index')->name('test');
 //Request
 Route::post('/search', 'SearchController@search')->name('search');

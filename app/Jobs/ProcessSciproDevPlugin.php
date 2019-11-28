@@ -33,14 +33,9 @@ class ProcessSciproDevPlugin implements ShouldQueue
      */
     public function handle()
     {
-        $code = Cache::get('code');
         //Start GDPR request to scipro-dev
-        $scipro = new Scipro($code);
-
-
-
+        $scipro = new Scipro(Cache::get('code'));
         $update = Searchcase::find(Cache::get('requestid'));
-
         if ($status = $scipro->gettoken()) //Request was sucessful
         {
             Storage::disk('public')->put(Cache::get('request').'_scipro-dev.zip', $status);
@@ -52,7 +47,5 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $update->status = $update->status+0; //Unsucessful request flag 0%
         }
         $update->save();
-
-
     }
 }

@@ -8,6 +8,7 @@ use App\Plugin\Scipro;
 use App\Searchcase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class CallbackSciproController extends Controller
 {
@@ -19,8 +20,10 @@ class CallbackSciproController extends Controller
         $sciproJob = new ProcessSciproDevPlugin();
         dispatch($sciproJob);
         // Job end
+        return redirect()->route('home');
 
-        return redirect('/');
+
+
 
     }
 }
