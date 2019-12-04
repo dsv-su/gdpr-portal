@@ -44,15 +44,15 @@ class SearchController extends Controller
 
         if(!$record = Searchcase::latest()->first())
         {
-            //Store initial requestdata to model
+            //Store initial request data to model
             $request = Searchcase::create([
-                'case_id' => '2019-0',
+                'case_id' => config('services.case.start'),
                 'request' => $userid,
                 'status' => 0,
                 'registrar' => false,
                 'download' => 0,
             ]);
-            $caseid = '2019-0';
+            $caseid = config('services.case.start');
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
 

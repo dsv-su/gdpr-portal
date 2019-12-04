@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Case' => $baseDir . '/app/Case.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AuthPluginController' => $baseDir . '/app/Http/Controllers/AuthPluginController.php',
@@ -41,6 +40,7 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Providers\\SciproServiceProvider' => $baseDir . '/app/Providers/SciproServiceProvider.php',
     'App\\Searchcase' => $baseDir . '/app/Searchcase.php',
+    'App\\Services\\CaseStore' => $baseDir . '/app/Services/CaseStore.php',
     'App\\User' => $baseDir . '/app/User.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonImmutable' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
@@ -3845,6 +3845,10 @@ return array(
     'Whoops\\Util\\SystemFacade' => $vendorDir . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
     'Whoops\\Util\\TemplateHelper' => $vendorDir . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
     'XdgBaseDir\\Xdg' => $vendorDir . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
+    'ZanySoft\\Zip\\Zip' => $vendorDir . '/zanysoft/laravel-zip/src/Zip.php',
+    'ZanySoft\\Zip\\ZipFacade' => $vendorDir . '/zanysoft/laravel-zip/src/ZipFacade.php',
+    'ZanySoft\\Zip\\ZipManager' => $vendorDir . '/zanysoft/laravel-zip/src/ZipManager.php',
+    'ZanySoft\\Zip\\ZipServiceProvider' => $vendorDir . '/zanysoft/laravel-zip/src/ZipServiceProvider.php',
     'kamermans\\OAuth2\\Exception\\AccessTokenRequestException' => $vendorDir . '/kamermans/guzzle-oauth2-subscriber/src/Exception/AccessTokenRequestException.php',
     'kamermans\\OAuth2\\Exception\\OAuth2Exception' => $vendorDir . '/kamermans/guzzle-oauth2-subscriber/src/Exception/OAuth2Exception.php',
     'kamermans\\OAuth2\\Exception\\ReauthorizationException' => $vendorDir . '/kamermans/guzzle-oauth2-subscriber/src/Exception/ReauthorizationException.php',

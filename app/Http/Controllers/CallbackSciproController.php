@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class CallbackSciproController extends Controller
 {
-    public function callbackScipro()
+    public function callbackScipro(Searchcase $searchcase)
     {
         //Store code from callback in cache
         Cache::put('code', $_GET['code'], 60);
+
         //Start Scipro dev job
         $sciproJob = new ProcessSciproDevPlugin();
         dispatch($sciproJob);

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Plugin\Scipro;
 use App\Searchcase;
+use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Zip;
 
 class ProcessSciproDevPlugin implements ShouldQueue
 {
@@ -21,9 +23,11 @@ class ProcessSciproDevPlugin implements ShouldQueue
      *
      * @return void
      */
+    public $x;
+
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -38,8 +42,16 @@ class ProcessSciproDevPlugin implements ShouldQueue
         $update = Searchcase::find(Cache::get('requestid'));
         if ($status = $scipro->gettoken()) //Request was sucessful
         {
-            Storage::makeDirectory('/public/'.Cache::get('request'));
-            Storage::disk('public')->put(Cache::get('request').'/'.Cache::get('request').'_scipro-dev.zip', $status);
+            //Create folders for retrived data
+            $dir = new CaseStore();
+            $dir->makedfolders(config('services.scipro-dev.client_name'));
+
+            //Store zipfile in directory
+            $dir->storeZip(config('services.scipro-dev.client_name'), $status);
+
+            //Unzip
+            $dir->unzip(config('services.scipro-dev.client_name'));
+
             $update->status = $update->status+100; //Temporary flag 50%
             $update->download =  $update->download+2; //Temporary finished download
         }

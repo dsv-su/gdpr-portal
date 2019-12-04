@@ -30,9 +30,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'scipro-dev' => [
+        'client_name' => env('SCIPRO_DEV_CLIENT_NAME'),
         'client_id' => env('SCIPRO_DEV_CLIENT_ID'),
         'client_secret' => env('SCIPRO_DEV_CLIENT_SECRET'),
         'redirect_uri' => env('SCIPRO_DEV_REDIRECT_URI'),
+    ],
+    'case' => [
+        'start' => env('CASE_START_ID'),
+        'ttl' => env('CASE_TTL'),
     ]
 
 ];

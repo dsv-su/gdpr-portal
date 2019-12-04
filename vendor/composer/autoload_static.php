@@ -38,6 +38,10 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         array (
             'kamermans\\OAuth2\\' => 17,
         ),
+        'Z' => 
+        array (
+            'ZanySoft\\Zip\\' => 13,
+        ),
         'X' => 
         array (
             'XdgBaseDir\\' => 11,
@@ -167,6 +171,10 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'kamermans\\OAuth2\\' => 
         array (
             0 => __DIR__ . '/..' . '/kamermans/guzzle-oauth2-subscriber/src',
+        ),
+        'ZanySoft\\Zip\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zanysoft/laravel-zip/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -443,7 +451,6 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
     );
 
     public static $classMap = array (
-        'App\\Case' => __DIR__ . '/../..' . '/app/Case.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AuthPluginController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthPluginController.php',
@@ -478,6 +485,7 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Providers\\SciproServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SciproServiceProvider.php',
         'App\\Searchcase' => __DIR__ . '/../..' . '/app/Searchcase.php',
+        'App\\Services\\CaseStore' => __DIR__ . '/../..' . '/app/Services/CaseStore.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
@@ -4282,6 +4290,10 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
+        'ZanySoft\\Zip\\Zip' => __DIR__ . '/..' . '/zanysoft/laravel-zip/src/Zip.php',
+        'ZanySoft\\Zip\\ZipFacade' => __DIR__ . '/..' . '/zanysoft/laravel-zip/src/ZipFacade.php',
+        'ZanySoft\\Zip\\ZipManager' => __DIR__ . '/..' . '/zanysoft/laravel-zip/src/ZipManager.php',
+        'ZanySoft\\Zip\\ZipServiceProvider' => __DIR__ . '/..' . '/zanysoft/laravel-zip/src/ZipServiceProvider.php',
         'kamermans\\OAuth2\\Exception\\AccessTokenRequestException' => __DIR__ . '/..' . '/kamermans/guzzle-oauth2-subscriber/src/Exception/AccessTokenRequestException.php',
         'kamermans\\OAuth2\\Exception\\OAuth2Exception' => __DIR__ . '/..' . '/kamermans/guzzle-oauth2-subscriber/src/Exception/OAuth2Exception.php',
         'kamermans\\OAuth2\\Exception\\ReauthorizationException' => __DIR__ . '/..' . '/kamermans/guzzle-oauth2-subscriber/src/Exception/ReauthorizationException.php',

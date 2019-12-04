@@ -13,7 +13,9 @@
 //Endpoint
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/status','DashboardController@status');
-Route::get('download-zip', 'DiskController@index')->name('test');
+Route::get('zip', 'DiskController@unzip')->name('test');
+Route::get('mzip', 'DiskController@index')->name('zip');
+Route::get('/download/{id}', 'DiskController@download')->name('download');
 //Request
 Route::post('/search', 'SearchController@search')->name('search');
 //Callback plugin 1: Scipro-dev

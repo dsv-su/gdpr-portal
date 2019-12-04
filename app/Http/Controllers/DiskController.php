@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Searchcase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use File;
+use ZanySoft\Zip\Zip;
 use ZipArchive;
+use ZanySoft\Zip\ZipFacade;
 
 class DiskController extends Controller
 {
@@ -14,15 +18,45 @@ class DiskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function unzip()
+    {
+        // extract whole archive
+        //echo Cache::get('request');
+        $target_path = base_path() . '/storage/app/public/2019-1/zip/2019-1_scipro-dev.zip';
+        $dest_path = base_path() . '/storage/app/public/2019-1/raw/';
+        $zip = new ZipArchive();
+        $x = $zip->open($target_path);
+        $zip->extractTo($dest_path);
+    }
+
+    public function download($id)
+    {
+        $public_dir = public_path().'/storage/2019-1/raw/';
+        $case = Searchcase::find($id);
+        $zipFileName = $case->case_id.'.zip';
+
+        // Set Header
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+
+        $filetopath = $public_dir.$zipFileName;
+        // Create Download Response
+        if(file_exists($filetopath)){
+            return response()->download($filetopath,$zipFileName,$headers);
+        }
+    }
+
     public function index()
     {
+        $public_dir = public_path().'/storage/2019-1/raw/';
         $zip = new ZipArchive;
 
-        $fileName = 'myNewFile.zip';
+        $zipFileName = Cache::get('request').'.zip';
 
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
+        if ($zip->open($public_dir .  $zipFileName, ZipArchive::CREATE) === TRUE)
         {
-            $files = File::files(public_path('myFiles'));
+            $files = File::files($public_dir);
 
             foreach ($files as $key => $value) {
                 $relativeNameInZipFile = basename($value);
@@ -31,14 +65,17 @@ class DiskController extends Controller
 
             $zip->close();
         }
-
-        return response()->download(public_path($fileName));
-        /*
-        $directory = 'public';
-        $files = Storage::allFiles($directory);
-
-        return Storage::download($files);
-        */
+        // Set Header
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+        $download = $public_dir.'/download/';
+        $filetopath = $download.$zipFileName;
+        // Create Download Response
+        if(file_exists($filetopath)){
+            return response()->download($filetopath,$zipFileName,$headers);
+        }
+       dd('Done');
     }
 
     /**

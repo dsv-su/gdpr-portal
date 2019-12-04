@@ -177,6 +177,7 @@ return [
         App\Providers\SciproServiceProvider::class,
         App\Providers\MoodleServiceProvider::class,
         Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,
+        ZanySoft\Zip\ZipServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Zip' => ZanySoft\Zip\ZipFacade::class,
 
     ],
 
