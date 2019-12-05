@@ -463,7 +463,6 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'App\\Http\\Controllers\\CallbackSciproController' => __DIR__ . '/../..' . '/app/Http/Controllers/CallbackSciproController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/DashboardController.php',
-        'App\\Http\\Controllers\\DiskController' => __DIR__ . '/../..' . '/app/Http/Controllers/DiskController.php',
         'App\\Http\\Controllers\\SearchController' => __DIR__ . '/../..' . '/app/Http/Controllers/SearchController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',

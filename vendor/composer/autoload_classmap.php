@@ -18,7 +18,6 @@ return array(
     'App\\Http\\Controllers\\CallbackSciproController' => $baseDir . '/app/Http/Controllers/CallbackSciproController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\DashboardController' => $baseDir . '/app/Http/Controllers/DashboardController.php',
-    'App\\Http\\Controllers\\DiskController' => $baseDir . '/app/Http/Controllers/DiskController.php',
     'App\\Http\\Controllers\\SearchController' => $baseDir . '/app/Http/Controllers/SearchController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',

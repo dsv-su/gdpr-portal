@@ -1,4 +1,4 @@
-<table class="table table-bordered table table-sm">
+<table class="table table-bordered table table-sm table-fixed">
     <thead class="table-primary">
     <tr>
         <th scope="col"><i class="fas fa-barcode"></i> Case Id:</th>
@@ -15,7 +15,13 @@
             <td>{{ $case->request }}</td>
             <td>
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: {{ $case->status }}%;" aria-valuenow="{{ $case->status }}" aria-valuemin="0" aria-valuemax="100">{{ $case->status }}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ $case->status }}%;" aria-valuenow="{{ $case->status }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev {{ $case->status }}%</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Scipro-test 0% Failed</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Moodle-dev 0% Failed</div>
                 </div>
             </td>
             <td>

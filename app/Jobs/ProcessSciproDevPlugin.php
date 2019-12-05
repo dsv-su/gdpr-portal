@@ -11,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Zip;
 
 class ProcessSciproDevPlugin implements ShouldQueue
@@ -23,12 +22,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
      *
      * @return void
      */
-    public $x;
 
-    public function __construct()
-    {
-
-    }
 
     /**
      * Execute the job.
@@ -39,6 +33,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
     {
         //Start GDPR request to scipro-dev
         $scipro = new Scipro(Cache::get('code'));
+        //TODO Use of Cache -> change to eloquent
         $update = Searchcase::find(Cache::get('requestid'));
         if ($status = $scipro->gettoken()) //Request was sucessful
         {
@@ -52,6 +47,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //Unzip
             $dir->unzip(config('services.scipro-dev.client_name'));
 
+            //Status flags
             $update->status = $update->status+100; //Temporary flag 50%
             $update->download =  $update->download+2; //Temporary finished download
         }
@@ -59,6 +55,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
         {
             $update->status = $update->status+0; //Unsucessful request flag 0%
         }
+        //Update and save status
         $update->save();
     }
 }

@@ -23,6 +23,7 @@ class DashboardController extends Controller
 
     public function download($id)
     {
+        //Create zip of retried files and folder
         $zipdown = new CaseStore();
         $zipdown->makezip($id);
         return $zipdown->download($id);

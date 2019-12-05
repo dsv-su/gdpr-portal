@@ -25,12 +25,12 @@ class CaseStore extends Model
 
     public function storeZip($system, $file)
     {
-        //Store zipfile in directory
+        //Store retried zipfile in directory
         Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip', $file);
     }
     public function unzip($system)
     {
-        // extract retrived archive
+        // extract retrived archive to raw directory/folder
         $target_path = base_path() . '/storage/app/public/'.Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip';
         $dest_path = base_path() . '/storage/app/public/'.Cache::get('request').'/raw/'.$system.'/';
         $zip = new ZipArchive();
@@ -40,11 +40,13 @@ class CaseStore extends Model
 
     public function makezip($id)
     {
+        //Create zip file of retrieved files and folders
         $case = Searchcase::find($id);
         $zipFileName = $case->case_id.'.zip';
         $public_dir = public_path().'/storage/'.$case->case_id.'/raw/';
+        //Check if zip already has been created
         if($case->download<3) {
-            //Creates a zip file of the entire download
+            //Creates a zip file of the entire raw folder
             $zip = Zip::create($zipFileName);
             $zip->add($public_dir);
             $zip->add($public_dir . $zipFileName);
@@ -59,12 +61,12 @@ class CaseStore extends Model
 
     public function download($id)
     {
+        //Download zip file
         $case = Searchcase::find($id);
-
+        //Set public folder
         $public_dir = public_path().'/';
-
+        //Set filename
         $zipFileName = $case->case_id.'.zip';
-
         // Set Header
         $headers = array(
             'Content-Type' => 'application/octet-stream',
