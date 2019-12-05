@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
+
 
 class DashboardController extends Controller
 {
@@ -12,9 +14,17 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         return view('home.dashboard', $data);
     }
+
     public function status(Searchcase $searchcase)
     {
         $data['cases'] = Searchcase::all();
         return view('home.status', $data);
+    }
+
+    public function download($id)
+    {
+        $zipdown = new CaseStore();
+        $zipdown->makezip($id);
+        return $zipdown->download($id);
     }
 }

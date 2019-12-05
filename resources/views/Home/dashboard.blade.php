@@ -70,13 +70,15 @@
                             <i class="fas fa-check"></i><button class="btn btn-success btn-sm" type="button" disabled>Send</button>
                         @elseif ($case->registrar == 0 && $case->download < 2)
                             <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button" disabled>Send</button>
-                        @elseif ($case->registrar == 0 && $case->download == 2)
+                        @elseif ($case->registrar == 0 && $case->download >= 2)
                             <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Send</button>
                         @endif
                     </td>
                     <td>
                         @if ($case->download == 2)
-                            <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm">Download</a>
+                            <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
+                            @elseif ($case->download > 2)
+                                <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
                         @else
                         <button class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
