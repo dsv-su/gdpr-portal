@@ -13,15 +13,16 @@
 //Endpoint
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/status','DashboardController@status');
+
 //Download completed gdpr-request
 Route::get('/download/{id}', 'DashboardController@download')->name('download');
+
 //Initiate a Request
 Route::post('/search', 'SearchController@search')->name('search');
+
 //Callbacks
 Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 
-
-Route::get('/home', function () {
-    return view('search.home');
-})->name('new_search');
+//Test
+Route::get('/test', 'DashboardController@test')->name('test');
 

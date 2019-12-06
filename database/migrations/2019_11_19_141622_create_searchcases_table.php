@@ -17,7 +17,8 @@ class CreateSearchcasesTable extends Migration
             $table->bigIncrements('id');
             $table->string('case_id');
             $table->string('request');
-            $table->integer('status');
+            $table->integer('status_scipro_dev');
+            $table->integer('status_moodle_test');
             $table->boolean('registrar');
             $table->integer('download');
             $table->timestamps();

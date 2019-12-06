@@ -13,13 +13,21 @@ use File;
 
 class CaseStore extends Model
 {
-    public function makedfolders($system)
+    //public function makedfolders($system)
+    public function makedfolders()
     {
         //Make case directory
         Storage::makeDirectory('/public/'.Cache::get('request'), $mode=0775);
         //Make zip directory
         Storage::makeDirectory('/public/'.Cache::get('request').'/zip/');
         //Make unzipzip directory
+        Storage::makeDirectory('/public/'.Cache::get('request').'/raw/');
+        //Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
+    }
+
+    public function makesystemfolder($system)
+    {
+        //Make system unzipzip directory
         Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
     }
 

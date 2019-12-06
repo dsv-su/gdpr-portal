@@ -62,13 +62,16 @@
                     <td>{{ $case->request }}</td>
                     <td>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: {{ $case->status }}%;" aria-valuenow="{{ $case->status }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev {{ $case->status }}%</div>
+                            <div class="progress-bar" role="progressbar" style="width: {{ $case->status_moodle_test }}%;" aria-valuenow="{{ $case->status_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test {{ $case->status_moodle_test }}%</div>
                         </div>
                         <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Scipro-test 0% Failed</div>
+                            <div class="progress-bar" role="progressbar" style="width: {{ $case->status_scipro_dev }}%;" aria-valuenow="{{ $case->status_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev {{ $case->status_scipro_dev }}%</div>
                         </div>
                         <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Moodle-dev 0% Failed</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Daisy 0% Failed</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Ilearn2 0% Failed</div>
                         </div>
                     </td>
                     <td>

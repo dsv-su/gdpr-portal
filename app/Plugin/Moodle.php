@@ -8,13 +8,19 @@ use Illuminate\Support\Facades\Storage;
 
 class Moodle
 {
+    private $endpoint_url;
 
-    public function getMoodle()
+    public function __construct()
+    {
+        $this->endpoint_url  = 'https://ilearn2test.dsv.su.se/gdpr/moodle.php?op=1&username=';
+    }
+
+    public function getMoodle($req)
     {
         $client = new Client();
         try {
-            $response = $client->get('https://ilearn2test.dsv.su.se/gdpr/do_fetch.php?op=1&username=tdsv');
-            //$response = $client->get('https://ilearn2test.dsv.su.se/gdpr/do_fetch.php?op=1&username=rydi5898');
+            $response = $client->get($this->endpoint_url.$req);
+
         } catch (GuzzleHttp\Exception\ClientException $e) {
             $response = $e->getResponse();
 
@@ -24,9 +30,9 @@ class Moodle
 
             // Read contents of the body
             $zip = $body->getContents();
-            Storage::disk('public')->put(Cache::get('request').'_moodle.zip', $zip);
+
             //dd($response->getStatusCode());
-            return 200;
+            return $zip;
         } else
             return 401;
     }

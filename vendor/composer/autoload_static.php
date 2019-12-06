@@ -453,7 +453,6 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
-        'App\\Http\\Controllers\\AuthPluginController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthPluginController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -473,6 +472,7 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Jobs\\ProcessGDPRPlugins' => __DIR__ . '/../..' . '/app/Jobs/ProcessGDPRPlugins.php',
+        'App\\Jobs\\ProcessMoodlePlugin' => __DIR__ . '/../..' . '/app/Jobs/ProcessMoodlePlugin.php',
         'App\\Jobs\\ProcessSciproDevPlugin' => __DIR__ . '/../..' . '/app/Jobs/ProcessSciproDevPlugin.php',
         'App\\Plugin\\Moodle' => __DIR__ . '/../..' . '/app/Plugin/Moodle.php',
         'App\\Plugin\\Scipro' => __DIR__ . '/../..' . '/app/Plugin/Scipro.php',

@@ -28,4 +28,8 @@ class DashboardController extends Controller
         $zipdown->makezip($id);
         return $zipdown->download($id);
     }
+    public function test()
+    {
+        return $_SERVER;
+    }
 }

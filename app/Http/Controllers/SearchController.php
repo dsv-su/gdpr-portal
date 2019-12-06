@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\ProcessMoodlePlugin;
 use App\Jobs\ProcessSciproDevPlugin;
+use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
 use App\Plugin\Moodle;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 
 class SearchController extends Controller
@@ -28,10 +31,6 @@ class SearchController extends Controller
          * 3. Store request data in cache
          * 4. Store initiate request data in database table
          * 5. Perform request to plugin scripts
-         *  -if not sucessful -> update status in database table
-         * 6. Store returned files on disk
-         * 7. Update status in database table
-         * 8. Redirect to dashboard
          *
         */
 
@@ -48,7 +47,8 @@ class SearchController extends Controller
             $request = Searchcase::create([
                 'case_id' => config('services.case.start'),
                 'request' => $userid,
-                'status' => 0,
+                'status_scipro_dev' => 0,
+                'status_moodle_test' => 0,
                 'registrar' => false,
                 'download' => 0,
             ]);
@@ -69,59 +69,43 @@ class SearchController extends Controller
             // Request case_id
             $caseid = $nextCaseNumber;
 
+            // 3. Store request in cache
+
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
-
-            // 3. Store search in cache for 60 min
+            //Store search in cache for 60 min
             Cache::put('search', $userid, 60);
 
             // 4. Store initial requestdata to model
             $request = Searchcase::create([
                 'case_id' => $caseid,
                 'request' => $userid,
-                'status' => 0,
+                'status_scipro_dev' => 0,
+                'status_moodle_test' => 0,
                 'registrar' => false,
                 'download' => 0,
             ]);
             $id = $request->id;
-
+            //Store primary key
             Cache::put('requestid', $id, 60);
         }
 
-//------------------------------------------------------------------------------
         // 5. Start JobsPlugins
-
+        //Create folders for retrived data
+        $dir = new CaseStore();
+        $dir->makedfolders();
+        //Start Moodle job
+        $moodleJob = new ProcessMoodlePlugin();
+        dispatch($moodleJob);
 
         //Start Scipro dev job
         $scipro->auth();
+
         // Job end
-
-
-
-        //If error show status
-        return redirect('/');
+        return redirect()->route('home');
 
     }
 
-
-
-    public function callMoodle(Moodle $moodle)
-    {
-        $status = $moodle->getMoodle();
-        $update = Searchcase::find(Cache::get('requestid'));
-
-        if ($status == 200) //Request was sucessful
-        {
-            $update->status = $update->status+50; //Temporary flag 100%
-            $update->download =  $update->download+1; //Temporary finished download
-        }
-        else
-        {
-            $update->status = $update->status+0; //Unsucessful request flag 0%
-        }
-        $update->save();
-        return redirect('/');
-    }
     public function index()
     {
         //

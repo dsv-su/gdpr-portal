@@ -8,7 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
-    'App\\Http\\Controllers\\AuthPluginController' => $baseDir . '/app/Http/Controllers/AuthPluginController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -28,6 +27,7 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Jobs\\ProcessGDPRPlugins' => $baseDir . '/app/Jobs/ProcessGDPRPlugins.php',
+    'App\\Jobs\\ProcessMoodlePlugin' => $baseDir . '/app/Jobs/ProcessMoodlePlugin.php',
     'App\\Jobs\\ProcessSciproDevPlugin' => $baseDir . '/app/Jobs/ProcessSciproDevPlugin.php',
     'App\\Plugin\\Moodle' => $baseDir . '/app/Plugin/Moodle.php',
     'App\\Plugin\\Scipro' => $baseDir . '/app/Plugin/Scipro.php',
