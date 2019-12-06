@@ -51,9 +51,9 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $update->status_scipro_dev = $update->status_scipro_dev+100; //Temporary flag 50%
             $update->download =  $update->download+1; //Temporary finished download
         }
-        else
+        else if( $status==404)
         {
-            $update->status_scipro_dev = $update->status_scipro_dev+0; //Unsucessful request flag 0%
+            $update->status_scipro_dev = $update->status_scipro_dev+9; //Unsucessful request flag 0%
         }
         //Update and save status
         $update->save();

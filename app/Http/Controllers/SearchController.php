@@ -38,6 +38,11 @@ class SearchController extends Controller
         $personnr = $request->input('personnr');
         $email = $request->input('gdpr_email');
         $userid = $request->input('gdpr_userid');
+        //Store formrequest in array
+        $search_request[] = $request->input('personnr');
+        $search_request[] = $request->input('gdpr_email');
+        $search_request[] = $request->input('gdpr_userid');
+
 
         // 2. Generate unique case -id
 
@@ -46,7 +51,9 @@ class SearchController extends Controller
             //Store initial request data to model
             $request = Searchcase::create([
                 'case_id' => config('services.case.start'),
-                'request' => $userid,
+                'request_pnr' => $search_request[0],
+                'request_email' => $search_request[1],
+                'request_uid' => $search_request[2],
                 'status_scipro_dev' => 0,
                 'status_moodle_test' => 0,
                 'registrar' => false,
@@ -79,7 +86,9 @@ class SearchController extends Controller
             // 4. Store initial requestdata to model
             $request = Searchcase::create([
                 'case_id' => $caseid,
-                'request' => $userid,
+                'request_pnr' => $search_request[0],
+                'request_email' => $search_request[1],
+                'request_uid' => $search_request[2],
                 'status_scipro_dev' => 0,
                 'status_moodle_test' => 0,
                 'registrar' => false,
@@ -89,6 +98,9 @@ class SearchController extends Controller
             //Store primary key
             Cache::put('requestid', $id, 60);
         }
+
+
+
 
         // 5. Start JobsPlugins
         //Create folders for retrived data

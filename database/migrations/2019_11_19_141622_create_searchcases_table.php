@@ -16,7 +16,9 @@ class CreateSearchcasesTable extends Migration
         Schema::create('searchcases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('case_id');
-            $table->string('request');
+            $table->string('request_pnr')->nullable();
+            $table->string('request_email')->nullable();
+            $table->string('request_uid')->nullable();
             $table->integer('status_scipro_dev');
             $table->integer('status_moodle_test');
             $table->boolean('registrar');

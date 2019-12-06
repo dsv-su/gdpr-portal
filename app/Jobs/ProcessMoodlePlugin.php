@@ -33,10 +33,15 @@ class ProcessMoodlePlugin implements ShouldQueue
      */
     public function handle()
     {
-
+        //Find requestdata for request
         $update = Searchcase::find(Cache::get('requestid'));
+        //Strip domain from userid
+        $search = $update->request_uid;
+        $searchNum = explode('@', $search);
+        $search = $searchNum[0];
+
         $moodle = new Moodle();
-        if ($status = $moodle->getMoodle($x='tdsv')) //Request was sucessful
+        if ($status = $moodle->getMoodle($search)) //Request was sucessful
         {
             //Create folders for retrived data
             $dir = new CaseStore();
@@ -54,7 +59,7 @@ class ProcessMoodlePlugin implements ShouldQueue
         }
         else
         {
-            $update->status_moodle_test = $update->status_moodle_test+0; //Unsucessful request flag 0%
+            $update->status_moodle_test = $update->status_moodle_test+9; //Unsucessful request flag 0%
         }
         //Update and save status
         $update->save();

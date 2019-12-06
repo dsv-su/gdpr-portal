@@ -3,8 +3,6 @@
 namespace App\Plugin;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class Moodle
 {
@@ -12,7 +10,7 @@ class Moodle
 
     public function __construct()
     {
-        $this->endpoint_url  = 'https://ilearn2test.dsv.su.se/gdpr/moodle.php?op=1&username=';
+        $this->endpoint_url  = "https://ilearn2test.dsv.su.se/gdpr/moodle.php?op=1&username=";
     }
 
     public function getMoodle($req)

@@ -85,6 +85,10 @@ class Scipro
 
                 return $this->zip;
             }
+            else
+            {
+                return 404;
+            }
 
 
         }
