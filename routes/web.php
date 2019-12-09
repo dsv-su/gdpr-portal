@@ -17,6 +17,9 @@ Route::get('/status','DashboardController@status');
 //Download completed gdpr-request
 Route::get('/download/{id}', 'DashboardController@download')->name('download');
 
+//Delete completed gdpr-request
+Route::get('/delete/{id}', 'DashboardController@delete')->name('delete');
+
 //Initiate a Request
 Route::post('/search', 'SearchController@search')->name('search');
 

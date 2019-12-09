@@ -28,6 +28,14 @@ class DashboardController extends Controller
         $zipdown->makezip($id);
         return $zipdown->download($id);
     }
+    public function delete($id)
+    {
+        //Delete zip and retrived files and folder
+        $zip = new CaseStore();
+        $zip->delete_case($id);
+
+        return redirect()->route('home');
+    }
     public function test()
     {
         return $_SERVER;

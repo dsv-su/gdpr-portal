@@ -5,11 +5,13 @@
         <th scope="col"><i class="fas fa-search"></i> Request</th>
         <th scope="col"><i class="fas fa-spinner"></i> Status</th>
         <th scope="col"><i class="fas fa-file-upload"></i> Registrar</th>
+        <th scope="col"><i class="far fa-trash-alt"></i></i> Delete</th>
         <th scope="col"><i class="fas fa-download"></i> Download</th>
     </tr>
     </thead>
     @foreach ($cases as $case)
         <tbody>
+        @if ($case->visability == 1)
         <tr>
             <th scope="row">{{ $case->case_id }}</th>
             <td class="small text-center">{{ $case->request_pnr }}<br>{{$case->request_email}}<br>{{$case->request_uid}}</td>
@@ -36,6 +38,10 @@
                     <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Send</button>
                 @endif
             </td>
+            <td>@if ($case->download > 2)
+                    <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</a>
+                @endif
+            </td>
             <td>
                 @if ($case->download == 2)
                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
@@ -49,7 +55,7 @@
                 @endif
             </td>
         </tr>
-
+        @endif
         @endforeach
         </tbody>
 </table>

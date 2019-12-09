@@ -51,6 +51,7 @@ class SearchController extends Controller
             //Store initial request data to model
             $request = Searchcase::create([
                 'case_id' => config('services.case.start'),
+                'visability' => 1,
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
@@ -86,6 +87,7 @@ class SearchController extends Controller
             // 4. Store initial requestdata to model
             $request = Searchcase::create([
                 'case_id' => $caseid,
+                'visability' => 1,
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],

@@ -87,4 +87,25 @@ class CaseStore extends Model
         }
 
     }
+
+    public function delete_case($id)
+    {
+        //Get the case
+        $case = Searchcase::find($id);
+        //Delete cpmpact zip-file
+        unlink($case->case_id.'.zip');
+        //Delete directory structure
+        Storage::deleteDirectory('/public/'.$case->case_id);
+        //
+        $case->visability = 0;
+        //$case->request_pnr = '';
+        //$case->request_email = '';
+        //$case->request_uid = '';
+        $case->status_scipro_dev = 0;
+        $case->status_moodle_test = 0;
+        $case->registrar = 0;
+        $case->download = 0;
+        $case->save();
+
+    }
 }
