@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.test-master')
 
 @section('content')
     <h5>GDRP</h5>
@@ -13,20 +13,20 @@
             </table>
     </div>
 <!-- -->
-    <form action="{{ route('search') }}" method="post">
+    <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="gdpr-form" class="text-primary">Search according to one of the following criteria</label>
             <div class="form-row">
                 <div class="col-3">
-                    <label>Personal ID number:</label>
-                    <input class="form-control form-control-sm" type="text" name="personnr">
-                    <small class="text-danger"></small>
+                    <label for="gdpr_pnr">Personal ID number:</label>
+                    <input class="form-control form-control-sm" type="text" name="gdpr_pnr" id="gdpr_pnr" data-field="gdpr_pnr">
+                    <div class="valid-message"></div>
                 </div>
                 <div class="col-3">
-                    <label>Email:</label>
-                    <input class="form-control form-control-sm" type="text" name="gdpr_email">
-                    <small class="text-danger"></small>
+                    <label for="gdpr_email">Email:</label>
+                    <input class="form-control form-control-sm" type="text" name="gdpr_email" id="gdpr_email" data-field="gdpr_email">
+                    <div class="valid-message"></div>
                 </div>
                 <div class="col-3">
                     <label>User ID:</label>
@@ -59,7 +59,7 @@
                 <tbody>
                 <tr>
                     <th scope="row">{{ $case->case_id }}</th>
-                    <td>{{ $case->request }}</td>
+                    <td class="small text-center">{{ $case->request_pnr }}<br>{{$case->request_email}}<br>{{$case->request_uid}}</td>
                     <td>
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: {{ $case->status_moodle_test }}%;" aria-valuenow="{{ $case->status_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test {{ $case->status_moodle_test }}%</div>
@@ -106,6 +106,43 @@
     </form>
 <script>
     $(document).ready(function () {
+        var form = $('#form').formValid({
+            fields: {
+                "gdpr_email": {
+                    "required": false,
+                    "tests": [
+                        {
+                            "type": "null",
+                            "message": "Not entered an email"
+                        },
+                        {
+                            "type": "email",
+                            "message": "Your entry is incorrect! Enter a valid email."
+                        }
+                    ]
+                },
+                "gdpr_pnr": {
+                    "required": false,
+                    "tests": [
+                        {
+                            "regex": "^(19|20)?[0-9]{6}[- ]?[0-9]{4}$",
+                            "message": "Your entry is incorrect! Enter a pnr in the following format YYMMDD-XXXX"
+                        }
+                    ]
+                }
+            }
+        });
+
+        form.keypress(300);
+
+        $('button[type="submit"]').click(function() {
+            form.test();
+            if (form.errors() == 0) {
+                return true;
+            }
+            return false;
+        });
+        //
         var auto_refresh = setInterval(
             function() {
                 $('#cases').load('<?php echo url('/status');?>').fadeIn("slow");

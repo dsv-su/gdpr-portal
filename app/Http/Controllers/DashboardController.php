@@ -32,4 +32,13 @@ class DashboardController extends Controller
     {
         return $_SERVER;
     }
+    public function phpinfo()
+    {
+        return phpinfo();
+    }
+    public function val()
+    {
+        return view('home.test');
+    }
+
 }

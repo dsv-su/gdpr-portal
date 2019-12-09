@@ -12,7 +12,7 @@
         <tbody>
         <tr>
             <th scope="row">{{ $case->case_id }}</th>
-            <td>{{ $case->request }}</td>
+            <td class="small text-center">{{ $case->request_pnr }}<br>{{$case->request_email}}<br>{{$case->request_uid}}</td>
             <td>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: {{ $case->status_moodle_test }}%;" aria-valuenow="{{ $case->status_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test {{ $case->status_moodle_test }}%</div>
