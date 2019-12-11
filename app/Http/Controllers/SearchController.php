@@ -35,13 +35,13 @@ class SearchController extends Controller
         */
 
         // 1. Requesting data from form
-        $personnr = $request->input('personnr');
+        $personnr = $request->input('gdpr_pnr');
         $email = $request->input('gdpr_email');
-        $userid = $request->input('gdpr_userid');
+        $userid = $request->input('gdpr_uid');
         //Store formrequest in array
-        $search_request[] = $request->input('personnr');
+        $search_request[] = $request->input('gdpr_pnr');
         $search_request[] = $request->input('gdpr_email');
-        $search_request[] = $request->input('gdpr_userid');
+        $search_request[] = $request->input('gdpr_uid');
 
 
         // 2. Generate unique case -id
@@ -55,9 +55,11 @@ class SearchController extends Controller
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
-                'status_scipro_dev' => 0,
-                'status_moodle_test' => 0,
+                'status_scipro_dev' => 200,
+                'status_moodle_test' => 200,
                 'registrar' => false,
+                'download_moodle_test' => 0,
+                'download_scipro_dev' => 0,
                 'download' => 0,
             ]);
             $caseid = config('services.case.start');
@@ -91,9 +93,11 @@ class SearchController extends Controller
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
-                'status_scipro_dev' => 0,
-                'status_moodle_test' => 0,
+                'status_scipro_dev' => 200,
+                'status_moodle_test' => 200,
                 'registrar' => false,
+                'download_moodle_test' => 0,
+                'download_scipro_dev' => 0,
                 'download' => 0,
             ]);
             $id = $request->id;

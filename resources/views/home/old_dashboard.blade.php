@@ -6,7 +6,9 @@
             <table class="table table-sm">
                 <tbody>
                 <tr>
-                    <td class="small">GDRP-officer: Test Testuser</td><td></td>
+                    <td class="small">
+                        GDRP-officer: Test Testuser
+                    </td><td></td>
                     <td class="small">Available systems: 2</td><td></td><td></td><td></td>
                 </tr>
                 </tbody>
@@ -20,7 +22,7 @@
             <div class="form-row">
                 <div class="col-3">
                     <label for="gdpr_pnr">Personal ID number:</label>
-                    <input class="form-control form-control-sm" type="text" name="gdpr_pnr" id="gdpr_pnr" data-field="gdpr_pnr">
+                    <input class="form-control form-control-sm" type="text" name="gdpr_pnr" id="gdpr_pnr" data-field="gdpr_pnr"  />
                     <div class="valid-message"></div>
                 </div>
                 <div class="col-3">
@@ -39,8 +41,7 @@
                     <small class="text-danger"></small>
                 </div>
             </div>
-            <br>
-
+        </div>
     </form>
 
     <!-- -->

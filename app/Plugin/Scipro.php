@@ -87,7 +87,7 @@ class Scipro
             }
             else
             {
-                return 404;
+                return $this->response->getStatusCode();
             }
 
 

@@ -23,6 +23,8 @@ class CreateSearchcasesTable extends Migration
             $table->integer('status_scipro_dev');
             $table->integer('status_moodle_test');
             $table->boolean('registrar');
+            $table->integer('download_moodle_test');
+            $table->integer('download_scipro_dev');
             $table->integer('download');
             $table->timestamps();
         });

@@ -21,6 +21,8 @@ class ProcessMoodlePlugin implements ShouldQueue
      *
      * @return void
      */
+    public $tries = 3;
+
     public function __construct()
     {
         //
@@ -35,13 +37,31 @@ class ProcessMoodlePlugin implements ShouldQueue
     {
         //Find requestdata for request
         $update = Searchcase::find(Cache::get('requestid'));
-        //Strip domain from userid
+        //Strip domainname from userid -> userid@su.se
         $search = $update->request_uid;
         $searchNum = explode('@', $search);
         $search = $searchNum[0];
 
+        //Start request to Moodle
+        $update->download_moodle_test = 25;
+        //Update and save initiate status
+        $update->save();
         $moodle = new Moodle();
-        if ($status = $moodle->getMoodle($search)) //Request was sucessful
+
+        $status = $moodle->getMoodle($search);
+        if ($status == 204)
+        {
+            //User not found
+            $update->status_moodle_test = 204;
+            $update->download_moodle_test = 100;
+        }
+        else if( $status == 400)
+        {
+            //Request denied
+            $update->status_moodle_test = 400;
+            $update->download_moodle_test = 100;
+        }
+        else
         {
             //Create folders for retrived data
             $dir = new CaseStore();
@@ -54,13 +74,11 @@ class ProcessMoodlePlugin implements ShouldQueue
             $dir->unzip(config('services.moodle-test.client_name'));
 
             //Status flags
-            $update->status_moodle_test = $update->status_moodle_test+100; //Temporary flag 50%
+            $update->status_moodle_test = 200; //Successful download
+            $update->download_moodle_test = 100;
             $update->download =  $update->download+1; //Temporary finished download
         }
-        else
-        {
-            $update->status_moodle_test = $update->status_moodle_test+9; //Unsucessful request flag 0%
-        }
+
         //Update and save status
         $update->save();
     }

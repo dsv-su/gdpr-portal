@@ -12,6 +12,7 @@ class DashboardController extends Controller
     public function index(Searchcase $searchcase)
     {
         $data['cases'] = Searchcase::all();
+        $data['shibbs'] = $_SERVER;
         return view('home.dashboard', $data);
     }
 
@@ -40,13 +41,11 @@ class DashboardController extends Controller
     {
         return $_SERVER;
     }
+
     public function phpinfo()
     {
         return phpinfo();
     }
-    public function val()
-    {
-        return view('home.test');
-    }
+
 
 }

@@ -32,6 +32,6 @@ class Moodle
             //dd($response->getStatusCode());
             return $zip;
         } else
-            return 401;
+            return $response->getStatusCode();
     }
 }

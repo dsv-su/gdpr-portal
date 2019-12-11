@@ -29,4 +29,7 @@ Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 //Test
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
-Route::get('/val', 'DashboardController@val')->name('val');
+
+//Scipro dev test
+//Route::get('/scipro', 'TestController@test_scipro');
+//Route::get('/oauth/callback', 'TestController@callbackScipro');

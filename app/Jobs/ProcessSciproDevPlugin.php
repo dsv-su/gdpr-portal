@@ -35,8 +35,27 @@ class ProcessSciproDevPlugin implements ShouldQueue
         $scipro = new Scipro(Cache::get('code'));
         //TODO Use of Cache -> change to eloquent
         $update = Searchcase::find(Cache::get('requestid'));
-        if ($status = $scipro->gettoken()) //Request was sucessful
+        //Start request to Sciprodev
+        $update->download_scipro_dev = 25;
+        //Update and save initiate status
+        $update->save();
+
+        $status = $scipro->gettoken();
+        if ($status == 204)
         {
+            //User not found
+            $update->status_scipro_dev = 204;
+            $update->download_scipro_dev = 100;
+        }
+        else if( $status == 400)
+        {
+            //Request denied
+            $update->status_scipro_dev = 400;
+            $update->download_scipro_dev = 100;
+        }
+        else
+        {
+
             //Create folders for retrived data
             $dir = new CaseStore();
             //$dir->makedfolders(config('services.scipro-dev.client_name'));
@@ -48,12 +67,9 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $dir->unzip(config('services.scipro-dev.client_name'));
 
             //Status flags
-            $update->status_scipro_dev = $update->status_scipro_dev+100; //Temporary flag 50%
+            $update->status_scipro_dev = 200;
+            $update->download_scipro_dev = 100;
             $update->download =  $update->download+1; //Temporary finished download
-        }
-        else if( $status==404)
-        {
-            $update->status_scipro_dev = $update->status_scipro_dev+9; //Unsucessful request flag 0%
         }
         //Update and save status
         $update->save();
