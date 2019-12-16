@@ -1,12 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
 
 form {
-    max-width: 450px;
+    //max-width: 450px;
     margin: 0 auto;
 
     // positioning context
     > div.a {
-        position: relative;
+        display: inline-block;
+        width: 230px;
+        margin: 20px 0;
         background: white;
         border-bottom: 1px solid #ccc;
 
@@ -24,7 +26,7 @@ form {
         > input[type="password"] {
             width: 100%;
             border: 0;
-            padding: 10px 10px 10px 50px;
+            padding: 10px 10px 10px 40px;
             background: #eee;
 
             &:focus {
@@ -76,11 +78,22 @@ form {
         }
 
     }
+    > div.b {
+        display: inline-block;
+        .req {
+            padding: 0 20px 0 50px;
+            color: #999;
+            max-height: 0;
+            transition: 0.28s;
+            overflow: hidden;
+            color: red;
+            font-style: italic;
+        }
+    }
 
     button[type="submit"]{
-        display: block;
-        width: 100%;
-        margin: 20px 0;
+        display: inline-block;
+        margin: 0 40px 0;
         background: #41D873;
         color: white;
         border: 0;
@@ -96,9 +109,6 @@ body {
     padding: 10px;
 }
 
-@keyframes progress-bar {
-    0% { width: 0; }
-}
 * {
     box-sizing: border-box;
 }

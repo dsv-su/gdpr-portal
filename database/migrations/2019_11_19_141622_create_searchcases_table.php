@@ -16,6 +16,7 @@ class CreateSearchcasesTable extends Migration
         Schema::create('searchcases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('visability');
+            $table->string('gdpr_userid');
             $table->string('case_id');
             $table->string('request_pnr')->nullable();
             $table->string('request_email')->nullable();

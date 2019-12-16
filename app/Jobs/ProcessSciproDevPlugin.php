@@ -46,6 +46,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //User not found
             $update->status_scipro_dev = 204;
             $update->download_scipro_dev = 100;
+            $update->download =  $update->download+1; // Finished download
         }
         else if( $status == 400)
         {
@@ -69,7 +70,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //Status flags
             $update->status_scipro_dev = 200;
             $update->download_scipro_dev = 100;
-            $update->download =  $update->download+1; //Temporary finished download
+            $update->download =  $update->download+1; // Finished download
         }
         //Update and save status
         $update->save();

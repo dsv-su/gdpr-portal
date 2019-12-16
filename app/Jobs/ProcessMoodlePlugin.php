@@ -55,10 +55,10 @@ class ProcessMoodlePlugin implements ShouldQueue
             $update->status_moodle_test = 204;
             $update->download_moodle_test = 100;
         }
-        else if( $status == 400)
+        else if( $status == 404)
         {
             //Request denied
-            $update->status_moodle_test = 400;
+            $update->status_moodle_test = 404;
             $update->download_moodle_test = 100;
         }
         else

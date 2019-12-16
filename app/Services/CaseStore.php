@@ -17,7 +17,7 @@ class CaseStore extends Model
     public function makedfolders()
     {
         //Make case directory
-        Storage::makeDirectory('/public/'.Cache::get('request'), $mode=0775);
+        Storage::makeDirectory('/public/'.Cache::get('request'));
         //Make zip directory
         Storage::makeDirectory('/public/'.Cache::get('request').'/zip/');
         //Make unzipzip directory
@@ -28,7 +28,8 @@ class CaseStore extends Model
     public function makesystemfolder($system)
     {
         //Make system unzipzip directory
-        Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
+        //Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
+        Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system);
     }
 
     public function storeZip($system, $file)
@@ -42,20 +43,30 @@ class CaseStore extends Model
         $target_path = base_path() . '/storage/app/public/'.Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip';
         $dest_path = base_path() . '/storage/app/public/'.Cache::get('request').'/raw/'.$system.'/';
         $zip = new ZipArchive();
-        $x = $zip->open($target_path);
-        $zip->extractTo($dest_path);
+        //Check if zip has been created
+        if($x = $zip->open($target_path))
+        {
+            //If yes; extract to destination
+            $zip->extractTo($dest_path);
+        }
     }
 
     public function makezip($id)
     {
         //Create zip file of retrieved files and folders
         $case = Searchcase::find($id);
-        $zipFileName = $case->case_id.'.zip';
+        $destination = public_path().'/storage/'.$case->case_id.'/';
+        $zipFileName = $destination.$case->case_id.'.zip';
+
+        //$public_dir = public_path().'/storage/app/public/'.$case->case_id.'/raw/';
+        //$destination = public_path().'/storage/app/public/'.$case->case_id.'/';
         $public_dir = public_path().'/storage/'.$case->case_id.'/raw/';
+
+
         //Check if zip already has been created
         if($case->download<3) {
             //Creates a zip file of the entire raw folder
-            $zip = Zip::create($zipFileName);
+            $zip = Zip::create( $zipFileName);
             $zip->add($public_dir);
             $zip->add($public_dir . $zipFileName);
             $zip->close();
@@ -72,7 +83,7 @@ class CaseStore extends Model
         //Download zip file
         $case = Searchcase::find($id);
         //Set public folder
-        $public_dir = public_path().'/';
+        $public_dir = public_path().'/storage/'.$case->case_id.'/';
         //Set filename
         $zipFileName = $case->case_id.'.zip';
         // Set Header
@@ -93,7 +104,30 @@ class CaseStore extends Model
         //Get the case
         $case = Searchcase::find($id);
         //Delete cpmpact zip-file
-        unlink($case->case_id.'.zip');
+        $public_dir = public_path().'/storage/'.$case->case_id.'/';
+        unlink($public_dir.$case->case_id.'.zip');
+        //Delete directory structure
+        Storage::deleteDirectory('/public/'.$case->case_id);
+        //Storage::deleteDirectory($public_dir.$case->case_id);
+        //
+        $case->visability = 0;
+        //$case->request_pnr = '';
+        //$case->request_email = '';
+        //$case->request_uid = '';
+        $case->status_scipro_dev = 0;
+        $case->status_moodle_test = 0;
+        $case->registrar = 0;
+        $case->download = 0;
+        $case->save();
+
+    }
+    //Only during developing and deploying testing
+    public function dev_delete_case($id)
+    {
+        //Get the case
+        $case = Searchcase::find($id);
+        //Delete cpmpact zip-file
+        //unlink($case->case_id.'.zip');
         //Delete directory structure
         Storage::deleteDirectory('/public/'.$case->case_id);
         //
@@ -106,6 +140,13 @@ class CaseStore extends Model
         $case->registrar = 0;
         $case->download = 0;
         $case->save();
+    }
 
+    //Only during developing and deploying testing
+    public function dev_delete()
+    {
+    //Delete directory structure
+    Storage::deleteDirectory('/public/raw');
+    Storage::deleteDirectory('/public/zip');
     }
 }

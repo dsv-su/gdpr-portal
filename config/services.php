@@ -32,6 +32,8 @@ return [
     'scipro-dev' => [
         'client_name' => env('SCIPRO_DEV_CLIENT_NAME'),
         'client_id' => env('SCIPRO_DEV_CLIENT_ID'),
+        'auth_url' => env('SCIPRO_DEV_AUTH_URL'),
+        'base_uri' => env('SCIPRO_DEV_BASE_URI'),
         'client_secret' => env('SCIPRO_DEV_CLIENT_SECRET'),
         'redirect_uri' => env('SCIPRO_DEV_REDIRECT_URI'),
     ],
@@ -41,7 +43,7 @@ return [
     ],
     'moodle-test' => [
         'client_name' => env('MOODLE_NAME'),
-        'endpoint_uri' => env('MOODLE_URIs'),
+        'endpoint_uri' => env('MOODLE_URI'),
     ]
 
 ];

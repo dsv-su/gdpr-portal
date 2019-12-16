@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Plugin\Moodle;
 use App\Plugin\Scipro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -21,5 +22,11 @@ class TestController extends Controller
         //Store search in cache for 60 min
         Cache::put('search', 'rydi5898@su.se', 60);
         return $scipro->gettoken();
+    }
+    public function test_moodle()
+    {
+        $moodle = new Moodle();
+
+        return $status = $moodle->getMoodle('tdsv');
     }
 }

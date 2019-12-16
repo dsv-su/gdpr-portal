@@ -2,11 +2,8 @@
 
 namespace App\Plugin;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\RefreshToken;
-use kamermans\OAuth2\Persistence\FileTokenPersistence;
 use kamermans\OAuth2\OAuth2Middleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -33,12 +30,14 @@ class Scipro
             public function auth()
             {
                 // If we have no access token or refresh token, we need to get user consent to obtain one
-                $this->auth_url = 'https://toker.dsv.su.se/authorize?'.http_build_query([
+                $this->auth_url = config('services.scipro-dev.auth_url').'?'.http_build_query([
                         'client_id' => $this->client_id,
                         'redirect_uri' => $this->redirect_uri,
                         'response_type' => 'code',
                         'scope' => '',
                         'access_type' => '',
+                        //'principal' => 'rydi5898@dsv.su.se',
+                        //'entitlement' => 'dsv-user:gdpr',
                     ]);
 
                 // Redirect to authorization endpoint
@@ -53,7 +52,7 @@ class Scipro
             // Authorization client - this is used to request OAuth access tokens
             $this->reauth_client = new Client([
                 // URL for access_token request
-                'base_uri' => 'https://toker.dsv.su.se/exchange',
+                'base_uri' => config('services.scipro-dev.base_uri'),
                 // 'debug' => true,
             ]);
             $this->reauth_config = [
@@ -76,20 +75,38 @@ class Scipro
             //
             $this->id = Cache::pull('search'); //Pull and destroy cache
             $this->endpoint_url = 'https://scipro-dev.dsv.su.se/gdpr/report?identity='.$this->id;
-            $this->response = $this->client->get($this->endpoint_url);
-            if ($this->response->getStatusCode() == 200) {
-                //If response == 200 then ->
-                $this->body = $this->response->getBody();
-                // Read contents of the body
-                $this->zip = $this->body->getContents();
 
-                return $this->zip;
+            //$this->response = $this->client->get($this->endpoint_url); //Restore
+
+            try {
+                $this->response = $this->client->get($this->endpoint_url);
             }
-            else
-            {
-                return $this->response->getStatusCode();
+            catch (\Exception $e) {
+                /**
+                If there is an exception; Client error;
+                 */
+                if ($e->hasResponse()) {
+                    $response = $e->getResponse();
+
+                    return $response->getStatusCode();
+
+                }
             }
 
+            //Processing response from Scipro
+            if($this->response) {
+                if ($this->response->getStatusCode() == 200) {
+                    //If response == 200 then ->
+                    $this->body = $this->response->getBody();
+                    // Read contents of the body
+                    $this->zip = $this->body->getContents();
+
+                    return $this->zip;
+                } else {
+                    return $this->response->getStatusCode();
+                }
+
+            }
 
         }
 }

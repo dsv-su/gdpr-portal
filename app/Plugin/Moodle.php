@@ -10,28 +10,40 @@ class Moodle
 
     public function __construct()
     {
-        $this->endpoint_url  = "https://ilearn2test.dsv.su.se/gdpr/moodle.php?op=1&username=";
+        $this->endpoint_url  = config('services.moodle-test.endpoint_uri');
     }
 
     public function getMoodle($req)
     {
         $client = new Client();
         try {
-            $response = $client->get($this->endpoint_url.$req);
+            $response = $client->get($this->endpoint_url . $req);
 
-        } catch (GuzzleHttp\Exception\ClientException $e) {
-            $response = $e->getResponse();
+        } catch (\Exception $e) {
+            /**
+             * If there is an exception; Client error;
+             */
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+
+                return $response->getStatusCode();
+
+            }
+        }
+
+        //Processing response from Moodle
+        if ($response) {
+            if ($response->getStatusCode() == 200) {
+                $body = $response->getBody();
+
+                // Read contents of the body
+                $zip = $body->getContents();
+
+                //dd($response->getStatusCode());
+                return $zip;
+            } else
+                return $response->getStatusCode();
 
         }
-        if ($response->getStatusCode() == 200) {
-            $body = $response->getBody();
-
-            // Read contents of the body
-            $zip = $body->getContents();
-
-            //dd($response->getStatusCode());
-            return $zip;
-        } else
-            return $response->getStatusCode();
     }
 }

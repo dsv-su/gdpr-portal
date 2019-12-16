@@ -12,7 +12,13 @@ class DashboardController extends Controller
     public function index(Searchcase $searchcase)
     {
         $data['cases'] = Searchcase::all();
-        $data['shibbs'] = $_SERVER;
+        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        {
+            $data['gdpr_user'] = $_SERVER['displayName'];
+        }
+        else {
+            $data['gdpr_user'] = 'Ryan Dias';
+        }
         return view('home.dashboard', $data);
     }
 
@@ -37,9 +43,34 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
+    public function dev_delete($id)
+    {
+        //Delete zip and retrived files and folder
+        $zip = new CaseStore();
+        $zip->dev_delete_case($id);
+
+        return redirect()->route('home');
+    }
+    public function dev()
+    {
+        //Delete zip and retrived files and folder
+        $zip = new CaseStore();
+        $zip->dev_delete();
+
+        return redirect()->route('home');
+    }
+
     public function test()
     {
         return $_SERVER;
+    }
+    public function test1()
+    {
+        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        {
+            return $_SERVER['displayName'];
+        }
+
     }
 
     public function phpinfo()

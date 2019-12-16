@@ -27,10 +27,11 @@ class SearchController extends Controller
     {
         /*
          * 1. Request and store form entries in cache
-         * 2. Generate unique request id
-         * 3. Store request data in cache
-         * 4. Store initiate request data in database table
-         * 5. Perform request to plugin scripts
+         * 2. Logg user
+         * 3. Generate unique request id
+         * 4. Store request data in cache
+         * 5. Store initiate request data in database table
+         * 6. Perform request to plugin scripts
          *
         */
 
@@ -43,8 +44,16 @@ class SearchController extends Controller
         $search_request[] = $request->input('gdpr_email');
         $search_request[] = $request->input('gdpr_uid');
 
+        // 2. Logg user
+        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        {
+            $gdpr_userid = $_SERVER['eppn'];
+        }
+        else {
+            $gdpr_userid = 'devuser';
+        }
 
-        // 2. Generate unique case -id
+        // 3. Generate unique case -id
 
         if(!$record = Searchcase::latest()->first())
         {
@@ -52,6 +61,7 @@ class SearchController extends Controller
             $request = Searchcase::create([
                 'case_id' => config('services.case.start'),
                 'visability' => 1,
+                'gdpr_userid' => $gdpr_userid,
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
@@ -79,17 +89,18 @@ class SearchController extends Controller
             // Request case_id
             $caseid = $nextCaseNumber;
 
-            // 3. Store request in cache
+            // 4. Store request in cache
 
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
             //Store search in cache for 60 min
             Cache::put('search', $userid, 60);
 
-            // 4. Store initial requestdata to model
+            // 5. Store initial requestdata to model
             $request = Searchcase::create([
                 'case_id' => $caseid,
                 'visability' => 1,
+                'gdpr_userid' => $gdpr_userid,
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
@@ -108,7 +119,7 @@ class SearchController extends Controller
 
 
 
-        // 5. Start JobsPlugins
+        // 6. Start JobsPlugins
         //Create folders for retrived data
         $dir = new CaseStore();
         $dir->makedfolders();
