@@ -1,11 +1,11 @@
-<table class="table table-bordered table table-sm table-fixed">
+<table class="table table table-sm table-fixed">
     <thead class="table-primary">
     <tr>
         <th scope="col"><i class="fas fa-barcode"></i> Case Id:</th>
         <th scope="col"><i class="fas fa-search"></i> Request</th>
         <th scope="col"><i class="fas fa-spinner"></i> Status</th>
         <th scope="col"><i class="fas fa-file-upload"></i> Registrar</th>
-        <th scope="col"><i class="far fa-trash-alt"></i></i> Delete</th>
+        <th scope="col"><i class="far fa-trash-alt"></i> Delete</th>
         <th scope="col"><i class="fas fa-download"></i> Download</th>
     </tr>
     </thead>
@@ -13,7 +13,7 @@
         <tbody>
         @if ($case->visability == 1)
         <tr>
-            <th scope="row">{{ $case->case_id }}</th>
+            <td scope="row">{{ $case->case_id }}</td>
             <td class="small text-center">{{ $case->request_pnr }}<br>{{$case->request_email}}<br>{{$case->request_uid}}</td>
             <td>
                 @if ($case->status_moodle_test == 200)

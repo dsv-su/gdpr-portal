@@ -21,7 +21,7 @@ class CallbackSciproController extends Controller
         $sciproJob = new ProcessSciproDevPlugin();
         dispatch($sciproJob);
         // Job end
-        return redirect()->route('home');
+        return redirect()->route('finished');
 
 
 

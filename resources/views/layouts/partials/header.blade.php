@@ -10,6 +10,5 @@
     <a id="header-su" href="http://www.su.se/english/" title="Stockholm University home">
         <img src="{{ asset('images/su_logo_en.gif') }}" alt="Stockholm University">
     </a>
-    <div class="clear">
-    </div>
+    <div class="clear"></div>
 </div>

@@ -116,21 +116,25 @@ class SearchController extends Controller
             Cache::put('requestid', $id, 60);
         }
 
-
-
-
         // 6. Start JobsPlugins
-        //Create folders for retrived data
+
+        //Create folders for retrieved data
         $dir = new CaseStore();
         $dir->makedfolders();
+
+        //**************************************************************************************************************
         //Start Moodle job
         $moodleJob = new ProcessMoodlePlugin();
         dispatch($moodleJob);
+        //**************************************************************************************************************
 
+        //**************************************************************************************************************
         //Start Scipro dev job
         $scipro->auth();
+        //**************************************************************************************************************
 
-        // Job end
+        // Request end
+
         return redirect()->route('home');
 
     }

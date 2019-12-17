@@ -27,9 +27,13 @@ Route::post('/search', 'SearchController@search')->name('search');
 //Callbacks
 Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 
+//Finished request
+Route::get('/finished', 'DashboardController@request_end')->name('finished');
+//Route::get('email', 'EmailController@sendEMail');
+
 //Test
+Route::get('/t', 'DashboardController@testview')->name('tview');
 Route::get('/test', 'DashboardController@test')->name('test');
-Route::get('/test1', 'DashboardController@test1')->name('test1');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
 
 //Scipro dev test
@@ -37,4 +41,4 @@ Route::get('/php', 'DashboardController@phpinfo')->name('php');
 //Route::get('/oauth/callback', 'TestController@callbackScipro');
 
 //Moodle-test
-Route::get('/moodle', 'TestController@test_moodle');
+//Route::get('/moodle', 'TestController@test_moodle');

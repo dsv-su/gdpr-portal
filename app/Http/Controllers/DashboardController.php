@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
+use App\Jobs\ProcessFinished;
+use Illuminate\Support\Facades\Cache;
 
 
 class DashboardController extends Controller
@@ -15,9 +17,12 @@ class DashboardController extends Controller
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             $data['gdpr_user'] = $_SERVER['displayName'];
+            //TODO change cache to eloquent
+            Cache::put('requester_email', $_SERVER['mail'], 60);
         }
         else {
             $data['gdpr_user'] = 'Ryan Dias';
+            Cache::put('requester_email', 'ryan@dsv.su.se', 60);
         }
         return view('home.dashboard', $data);
     }
@@ -27,7 +32,12 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         return view('home.status', $data);
     }
-
+    public function request_end()
+    {
+        $request_finished = new ProcessFinished();
+        $this->dispatch($request_finished);
+        return redirect()->route('home');
+    }
     public function download($id)
     {
         //Create zip of retried files and folder
@@ -64,13 +74,13 @@ class DashboardController extends Controller
     {
         return $_SERVER;
     }
-    public function test1()
+    public function testview()
     {
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             return $_SERVER['displayName'];
         }
-
+        return view('home.test_dashboard');
     }
 
     public function phpinfo()
