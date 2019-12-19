@@ -20,7 +20,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    Your request <strong>ID#{{$details['case']}}</strong> has now been processed and is ready for downloading.
+                                    Your request <strong>ID#{{$details['case']}}</strong> has <strong>NOT</strong> been processed due to a server problem. Please try again later!
                                 </td>
                             </tr>
                             <tr>
@@ -69,7 +69,7 @@
                                         <tr>
                                             <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
                                                 <a href="http://su.se/" style="color: #ffffff;">
-                                                   SU
+                                                    SU
                                                 </a>
                                             </td>
                                             <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>

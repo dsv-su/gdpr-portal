@@ -4,9 +4,6 @@
     <h5>GDRP - Welcome {{ $gdpr_user }}</h5>
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
-
-            <label for="gdpr-form" class="text-primary">Search according to one of the following criteria:</label>
-            <br>
                 <div class="a">
                     <input pattern="^(19|20)?[0-9]{6}[- ]?[0-9]{4}$" type="text" id="gdpr_pnr" name="gdpr_pnr" placeholder="Personal ID" />
                     <label for="gdpr_pnr">Personal ID</label>
@@ -35,12 +32,12 @@
                         Must
                     </div>
                 </div>
-
     </form>
+    <br>
     <!-- -->
-    <div class="row row-no-gutters" id="cases">
-        <table class="table table table-sm table-fixed">
-            <thead class="table-primary">
+    <div class="row row-no-gutters"id="cases" >
+        <table class="table table-sm table-fixed">
+            <thead>
             <tr>
                 <th scope="col"><i class="fas fa-barcode"></i> Case Id:</th>
                 <th scope="col"><i class="fas fa-search"></i> Request</th>
@@ -82,12 +79,6 @@
                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $case->download_scipro_dev }}%;" aria-valuenow="{{ $case->download_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev: Client Error</div>
                                  </div>
                             @endif
-                                <div class="progress">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Daisy 0% Failed</div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Ilearn2 0% Failed</div>
-                            </div>
                         </td>
                         <td>
                             @if ( $case->registrar == 1)
@@ -109,15 +100,18 @@
                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
                             @elseif ($case->download > 2)
                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
-                            @else
+
+                            @elseif ($case->download <2 && ($case->status_scipro_dev == 200 && $case->status_moodle_test == 200))
                                 <button class="btn btn-primary" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Downloading...
                                 </button>
+                            @else
+                                <span class="badge badge-danger">Failed</span>
                             @endif
                         </td>
                     </tr>
-                @endif
+                 @endif
                 @endforeach
                 </tbody>
         </table>

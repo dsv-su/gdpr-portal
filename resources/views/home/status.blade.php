@@ -1,5 +1,5 @@
-<table class="table table table-sm table-fixed">
-    <thead class="table-primary">
+<table class="table table-sm table-fixed">
+    <thead>
     <tr>
         <th scope="col"><i class="fas fa-barcode"></i> Case Id:</th>
         <th scope="col"><i class="fas fa-search"></i> Request</th>
@@ -41,12 +41,6 @@
                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $case->download_scipro_dev }}%;" aria-valuenow="{{ $case->download_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev: Client Error</div>
                      </div>
                 @endif
-                <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Daisy Failed</div>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">Ilearn2 Failed</div>
-                </div>
             </td>
             <td>
                 @if ( $case->registrar == 1)
@@ -67,16 +61,19 @@
                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
                 @elseif ($case->download > 2)
                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
-                @else
+                @elseif ($case->download <2 && ($case->status_scipro_dev == 200 && $case->status_moodle_test == 200))
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Downloading...
+                            Downloading...
                     </button>
+                @else
+                <span class="badge badge-danger">Failed</span>
+
                 @endif
-            </td>
-        </tr>
-        @endif
-        @endforeach
-        </tbody>
+             </td>
+            </tr>
+            @endif
+            @endforeach
+    </tbody>
 </table>
 

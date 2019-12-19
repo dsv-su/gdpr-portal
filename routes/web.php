@@ -29,7 +29,6 @@ Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 
 //Finished request
 Route::get('/finished', 'DashboardController@request_end')->name('finished');
-//Route::get('email', 'EmailController@sendEMail');
 
 //Test
 Route::get('/t', 'DashboardController@testview')->name('tview');

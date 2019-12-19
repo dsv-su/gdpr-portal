@@ -2,6 +2,9 @@
 
 form {
     //max-width: 450px;
+    border-radius: 25px;
+    border: 2px solid #41D873;
+    padding: 20px;
     margin: 0 auto;
 
     // positioning context
@@ -110,35 +113,37 @@ body {
 }
 
 * {
-    box-sizing: border-box;
+    //box-sizing: border-box;
 }
 /* --- The Table Structure --- */
 table {
     border-collapse: separate;
-    border-spacing: 0;
+    //border-spacing: 0;
+    //border: 2px solid #41D873;
 }
 table tr th,
 table tr td {
-    border-right: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
+    //border-right: 1px solid #bbb;
+    //border-bottom: 1px solid #bbb;
     box-shadow: 2px 2px 1px #e5dfcc;
 }
 table tr th:first-child,
 table tr td:first-child {
-    border-left: 1px solid #bbb;
+    //border-left: 1px solid #bbb;
 }
 table tr th {
-    border-top: 1px solid #bbb;
+    //border-top: 1px solid #bbb;
+
 }
 
 /* top-left border-radius */
 table tr:first-child th:first-child {
-    border-top-left-radius: 6px;
+    border-top-left-radius: 10px;
 }
 
 /* top-right border-radius */
 table tr:first-child th:last-child {
-    border-top-right-radius: 6px;
+    border-top-right-radius: 10px;
 }
 
 /* bottom-left border-radius */
@@ -151,10 +156,11 @@ table tr:last-child td:last-child {
     border-bottom-right-radius: 6px;
 }
 
-/* -- The Stlyes -- */
+/* -- The Styles -- */
 body {
     margin: 30px;
-    background: #ECEAE3;
+    //background: #ECEAE3;
+    background: #F8F8FF;
     font-family: 'Muli', Serif;
 }
 th, td{
@@ -163,8 +169,8 @@ th, td{
 th{
     background: #41D873;
     color: #fff;
+    border: 0;
 }
 td{
-    //background: #EFF1F6;
-    background: #999;
+    background: #F8F8FF; //Ghostwhite
 }

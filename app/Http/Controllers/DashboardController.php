@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessNotFinished;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
@@ -34,8 +35,19 @@ class DashboardController extends Controller
     }
     public function request_end()
     {
-        $request_finished = new ProcessFinished();
-        $this->dispatch($request_finished);
+        //Find requestdata for request
+        $update = Searchcase::find(Cache::get('requestid'));
+        if ($update->download == 2)
+        {
+            $request_finished = new ProcessFinished();
+            $this->dispatch($request_finished);
+        }
+        else
+        {
+            $request_finished_error = new ProcessNotFinished();
+            $this->dispatch($request_finished_error);
+        }
+
         return redirect()->route('home');
     }
     public function download($id)
@@ -76,11 +88,18 @@ class DashboardController extends Controller
     }
     public function testview()
     {
+        $data['cases'] = Searchcase::all();
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
-            return $_SERVER['displayName'];
+            $data['gdpr_user'] = $_SERVER['displayName'];
+            //TODO change cache to eloquent
+            Cache::put('requester_email', $_SERVER['mail'], 60);
         }
-        return view('home.test_dashboard');
+        else {
+            $data['gdpr_user'] = 'Ryan Dias';
+            Cache::put('requester_email', 'ryan@dsv.su.se', 60);
+        }
+        return view('home.test_dashboard', $data);
     }
 
     public function phpinfo()
