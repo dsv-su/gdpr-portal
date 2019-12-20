@@ -27,9 +27,6 @@ Route::post('/search', 'SearchController@search')->name('search');
 //Callbacks
 Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 
-//Finished request
-Route::get('/finished', 'DashboardController@request_end')->name('finished');
-
 //Test
 Route::get('/t', 'DashboardController@testview')->name('tview');
 Route::get('/test', 'DashboardController@test')->name('test');

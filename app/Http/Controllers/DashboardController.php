@@ -33,23 +33,7 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         return view('home.status', $data);
     }
-    public function request_end()
-    {
-        //Find requestdata for request
-        $update = Searchcase::find(Cache::get('requestid'));
-        if ($update->download == 2)
-        {
-            $request_finished = new ProcessFinished();
-            $this->dispatch($request_finished);
-        }
-        else
-        {
-            $request_finished_error = new ProcessNotFinished();
-            $this->dispatch($request_finished_error);
-        }
 
-        return redirect()->route('home');
-    }
     public function download($id)
     {
         //Create zip of retried files and folder

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\FinishedJobs;
 use App\Jobs\ProcessMoodlePlugin;
 use App\Jobs\ProcessSciproDevPlugin;
 use App\Services\CaseStore;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
 use App\Plugin\Moodle;
+use App\Plugin;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -67,11 +69,23 @@ class SearchController extends Controller
                 'request_uid' => $search_request[2],
                 'status_scipro_dev' => 200,
                 'status_moodle_test' => 200,
+                'status_processed' => 0,
+                'status_flag' => 1,
                 'registrar' => false,
                 'download_moodle_test' => 0,
                 'download_scipro_dev' => 0,
                 'download' => 0,
             ]);
+            //---Temporary
+            Plugin::create([
+                'name' => 'Ilearn2test',
+                'status' => 0,
+            ]);
+            Plugin::create([
+                'name' => 'Scipro-dev',
+                'status' => 0,
+            ]);
+            //---endTemporary
             $caseid = config('services.case.start');
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
@@ -106,6 +120,8 @@ class SearchController extends Controller
                 'request_uid' => $search_request[2],
                 'status_scipro_dev' => 200,
                 'status_moodle_test' => 200,
+                'status_processed' => 0,
+                'status_flag' => 1,
                 'registrar' => false,
                 'download_moodle_test' => 0,
                 'download_scipro_dev' => 0,
@@ -121,6 +137,7 @@ class SearchController extends Controller
         //Create folders for retrieved data
         $dir = new CaseStore();
         $dir->makedfolders();
+
 
         //**************************************************************************************************************
         //Start Moodle job

@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Jobs\ProcessFinished;
+use App\Jobs\ProcessNotFinished;
+use App\Jobs\ProcessNotFound;
+use App\Searchcase;
+use App\Plugin;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -36,6 +42,33 @@ class AppServiceProvider extends ServiceProvider
             // $event->connectionName  //database
             // $event->job
             //$event->job->payload()
+            //Find requestdata for request and update stats
+            $update = Searchcase::find(Cache::get('requestid'));
+            $update->status_processed = $update->status_processed + 1;
+            $update->save();
+            //Check processed flag
+            $update = Searchcase::find(Cache::get('requestid'));
+            $systems = Plugin::all()->count();
+
+            if ($update->download >0 && $update->status_processed == $systems && $update->status_flag == 1)
+            {
+                $request_finished = new ProcessFinished();
+                dispatch($request_finished);
+
+            }
+            elseif ($update->download == 0 && $update->status_processed == $systems && $update->status_flag == 1)
+            {
+                $request_finished_empty = new ProcessNotFound();
+                dispatch($request_finished_empty);
+
+            }
+            elseif ($update->download <$systems && $update->status_processed == $systems && $update->status_flag == 0)
+            {
+
+                $request_finished_error = new ProcessNotFinished();
+                dispatch($request_finished_error);
+
+            }
         });
     }
 }

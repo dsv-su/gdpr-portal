@@ -37,10 +37,12 @@ class ProcessMoodlePlugin implements ShouldQueue
     {
         //Find requestdata for request
         $update = Searchcase::find(Cache::get('requestid'));
-        //Strip domainname from userid -> userid@su.se
         $search = $update->request_uid;
+        //Strip domainname from userid -> userid@su.se
+        /* Disabled
         $searchNum = explode('@', $search);
         $search = $searchNum[0];
+        */
 
         //Start request to Moodle
         $update->download_moodle_test = 25;
@@ -58,7 +60,9 @@ class ProcessMoodlePlugin implements ShouldQueue
         else if( $status == 404)
         {
             //Request denied
-            $update->status_moodle_test = 404;
+            //$update->status_moodle_test = 404; //Should be 404 but moodle reports wrong
+            //$update->status_flag = 0; //Set flag to Error
+            $update->status_moodle_test = 204;
             $update->download_moodle_test = 100;
         }
         else

@@ -52,14 +52,14 @@
                 @if ($case->visability == 1)
                     <tr>
                         <td scope="row">{{ $case->case_id }}</td>
-                        <td class="small text-center">{{ $case->request_pnr }}<br>{{$case->request_email}}<br>{{$case->request_uid}}</td>
+                        <td class="small text-center">@if (!$case->request_pnr==null){{ $case->request_pnr }} <br> @endif @if (!$case->request_email==null) {{$case->request_email}} <br> @endif @if (!$case->request_uid==null) {{$case->request_uid}} @endif</td>
                         <td>
                             @if ($case->status_moodle_test == 200)
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="width: {{ $case->download_moodle_test }}%;" aria-valuenow="{{ $case->download_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test {{ $case->download_moodle_test }}%</div>
                             </div>
                             @endif
-                            @if ($case->status_moodle_test == 404)
+                            @if ($case->status_moodle_test == 204)
                                  <div class="progress">
                                  <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $case->download_moodle_test }}%;" aria-valuenow="{{ $case->download_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test</div>
                                  </div>
@@ -98,14 +98,18 @@
                         <td>
                             @if ($case->download == 2)
                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
+                            @elseif ($case->download >= 1 && ($case->status_moodle_test == 204 or $case->status_scipro_dev == 204))
+                                <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
                             @elseif ($case->download > 2)
                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
 
-                            @elseif ($case->download <2 && ($case->status_scipro_dev == 200 && $case->status_moodle_test == 200))
+                            @elseif ($case->download <2 && $case->status_processed <2 && ($case->status_scipro_dev == 200 or $case->status_moodle_test == 200))
                                 <button class="btn btn-primary" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Downloading...
                                 </button>
+                            @elseif ($case->download >=1 && $case->status_scipro_dev == 204 or $case->status_moodle_test == 204)
+                                <span class="badge badge-warning">Nothing to download</span>
                             @else
                                 <span class="badge badge-danger">Failed</span>
                             @endif

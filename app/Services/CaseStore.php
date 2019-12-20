@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Searchcase;
-use Cassandra\Exception\TruncateException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -13,7 +12,6 @@ use File;
 
 class CaseStore extends Model
 {
-    //public function makedfolders($system)
     public function makedfolders()
     {
         //Make case directory
@@ -22,13 +20,12 @@ class CaseStore extends Model
         Storage::makeDirectory('/public/'.Cache::get('request').'/zip/');
         //Make unzipzip directory
         Storage::makeDirectory('/public/'.Cache::get('request').'/raw/');
-        //Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
+
     }
 
     public function makesystemfolder($system)
     {
         //Make system unzipzip directory
-        //Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system, $mode=0775);
         Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system);
     }
 
@@ -57,24 +54,18 @@ class CaseStore extends Model
         $case = Searchcase::find($id);
         $destination = public_path().'/storage/'.$case->case_id.'/';
         $zipFileName = $destination.$case->case_id.'.zip';
-
-        //$public_dir = public_path().'/storage/app/public/'.$case->case_id.'/raw/';
-        //$destination = public_path().'/storage/app/public/'.$case->case_id.'/';
+        //Directory of unzipped files
         $public_dir = public_path().'/storage/'.$case->case_id.'/raw/';
-
-
         //Check if zip already has been created
         if($case->download<3) {
             //Creates a zip file of the entire raw folder
             $zip = Zip::create( $zipFileName);
-            $zip->add($public_dir);
+            $zip->add($public_dir, true); //Zip only contents of file
             $zip->add($public_dir . $zipFileName);
             $zip->close();
             $case->download++;
             $case->save();
         }
-
-
 
     }
 
@@ -90,7 +81,6 @@ class CaseStore extends Model
         $headers = array(
             'Content-Type' => 'application/octet-stream',
         );
-
         $filetopath = $public_dir.$zipFileName;
         // Create Download Response
         if(file_exists($filetopath)){
@@ -108,12 +98,8 @@ class CaseStore extends Model
         unlink($public_dir.$case->case_id.'.zip');
         //Delete directory structure
         Storage::deleteDirectory('/public/'.$case->case_id);
-        //Storage::deleteDirectory($public_dir.$case->case_id);
-        //
+        //Reset flags
         $case->visability = 0;
-        //$case->request_pnr = '';
-        //$case->request_email = '';
-        //$case->request_uid = '';
         $case->status_scipro_dev = 0;
         $case->status_moodle_test = 0;
         $case->registrar = 0;
@@ -121,6 +107,7 @@ class CaseStore extends Model
         $case->save();
 
     }
+
     //Only during developing and deploying testing
     public function dev_delete_case($id)
     {
@@ -130,11 +117,8 @@ class CaseStore extends Model
         //unlink($case->case_id.'.zip');
         //Delete directory structure
         Storage::deleteDirectory('/public/'.$case->case_id);
-        //
+        // Reset flags
         $case->visability = 0;
-        //$case->request_pnr = '';
-        //$case->request_email = '';
-        //$case->request_uid = '';
         $case->status_scipro_dev = 0;
         $case->status_moodle_test = 0;
         $case->registrar = 0;
