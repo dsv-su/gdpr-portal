@@ -63,7 +63,7 @@ class CaseStore extends Model
             $zip->add($public_dir, true); //Zip only contents of file
             $zip->add($public_dir . $zipFileName);
             $zip->close();
-            $case->download++;
+            $case->download=3;
             $case->save();
         }
 

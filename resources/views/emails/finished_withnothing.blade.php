@@ -15,12 +15,12 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
                                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-                                    <b>Message from the GDPR Portal</b>
+                                    <b>{{ $details['title'] }}</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    Your request <strong>ID#{{$details['case']}}</strong> has now been processed and but the user has <strong>not</strong> been found in any systems.
+                                    Your request <strong>ID#{{$details['case']}}</strong> has now been processed; the user has <strong>not</strong> been found in any systems. Please check that you have entered <strong>Personnummer</strong> and/or <strong>Emailaddress</strong> and/or <strong>UserId</strong> correct.
                                 </td>
                             </tr>
                             <tr>

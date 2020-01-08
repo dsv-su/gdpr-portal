@@ -36,7 +36,7 @@ class ProcessFinished implements ShouldQueue
         $user = Cache::get('requester_email');
 
         $details = [
-            'title' => 'Testmail från GDPR Portalen',
+            'title' => 'Message from the GDPR portal',
             'url' => 'https://methone.dsv.su.se',
             'case' => Cache::get('request')
         ];

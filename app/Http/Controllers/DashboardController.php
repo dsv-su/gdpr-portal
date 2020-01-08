@@ -41,6 +41,7 @@ class DashboardController extends Controller
         $zipdown->makezip($id);
         return $zipdown->download($id);
     }
+
     public function delete($id)
     {
         //Delete zip and retrived files and folder
@@ -49,6 +50,7 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
+
     public function dev_delete($id)
     {
         //Delete zip and retrived files and folder
@@ -57,6 +59,7 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
+
     public function dev()
     {
         //Delete zip and retrived files and folder
@@ -70,6 +73,7 @@ class DashboardController extends Controller
     {
         return $_SERVER;
     }
+    cd
     public function testview()
     {
         $data['cases'] = Searchcase::all();

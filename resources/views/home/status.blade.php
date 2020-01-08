@@ -59,7 +59,7 @@
             <td>
                 @if ($case->download == 2)
                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
-                @elseif ($case->download >= 1 && ($case->status_moodle_test == 204 or $case->status_scipro_dev == 204))
+                @elseif ($case->download >= 1 && $case->download < 3 && ($case->status_moodle_test == 204 or $case->status_scipro_dev == 204))
                      <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
                 @elseif ($case->download > 2)
                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
