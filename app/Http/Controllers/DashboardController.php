@@ -50,6 +50,11 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
+    //-----------------------------------------------
+    //
+    // Developing functions
+    //
+    //-----------------------------------------------
 
     public function dev_delete($id)
     {

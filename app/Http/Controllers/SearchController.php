@@ -12,7 +12,6 @@ use App\Searchcase;
 use App\Plugin\Scipro;
 use App\Plugin\Moodle;
 use App\Plugin;
-
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,10 +27,10 @@ class SearchController extends Controller
     public function search(Request $request, Scipro $scipro, Searchcase $searchcase)
     {
         /*
-         * 1. Request and store form entries in cache
-         * 2. Logg user
+         * 1. Request and store form entry (in cache)
+         * 2. Check server/dev
          * 3. Generate unique request id
-         * 4. Store request data in cache
+         * 4. Store request data (in cache)
          * 5. Store initiate request data in database table
          * 6. Perform request to plugin scripts
          *
@@ -41,12 +40,13 @@ class SearchController extends Controller
         $personnr = $request->input('gdpr_pnr');
         $email = $request->input('gdpr_email');
         $userid = $request->input('gdpr_uid');
-        //Store formrequest in array
+
+        //Store formdata in array
         $search_request[] = $request->input('gdpr_pnr');
         $search_request[] = $request->input('gdpr_email');
         $search_request[] = $request->input('gdpr_uid');
 
-        // 2. Logg user
+        // 2. Check server/dev
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             $gdpr_userid = $_SERVER['eppn'];
@@ -76,7 +76,8 @@ class SearchController extends Controller
                 'download_scipro_dev' => 0,
                 'download' => 0,
             ]);
-            //---Temporary
+
+            //---Temporary seeds to database
             Plugin::create([
                 'name' => 'Ilearn2test',
                 'status' => 0,
@@ -86,11 +87,12 @@ class SearchController extends Controller
                 'status' => 0,
             ]);
             //---endTemporary
+
             $caseid = config('services.case.start');
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
 
-            // 3. Store search in cache for 60 min
+            //Store search in cache for 60 min
             Cache::put('search', $userid, 60);
             $id = $request->id;
 

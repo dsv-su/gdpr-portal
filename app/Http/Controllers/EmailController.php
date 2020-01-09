@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class EmailController extends Controller
 {
+    //To test email settings on server
     public function sendEmail()
     {
         $user = 'ryan@dsv.su.se';

@@ -1,74 +1,90 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+#GDPR Portal
 
-## About Laravel
+The GDPR portal is a web application that connects to existing systems and requests GDPR data.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Workflow
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![Workflow](./public/images/guide/workflow.png)
 
-## Learning Laravel
+## Plugins
+### Plugin pattern/structure
+The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of three files; A main file, a process file to dispatch the plugin to a que and a configurations file containing credential- and configuration information if needed. This structure will be reworked in the future to allow easier integration. All plugins are handled by the PluginController.
+e.g.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+(1) SciproPlugin.php (core-file)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+(2) ProcessScipro.php (job handler)
 
-## Laravel Sponsors
+(3) Services.php (configuration and credentials)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![Pluginstructure](./public/images/guide/flow.png)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+### Plugin workflow
+The Plugincontroller dispatches each plugin in order to a job process explicitly defining which queue it should be dispatched to, passing retrieved information entered by the user. A database table is used to hold the jobs processes and also failed processes (e.g. unable to connect to a system or server).
+Through the Plugin a connection to external systems should be achieved and a zip file containing gdpr data should be retrieved. In able to access this file, the plugin in most cases must be authorized by the system to access that particular information (client id and a client secret has to be issued if required by the system). 
+Once the zip file has been retrieved from the external system it is stored and unpacked on the server disc identified by its case id. Once the entire queue has been processed and all files have been stored and unpacked the entire retrieved data will be packed and ready for downloading by the user. A mail will be sent to notify the user that the download is ready or if an error has occurred a mail will be sent to notify the user about the current status.
 
-## Contributing
+## Implementing a new plugin
+//TODO
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Installed Packages
+The following client libraries are installed.
 
-## Security Vulnerabilities
+Guzzle 6: 	
+        
+    use GuzzleHttp\Client;
+	use GuzzleHttp\HandlerStack;
+		
+Kamermans:	
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    use kamermans\OAuth2\GrantType\ClientCredentials;
+    use kamermans\OAuth2\OAuth2Middleware;
 
-## License
+### Passing arguments
+The Plugin should receive information from the PluginController by passing arguments to the constructor and should return a zip-file to be processed. The configuration file for the plugin should contain necessary data for connecting to the server e.g. client_id, client_secret, authorization code, callback uri, auth url, endpoint url.
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Response Status Codes
+
+Status code | Description
+------------ | -------------
+200 | OK - The request has succeeded. The client can read the result of the request in the body and the headers of the response.
+202| Accepted - The request has been accepted for processing, but the processing has not been completed.
+204 | User not Found - The requested user could not be found.
+400 | Bad Request - The request could not be understood by the server due to malformed syntax.
+401 | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
+500 | Internal Server Error.
+
+## User guide
+The trialversion of the portal can be found under the following url:
+
+https://methone.dsv.su.se
+
+For access to the page, you must first be authenticated by SU IdP. You will be redirected automatically for authentication. The trial version does not require the user to have the entitlement gdpr but this will be added to the production version. When logged in, you can access the dashboard.
+
+![Dashboard](./public/images/guide/dashboard.png)
+
+In the Dashboard there is a form and a table to show the status of cases. Searching for GDPR extracts are done by entering information into the form. Input is made with person number in the format YYMMDD-NNNN, e-mail address and User ID. The more information that is entered, the greater the hit can be expected in the systems searched. Validation of the form (according to defined rules) is active to help the user to make as little errors as possible with entry. In the current trial version, search is only possible with user ID.
+
+![Dashboard](./public/images/guide/validation.png)
+
+A search is started by submitting the form and a case is generated. This is shown in the dashboard. The status of each system being searched is also displayed.
+
+![Dashboard](./public/images/guide/status.png)
+
+When the search is completed, the user receives an email and can log in to the dashboard again. Some searches may take time and the system works in the background.
+
+![Dashboard](./public/images/guide/finished_status.png)
+
+When the search is completed, the table shows the status of each system (and cases if more have been processed) that have been searched and the user has the opportunity to download a single file containing files from all searched systems for each individual case. The file can also be sent directly to the registrar for registration (// Todo).
+
+If a user is not registered in a system, this is displayed in the status and the status indication shows the color yellow, user not found.
+
+![Dashboard](./public/images/guide/user_not_found.png)
+
+A system error is indicated in red and then the entire request must be performed again later after the issue has been resolved.
+
+![Dashboard](./public/images/guide/error_status.png)
+
+After the request is completed and downloaded, cases can be removed manually. After 30 days the case and all files concerning the case is automatically deleted by the system. (//TODO)
