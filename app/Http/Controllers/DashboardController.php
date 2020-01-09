@@ -73,7 +73,7 @@ class DashboardController extends Controller
     {
         return $_SERVER;
     }
-    cd
+
     public function testview()
     {
         $data['cases'] = Searchcase::all();

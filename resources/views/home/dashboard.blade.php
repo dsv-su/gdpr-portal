@@ -2,6 +2,7 @@
 
 @section('content')
     <h5>GDRP - Welcome {{ $gdpr_user }}</h5>
+
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
                 <div class="a">
