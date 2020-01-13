@@ -20,7 +20,6 @@ class CaseStore extends Model
         Storage::makeDirectory('/public/'.Cache::get('request').'/zip/');
         //Make unzipzip directory
         Storage::makeDirectory('/public/'.Cache::get('request').'/raw/');
-
     }
 
     public function makesystemfolder($system)
@@ -34,6 +33,7 @@ class CaseStore extends Model
         //Store retried zipfile in directory
         Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip', $file);
     }
+
     public function unzip($system)
     {
         // extract retrived archive to raw directory/folder

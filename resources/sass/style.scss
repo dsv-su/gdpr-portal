@@ -93,7 +93,13 @@ form {
             font-style: italic;
         }
     }
+    > div.c {
+        display: inline-block;
+        width: 200px;
+        margin: 10px 0;
 
+
+    }
     button[type="submit"]{
         display: inline-block;
         margin: 0 40px 0;

@@ -27,8 +27,13 @@ Route::post('/search', 'SearchController@search')->name('search');
 //Callbacks
 Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 
+//Plugin configuration
+Route::get('/plugin_configuration', 'PluginController@index')->name('plugin');
+Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('plugin_update');
+
 //Test
 Route::get('/t', 'DashboardController@testview')->name('tview');
+Route::get('/newstatus','DashboardController@teststatus');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
 

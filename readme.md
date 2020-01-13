@@ -1,5 +1,5 @@
 
-#GDPR Portal
+##GDPR Portal
 
 The GDPR portal is a web application that connects to existing systems and requests GDPR data.
 

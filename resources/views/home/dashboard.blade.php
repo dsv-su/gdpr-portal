@@ -1,38 +1,39 @@
 @extends('layouts.master')
 
 @section('content')
-    <h5>GDRP - Welcome {{ $gdpr_user }}</h5>
+    <h5>GDRP - Welcome {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Available number of Systems: <code>{{ $systems }}</code></span></h5>
+
 
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
-                <div class="a">
-                    <input pattern="^(19|20)?[0-9]{6}[- ]?[0-9]{4}$" type="text" id="gdpr_pnr" name="gdpr_pnr" placeholder="Personal ID" />
-                    <label for="gdpr_pnr">Personal ID</label>
-                    <div class="requirements">
-                        Must be in format YYMMDD-NNNN
-                    </div>
+        <div class="a">
+            <input pattern="^(19|20)?[0-9]{6}[- ]?[0-9]{4}$" type="text" id="gdpr_pnr" name="gdpr_pnr" placeholder="Personal ID" />
+            <label for="gdpr_pnr">Personal ID</label>
+            <div class="requirements">
+                Must be in format YYMMDD-NNNN
+            </div>
 
-                </div>
-                <div class="a">
-                    <input type="email" id="gdpr_email" name="gdpr_email" placeholder="Email Address" />
-                    <label for="gdpr_email">Email Address</label>
-                    <div class="requirements">
-                        Must be a valid email address.
-                    </div>
-                </div>
-                <div class="a">
-                    <input type="text" id="gdpr_uid" name="gdpr_uid" required placeholder="UserId" />
-                    <label for="gdpr_uid">UserId</label>
-                    <div class="requirements">
-                        Must be a valid uid.
-                    </div>
-                </div>
-                <div class="b">
-                <button type="submit" class="btn btn-outline-primary">Start Request</button>
-                    <div class="req">
-                        Must
-                    </div>
-                </div>
+        </div>
+        <div class="a">
+            <input type="email" id="gdpr_email" name="gdpr_email" placeholder="Email Address" />
+            <label for="gdpr_email">Email Address</label>
+            <div class="requirements">
+                Must be a valid email address.
+            </div>
+        </div>
+        <div class="a">
+            <input type="text" id="gdpr_uid" name="gdpr_uid" required placeholder="UserId" />
+            <label for="gdpr_uid">UserId</label>
+            <div class="requirements">
+                Must be a valid uid.
+            </div>
+        </div>
+        <div class="b">
+            <button type="submit" class="btn btn-outline-primary">Start Request</button>
+            <div class="req">
+                Must
+            </div>
+        </div>
     </form>
     <br>
     <!-- -->
@@ -55,31 +56,29 @@
                         <td scope="row">{{ $case->case_id }}</td>
                         <td class="small text-center">@if (!$case->request_pnr==null){{ $case->request_pnr }} <br> @endif @if (!$case->request_email==null) {{$case->request_email}} <br> @endif @if (!$case->request_uid==null) {{$case->request_uid}} @endif</td>
                         <td>
-                            @if ($case->status_moodle_test == 200)
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $case->download_moodle_test }}%;" aria-valuenow="{{ $case->download_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test {{ $case->download_moodle_test }}%</div>
-                            </div>
-                            @endif
-                            @if ($case->status_moodle_test == 204)
-                                 <div class="progress">
-                                 <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $case->download_moodle_test }}%;" aria-valuenow="{{ $case->download_moodle_test }}" aria-valuemin="0" aria-valuemax="100">Ilearn2Test</div>
-                                 </div>
+                            @foreach ($pluginstatuses as $plugin)
+                                @if ($case->id == $plugin->searchcase_id)
+                                    <div class="progress">
+                                         <div
+                                            @if ($plugin->status == 200)
+                                                class="progress-bar"
+                                            @elseif ($plugin->status == 204)
+                                                class="progress-bar bg-warning"
+                                            @elseif ($plugin->status == 400)
+                                                class="progress-bar bg-danger
+                                            @endif
+                                            role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}
+                                            @if ($plugin->status == 200)
+                                                {{ $plugin->download_status }}%
+                                            @elseif ($plugin->status == 204)
+                                                User not found
+                                            @elseif ($plugin->status == 400)
+                                                System error
+                                            @endif
+                                        </div>
+                                     </div>
                                 @endif
-                            @if ($case->status_scipro_dev == 200)
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $case->download_scipro_dev }}%;" aria-valuenow="{{ $case->download_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev {{ $case->download_scipro_dev }}%</div>
-                            </div>
-                            @endif
-                            @if ($case->status_scipro_dev == 204)
-                             <div class="progress">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $case->download_scipro_dev }}%;" aria-valuenow="{{ $case->download_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev: User not found</div>
-                                </div>
-                            @endif
-                            @if ($case->status_scipro_dev == 400)
-                                 <div class="progress">
-                                   <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $case->download_scipro_dev }}%;" aria-valuenow="{{ $case->download_scipro_dev }}" aria-valuemin="0" aria-valuemax="100">Scipro-dev: Client Error</div>
-                                 </div>
-                            @endif
+                            @endforeach
                         </td>
                         <td>
                             @if ( $case->registrar == 1)
@@ -89,12 +88,13 @@
                             @elseif ($case->registrar == 0 && $case->download >= 2)
                                 <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Send</button>
                             @endif
+
                         </td>
                         <td>
                             @if ($case->download > 2)
                                 <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</a>
                             @endif
-                                <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
+                            <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
                         </td>
                         <td>
                             @if ($case->download == 2)
@@ -116,7 +116,7 @@
                             @endif
                         </td>
                     </tr>
-                 @endif
+                @endif
                 @endforeach
                 </tbody>
         </table>

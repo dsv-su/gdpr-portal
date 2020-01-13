@@ -12,6 +12,7 @@ use App\Searchcase;
 use App\Plugin\Scipro;
 use App\Plugin\Moodle;
 use App\Plugin;
+use App\Status;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -77,17 +78,6 @@ class SearchController extends Controller
                 'download' => 0,
             ]);
 
-            //---Temporary seeds to database
-            Plugin::create([
-                'name' => 'Ilearn2test',
-                'status' => 0,
-            ]);
-            Plugin::create([
-                'name' => 'Scipro-dev',
-                'status' => 0,
-            ]);
-            //---endTemporary
-
             $caseid = config('services.case.start');
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 60);
@@ -97,6 +87,23 @@ class SearchController extends Controller
             $id = $request->id;
 
             Cache::put('requestid', $id, 60);
+            //Create plugin status
+            //--------------------------------------------------
+
+            $plugins = Plugin::all();
+            foreach ( $plugins as $plugin)
+            {
+                Status::create([
+                    'searchcase_id' => $id,
+                    'plugin_id' => $plugin->id,
+                    'plugin_name' => $plugin->name,
+                    'status' => 200,
+                    'download_status' => 0,
+            ]);
+
+            }
+
+            //--------------------------------------------------
         }
         else
         {
@@ -132,6 +139,23 @@ class SearchController extends Controller
             $id = $request->id;
             //Store primary key
             Cache::put('requestid', $id, 60);
+            //Create plugin status
+            //--------------------------------------------------
+
+            $plugins = Plugin::all();
+            foreach ( $plugins as $plugin)
+            {
+                Status::create([
+                    'searchcase_id' => $id,
+                    'plugin_id' => $plugin->id,
+                    'plugin_name' => $plugin->name,
+                    'status' => 200,
+                    'download_status' => 0,
+                ]);
+
+            }
+
+            //--------------------------------------------------
         }
 
         // 6. Start JobsPlugins
@@ -143,7 +167,7 @@ class SearchController extends Controller
 
         //**************************************************************************************************************
         //Start Moodle job
-        $moodleJob = new ProcessMoodlePlugin();
+        $moodleJob = new ProcessMoodlePlugin(1);
         dispatch($moodleJob);
         //**************************************************************************************************************
 

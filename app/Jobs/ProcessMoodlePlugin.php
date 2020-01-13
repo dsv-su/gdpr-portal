@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Plugin\Moodle;
 use App\Searchcase;
+use App\Status;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,9 +24,10 @@ class ProcessMoodlePlugin implements ShouldQueue
      */
     public $tries = 3;
 
+
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -35,8 +37,14 @@ class ProcessMoodlePlugin implements ShouldQueue
      */
     public function handle()
     {
+        //---------TODO------------------------------------------
         //Find requestdata for request
         $update = Searchcase::find(Cache::get('requestid'));
+        $pluginstatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 1],
+        ])->first();
+        //-------------------------------------------------------
         $search = $update->request_uid;
         //Strip domainname from userid -> userid@su.se
         /* Disabled
@@ -54,8 +62,12 @@ class ProcessMoodlePlugin implements ShouldQueue
         if ($status == 204)
         {
             //User not found
-            $update->status_moodle_test = 204;
-            $update->download_moodle_test = 100;
+            $update->status_moodle_test = 204; //Status to searchcases
+            $update->download_moodle_test = 100; //Status searchcases
+
+            $pluginstatus->status = 204; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
         }
         else if( $status == 404)
         {
@@ -64,6 +76,10 @@ class ProcessMoodlePlugin implements ShouldQueue
             //$update->status_flag = 0; //Set flag to Error
             $update->status_moodle_test = 204;
             $update->download_moodle_test = 100;
+
+            $pluginstatus->status = 204; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
         }
         else
         {
@@ -80,10 +96,15 @@ class ProcessMoodlePlugin implements ShouldQueue
             //Status flags
             $update->status_moodle_test = 200; //Successful download
             $update->download_moodle_test = 100;
+
+            $pluginstatus->status = 200; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
             $update->download =  $update->download+1; //Temporary finished download
         }
 
         //Update and save status
         $update->save();
+        $pluginstatus->save();
     }
 }

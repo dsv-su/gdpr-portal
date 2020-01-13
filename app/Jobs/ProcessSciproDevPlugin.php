@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Plugin\Scipro;
 use App\Searchcase;
+use App\Status;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,8 +34,14 @@ class ProcessSciproDevPlugin implements ShouldQueue
     {
         //Start GDPR request to scipro-dev
         $scipro = new Scipro(Cache::get('code'));
-        //TODO Use of Cache -> change to eloquent
+        //-------------TODO--------------------------------------
+        //Scipro plugin_id: 2
         $update = Searchcase::find(Cache::get('requestid'));
+        $pluginstatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 2],
+        ])->first();
+        //-------------------------------------------------------
         //Start request to Sciprodev
         $update->download_scipro_dev = 25;
         //Update and save initiate status
@@ -46,12 +53,20 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //User not found
             $update->status_scipro_dev = 204;
             $update->download_scipro_dev = 100;
+
+            $pluginstatus->status = 204; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
         }
         else if( $status == 400)
         {
             //Request denied
             $update->status_scipro_dev = 400;
             $update->download_scipro_dev = 100;
+
+            $pluginstatus->status = 400; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
             $update->status_flag = 0; //Set flag to Error
         }
         else
@@ -70,10 +85,15 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //Status flags
             $update->status_scipro_dev = 200;
             $update->download_scipro_dev = 100;
+
+            $pluginstatus->status = 200; //Status to status
+            $pluginstatus->download_status = 100; //Status to status
+
             $update->download =  $update->download+1; // Finished download
         }
         //Update and save status
         $update->save();
+        $pluginstatus->save();
 
     }
 }

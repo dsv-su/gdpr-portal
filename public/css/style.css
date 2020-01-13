@@ -74,6 +74,10 @@ form {
       overflow: hidden;
       color: red;
       font-style: italic; }
+  form > div.c {
+    display: inline-block;
+    width: 200px;
+    margin: 10px 0; }
   form button[type="submit"] {
     display: inline-block;
     margin: 0 40px 0;

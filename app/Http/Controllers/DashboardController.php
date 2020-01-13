@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessNotFinished;
 use App\Services\CaseStore;
+use App\Status;
 use Illuminate\Http\Request;
 use App\Searchcase;
+use App\Plugin;
 use App\Jobs\ProcessFinished;
 use Illuminate\Support\Facades\Cache;
 
@@ -14,7 +16,29 @@ class DashboardController extends Controller
 {
     public function index(Searchcase $searchcase)
     {
+        //Initiate testing plugins at first boot
+        //-----------------------------------------------
+        if(!$record = Searchcase::latest()->first()) {
+            if (!$plugin = Plugin::latest()->first()) {
+                //---Temporary seeds to database
+                Plugin::create([
+                    'name' => 'Ilearn2test',
+                    'status' => 0,
+                ]);
+                Plugin::create([
+                    'name' => 'Scipro-dev',
+                    'status' => 0,
+                ]);
+                //---endTemporary
+            }
+        }
+        //-----------------------------------------------
+
+
+        $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
+        $data['pluginstatuses'] = Status::all();
+
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             $data['gdpr_user'] = $_SERVER['displayName'];
@@ -31,6 +55,7 @@ class DashboardController extends Controller
     public function status(Searchcase $searchcase)
     {
         $data['cases'] = Searchcase::all();
+        $data['pluginstatuses'] = Status::all();
         return view('home.status', $data);
     }
 
@@ -81,6 +106,7 @@ class DashboardController extends Controller
 
     public function testview()
     {
+        $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
@@ -92,9 +118,18 @@ class DashboardController extends Controller
             $data['gdpr_user'] = 'Ryan Dias';
             Cache::put('requester_email', 'ryan@dsv.su.se', 60);
         }
-        return view('home.test_dashboard', $data);
+
+        $data['pluginstatuses'] = Status::all();
+        return view('home.new_dashboard', $data);
     }
 
+    public function teststatus(Searchcase $searchcase)
+    {
+        $data['cases'] = Searchcase::all();
+        $data['pluginstatuses'] = Status::all();
+
+        return view('home.new_status', $data);
+    }
     public function phpinfo()
     {
         return phpinfo();
