@@ -44,8 +44,11 @@ class ProcessSciproDevPlugin implements ShouldQueue
         //-------------------------------------------------------
         //Start request to Sciprodev
         $update->download_scipro_dev = 25;
+
+        $pluginstatus->download_status = 25;
         //Update and save initiate status
         $update->save();
+        $pluginstatus->save();
 
         $status = $scipro->gettoken();
         if ($status == 204)

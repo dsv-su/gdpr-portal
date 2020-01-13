@@ -54,8 +54,12 @@ class ProcessMoodlePlugin implements ShouldQueue
 
         //Start request to Moodle
         $update->download_moodle_test = 25;
+
+        $pluginstatus->download_status = 25;
         //Update and save initiate status
         $update->save();
+        $pluginstatus->save();
+
         $moodle = new Moodle();
 
         $status = $moodle->getMoodle($search);
