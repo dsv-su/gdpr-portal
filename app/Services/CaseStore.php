@@ -58,13 +58,13 @@ class CaseStore extends Model
         //Directory of unzipped files
         $public_dir = public_path().'/storage/'.$case->case_id.'/raw/';
         //Check if zip already has been created
-        if($case->download<3) {
+        if($case->downloaded < 1) {
             //Creates a zip file of the entire raw folder
             $zip = Zip::create( $zipFileName);
             $zip->add($public_dir, true); //Zip only contents of file
             $zip->add($public_dir . $zipFileName);
             $zip->close();
-            $case->download=3;
+            $case->downloaded = 1;
             $case->save();
         }
 
@@ -101,8 +101,8 @@ class CaseStore extends Model
         Storage::deleteDirectory('/public/'.$case->case_id);
         //Reset flags
         $case->visability = 0;
-        $case->status_scipro_dev = 0;
-        $case->status_moodle_test = 0;
+        //$case->status_scipro_dev = 0;
+        //$case->status_moodle_test = 0;
         $case->registrar = 0;
         $case->download = 0;
         $case->save();
@@ -122,8 +122,8 @@ class CaseStore extends Model
         Storage::deleteDirectory('/public/'.$case->case_id);
         // Reset flags
         $case->visability = 0;
-        $case->status_scipro_dev = 0;
-        $case->status_moodle_test = 0;
+        //$case->status_scipro_dev = 0;
+        //$case->status_moodle_test = 0;
         $case->registrar = 0;
         $case->download = 0;
         $case->save();

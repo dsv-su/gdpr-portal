@@ -53,9 +53,8 @@ class ProcessMoodlePlugin implements ShouldQueue
         */
 
         //Start request to Moodle
-        $update->download_moodle_test = 25;
-
         $pluginstatus->download_status = 25;
+
         //Update and save initiate status
         $update->save();
         $pluginstatus->save();
@@ -66,27 +65,28 @@ class ProcessMoodlePlugin implements ShouldQueue
         if ($status == 204)
         {
             //User not found
-            $update->status_moodle_test = 204; //Status to searchcases
-            $update->download_moodle_test = 100; //Status searchcases
-
             $pluginstatus->status = 204; //Status to status
+            $update->status_flag = 3; //Successful but not found
             $pluginstatus->download_status = 100; //Status to status
+            $update->download =  $update->download+1; //Temporary finished download
 
         }
         else if( $status == 404)
         {
             //Request denied
-            //$update->status_moodle_test = 404; //Should be 404 but moodle reports wrong
-            //$update->status_flag = 0; //Set flag to Error
-            $update->status_moodle_test = 204;
-            $update->download_moodle_test = 100;
 
+            //$update->status_flag = 0; //Set flag to Error
+            $update->download =  0; //Download error
             $pluginstatus->status = 204; //Status to status
             $pluginstatus->download_status = 100; //Status to status
 
         }
         else
         {
+            //********************************************************************
+            //Sucessfull download
+            //********************************************************************
+
             //Create folders for retrived data
             $dir = new CaseStore();
             $dir->makesystemfolder(config('services.moodle-test.client_name'));
@@ -98,8 +98,8 @@ class ProcessMoodlePlugin implements ShouldQueue
             $dir->unzip(config('services.moodle-test.client_name'));
 
             //Status flags
-            $update->status_moodle_test = 200; //Successful download
-            $update->download_moodle_test = 100;
+            //$update->download_moodle_test = 100;
+            $update->status_flag = 3; //Successful
 
             $pluginstatus->status = 200; //Status to status
             $pluginstatus->download_status = 100; //Status to status

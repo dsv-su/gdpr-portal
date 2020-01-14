@@ -38,6 +38,27 @@ class DashboardController extends Controller
         $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
+        //Check download status
+        if(!$record = Searchcase::latest()->first()) {
+        }
+        else {
+            $plugins = Plugin::count();
+            $cases = Searchcase::all();
+            foreach ($cases as $case)
+            {
+                if($case->status_flag == 3)
+                {
+                    $case->download_status = ($case->download/$plugins)*100;
+                }
+                else
+                {
+                    $case->download_status = 0;
+                }
+                $case->save();
+            }
+
+        }
+
 
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
@@ -56,6 +77,26 @@ class DashboardController extends Controller
     {
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
+        //Check download status
+        if(!$record = Searchcase::latest()->first()) {
+        }
+        else {
+            $plugins = Plugin::count();
+            $cases = Searchcase::all();
+            foreach ($cases as $case)
+            {
+                if($case->status_flag == 3)
+                {
+                    $case->download_status = ($case->download/$plugins)*100;
+                }
+                else
+                {
+                    $case->download_status = 0;
+                }
+                $case->save();
+            }
+
+        }
         return view('home.status', $data);
     }
 

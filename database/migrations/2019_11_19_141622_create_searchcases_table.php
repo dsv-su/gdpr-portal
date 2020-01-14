@@ -21,14 +21,13 @@ class CreateSearchcasesTable extends Migration
             $table->string('request_pnr')->nullable();
             $table->string('request_email')->nullable();
             $table->string('request_uid')->nullable();
-            $table->integer('status_scipro_dev');
-            $table->integer('status_moodle_test');
             $table->integer('status_processed');
             $table->integer('status_flag');
             $table->boolean('registrar');
-            $table->integer('download_moodle_test');
-            $table->integer('download_scipro_dev');
+            $table->integer('progress');
             $table->integer('download');
+            $table->integer('download_status');
+            $table->integer('downloaded');
             $table->timestamps();
         });
     }

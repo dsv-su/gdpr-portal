@@ -43,8 +43,8 @@ class ProcessSciproDevPlugin implements ShouldQueue
         ])->first();
         //-------------------------------------------------------
         //Start request to Sciprodev
-        $update->download_scipro_dev = 25;
 
+        //Status flags
         $pluginstatus->download_status = 25;
         //Update and save initiate status
         $update->save();
@@ -54,26 +54,24 @@ class ProcessSciproDevPlugin implements ShouldQueue
         if ($status == 204)
         {
             //User not found
-            $update->status_scipro_dev = 204;
-            $update->download_scipro_dev = 100;
-
             $pluginstatus->status = 204; //Status to status
+            $update->status_flag = 3; //Successful but not found
             $pluginstatus->download_status = 100; //Status to status
-
+            $update->download =  $update->download+1; // Finished download
         }
         else if( $status == 400)
         {
             //Request denied
-            $update->status_scipro_dev = 400;
-            $update->download_scipro_dev = 100;
-
             $pluginstatus->status = 400; //Status to status
             $pluginstatus->download_status = 100; //Status to status
-
+            $update->download =  0; //Download error
             $update->status_flag = 0; //Set flag to Error
         }
         else
         {
+            //********************************************************************
+            //Sucessfull download
+            //********************************************************************
 
             //Create folders for retrived data
             $dir = new CaseStore();
@@ -86,8 +84,8 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $dir->unzip(config('services.scipro-dev.client_name'));
 
             //Status flags
-            $update->status_scipro_dev = 200;
-            $update->download_scipro_dev = 100;
+            //$update->download_scipro_dev = 100;
+            $update->status_flag = 3; //Successful download
 
             $pluginstatus->status = 200; //Status to status
             $pluginstatus->download_status = 100; //Status to status

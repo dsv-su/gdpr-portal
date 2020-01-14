@@ -2,8 +2,7 @@
 
 @section('content')
     <h5>GDRP - Welcome {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Available number of Systems: <code>{{ $systems }}</code></span></h5>
-
-
+    <!-- Form -->
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
         <div class="a">
@@ -12,7 +11,6 @@
             <div class="requirements">
                 Must be in format YYMMDD-NNNN
             </div>
-
         </div>
         <div class="a">
             <input type="email" id="gdpr_email" name="gdpr_email" placeholder="Email Address" />
@@ -31,12 +29,11 @@
         <div class="b">
             <button type="submit" class="btn btn-outline-primary">Start Request</button>
             <div class="req">
-                Must
             </div>
         </div>
     </form>
     <br>
-    <!-- -->
+    <!-- End form-->
     <div class="row row-no-gutters"id="cases" >
         <table class="table table-sm table-fixed">
             <thead>
@@ -91,33 +88,30 @@
 
                         </td>
                         <td>
-                            @if ($case->download > 2)
+                            @if ($case->downloaded == 1)
                                 <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</a>
                             @endif
                             <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
                         </td>
                         <td>
-                            @if ($case->download == 2)
-                                <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
-                            @elseif ($case->download >= 1 && $case->download < 3 && ($case->status_moodle_test == 204 or $case->status_scipro_dev == 204))
-                                <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
-                            @elseif ($case->download > 2)
-                                <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
-
-                            @elseif ($case->download <2 && $case->status_processed <2 && ($case->status_scipro_dev == 200 or $case->status_moodle_test == 200))
-                                <button class="btn btn-primary" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Downloading...
-                                </button>
-                            @elseif ($case->download >=1 && $case->status_scipro_dev == 204 or $case->status_moodle_test == 204)
-                                <span class="badge badge-warning">Nothing to download</span>
-                            @else
+                            @if ($case->status_flag == 0)
                                 <span class="badge badge-danger">Failed</span>
+                            @elseif ($case->downloaded == 1)
+                                    <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
+                            @elseif ($case->download_status == 100)
+                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
+                            @elseif ($case->download_status < 100 && $case->progress == 0)
+                                 <span class="badge badge-warning">Nothing to download</span>
+                            @elseif ($case->progress == 1)
+                                     <button class="btn btn-primary" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                              Downloading...
+                                     </button>
                             @endif
                         </td>
                     </tr>
                 @endif
-                @endforeach
+            @endforeach
                 </tbody>
         </table>
     </div>

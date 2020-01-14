@@ -50,21 +50,29 @@ class AppServiceProvider extends ServiceProvider
             $update = Searchcase::find(Cache::get('requestid'));
             $systems = Plugin::all()->count();
 
-            if ($update->download >0 && $update->status_processed == $systems && $update->status_flag == 1)
+            if ($update->download >0 && $update->status_processed == $systems && $update->status_flag == 3)
             {
+                //Successfully finished
+                $update->progress = 0; //Kill progress flag
+                $update->save();
                 $request_finished = new ProcessFinished();
                 dispatch($request_finished);
 
             }
-            elseif ($update->download == 0 && $update->status_processed == $systems && $update->status_flag == 1)
+            elseif ($update->download == 0 && $update->status_processed == $systems && $update->status_flag == 3)
             {
+                //Sucessfully finished but user not found
+                $update->progress = 0; //Kill progress flag
+                $update->save();
                 $request_finished_empty = new ProcessNotFound();
                 dispatch($request_finished_empty);
 
             }
             elseif ($update->download <$systems && $update->status_processed == $systems && $update->status_flag == 0)
             {
-
+                //Unsuccessfull -> notify
+                $update->progress = 0; //Kill progress flag
+                $update->save();
                 $request_finished_error = new ProcessNotFinished();
                 dispatch($request_finished_error);
 

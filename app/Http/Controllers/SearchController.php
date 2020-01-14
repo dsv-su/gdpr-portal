@@ -68,14 +68,13 @@ class SearchController extends Controller
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
-                'status_scipro_dev' => 200,
-                'status_moodle_test' => 200,
                 'status_processed' => 0,
                 'status_flag' => 1,
                 'registrar' => false,
-                'download_moodle_test' => 0,
-                'download_scipro_dev' => 0,
+                'progress' => 1,
                 'download' => 0,
+                'download_status' => 1,
+                'downloaded' => 0,
             ]);
 
             $caseid = config('services.case.start');
@@ -127,14 +126,13 @@ class SearchController extends Controller
                 'request_pnr' => $search_request[0],
                 'request_email' => $search_request[1],
                 'request_uid' => $search_request[2],
-                'status_scipro_dev' => 200,
-                'status_moodle_test' => 200,
                 'status_processed' => 0,
                 'status_flag' => 1,
                 'registrar' => false,
-                'download_moodle_test' => 0,
-                'download_scipro_dev' => 0,
+                'progress' => 1,
                 'download' => 0,
+                'download_status' => 1,
+                'downloaded' => 0,
             ]);
             $id = $request->id;
             //Store primary key
