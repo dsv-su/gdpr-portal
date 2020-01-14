@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Searchcase;
+use App\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -105,10 +106,12 @@ class CaseStore extends Model
         $case->registrar = 0;
         $case->download = 0;
         $case->save();
+        //Delete status data
+        $deletedRows = Status::where('searchcase_id', $id)->delete();
 
     }
 
-    //Only during developing and deploying testing
+    //ForceDelete: Only during developing and deploying testing
     public function dev_delete_case($id)
     {
         //Get the case
@@ -124,6 +127,8 @@ class CaseStore extends Model
         $case->registrar = 0;
         $case->download = 0;
         $case->save();
+        //Delete status data
+        $deletedRows = Status::where('searchcase_id', $id)->delete();
     }
 
     //Only during developing and deploying testing
