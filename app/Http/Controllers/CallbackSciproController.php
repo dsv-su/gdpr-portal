@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessSciproDevPlugin;
 use App\Searchcase;
+use App\Status;
 use Illuminate\Support\Facades\Cache;
 
 class CallbackSciproController extends Controller
@@ -15,7 +16,14 @@ class CallbackSciproController extends Controller
         Cache::put('code', $_GET['code'], 60);
 
         //Dispatch to queue
-        $sciproJob = new ProcessSciproDevPlugin();
+        //Scipro plugin_id: 2
+        $case = Searchcase::find(Cache::get('requestid'));
+        $casestatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 2],
+        ])->first();
+
+        $sciproJob = new ProcessSciproDevPlugin($case, $casestatus);
         dispatch($sciproJob);
         // Job end
         return redirect()->route('home');

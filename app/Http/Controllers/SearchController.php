@@ -162,10 +162,16 @@ class SearchController extends Controller
         $dir = new CaseStore();
         $dir->makedfolders();
 
+        //Retrive case
+        $case = Searchcase::find(Cache::get('requestid'));
+        $casestatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 1],
+        ])->first();
 
         //**************************************************************************************************************
         //Start Moodle job
-        $moodleJob = new ProcessMoodlePlugin(1);
+        $moodleJob = new ProcessMoodlePlugin($case, $casestatus);
         dispatch($moodleJob);
         //**************************************************************************************************************
 

@@ -23,7 +23,14 @@ class ProcessSciproDevPlugin implements ShouldQueue
      *
      * @return void
      */
+    protected $case, $status;
 
+
+    public function __construct($case, $status)
+    {
+        $this->case = $case;
+        $this->status = $status;
+    }
 
     /**
      * Execute the job.
@@ -33,36 +40,31 @@ class ProcessSciproDevPlugin implements ShouldQueue
     public function handle()
     {
         //Start GDPR request to scipro-dev
-        $scipro = new Scipro(Cache::get('code'));
         //-------------TODO--------------------------------------
-        //Scipro plugin_id: 2
-        $update = Searchcase::find(Cache::get('requestid'));
-        $pluginstatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_id', '=', 2],
-        ])->first();
+        $scipro = new Scipro(Cache::get('code'));
+
         //-------------------------------------------------------
         //Start request to Sciprodev
 
         //Initiate Status flags
-        $pluginstatus->setDownloadStatus(25);
+        $this->status->setDownloadStatus(25);
 
         $status = $scipro->gettoken();
         if ($status == 204)
         {
             //User not found
-            $pluginstatus->setStatus(204);
-            $update->setStatusFlag(3); //Successful but not found
-            $pluginstatus->setDownloadStatus(100);
-            $update->setDownloadSuccess();
+            $this->status->setStatus(204);
+            $this->case->setStatusFlag(3); //Successful but not found
+            $this->status->setDownloadStatus(100);
+            $this->case->setDownloadSuccess();
         }
         else if( $status == 400)
         {
             //Request denied
-            $pluginstatus->setStatus(400);
-            $pluginstatus->setDownloadStatus(100);
-            $update->setDownloadFail();
-            $update->setStatusFlag(0);
+            $this->status->setStatus(400);
+            $this->status->setDownloadStatus(100);
+            $this->case->setDownloadFail();
+            $this->case->setStatusFlag(0);
         }
         else
         {
@@ -80,10 +82,10 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $dir->unzip(config('services.scipro-dev.client_name'));
 
             //Status flags
-            $update->setStatusFlag(3);
-            $pluginstatus->setStatus(200);
-            $pluginstatus->setDownloadStatus(100);
-            $update->setDownloadSuccess();
+            $this->case->setStatusFlag(3);
+            $this->status->setStatus(200);
+            $this->status->setDownloadStatus(100);
+            $this->case->setDownloadSuccess();
         }
 
     }

@@ -3,15 +3,12 @@
 namespace App\Jobs;
 
 use App\Plugin\Moodle;
-use App\Searchcase;
-use App\Status;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 
 class ProcessMoodlePlugin implements ShouldQueue
 {
@@ -23,11 +20,13 @@ class ProcessMoodlePlugin implements ShouldQueue
      * @return void
      */
     public $tries = 3;
+    protected $case, $status;
 
 
-    public function __construct()
+    public function __construct($case, $status)
     {
-
+        $this->case = $case;
+        $this->status = $status;
     }
 
     /**
@@ -37,15 +36,8 @@ class ProcessMoodlePlugin implements ShouldQueue
      */
     public function handle()
     {
-        //---------TODO------------------------------------------
-        //Find requestdata for request
-        $case = Searchcase::find(Cache::get('requestid'));
-        $casestatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_id', '=', 1],
-        ])->first();
-        //-------------------------------------------------------
-        $search = $case->request_uid;
+        $search = $this->case->request_uid;
+
         //Strip domainname from userid -> userid@su.se
         /* Disabled
         $searchNum = explode('@', $search);
@@ -53,7 +45,7 @@ class ProcessMoodlePlugin implements ShouldQueue
         */
 
         //Start request to Moodle
-        $casestatus->setDownloadStatus(25);
+        $this->status->setDownloadStatus(25);
 
         $moodle = new Moodle();
 
@@ -61,17 +53,17 @@ class ProcessMoodlePlugin implements ShouldQueue
         if ($status == 204)
         {
             //User not found
-            $casestatus->setStatus(204);
-            $casestatus->setDownloadStatus(100);
-            $case->setStatusFlag(3); //Successful but not found
-            $case->setDownloadSuccess(); //Successful but not found
+            $this->status->setStatus(204);
+            $this->status->setDownloadStatus(100);
+            $this->case->setStatusFlag(3); //Successful but not found
+            $this->case->setDownloadSuccess(); //Successful but not found
         }
         else if( $status == 404)
         {
             //Request denied
-            $case->setDownloadFail(); //Download error
-            $casestatus->setStatus(204);
-            $casestatus->setDownloadStatus(100);
+            $this->case->setDownloadFail(); //Download error
+            $this->status->setStatus(204);
+            $this->status->setDownloadStatus(100);
 
         }
         else
@@ -91,10 +83,10 @@ class ProcessMoodlePlugin implements ShouldQueue
             $dir->unzip(config('services.moodle-test.client_name'));
 
             //Status flags
-            $case->setStatusFlag(3);
-            $case->setDownloadSuccess();
-            $casestatus->setStatus(200);
-            $casestatus->setDownloadStatus(100);
+            $this->case->setStatusFlag(3);
+            $this->case->setDownloadSuccess();
+            $this->status->setStatus(200);
+            $this->status->setDownloadStatus(100);
 
         }
 
