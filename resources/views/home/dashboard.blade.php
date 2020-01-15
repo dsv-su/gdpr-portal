@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <h5>GDRP - Welcome {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Available number of Systems: <code>{{ $systems }}</code></span></h5>
+    <h5>GDRP Portal - Welcome {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Available number of Systems: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
     <!-- Form -->
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}

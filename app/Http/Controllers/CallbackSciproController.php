@@ -11,10 +11,10 @@ class CallbackSciproController extends Controller
 {
     public function callbackScipro(Searchcase $searchcase)
     {
-        //Store code from callback in cache
+        //Store Code from scipro-callback in cache
         Cache::put('code', $_GET['code'], 60);
 
-        //Start Scipro dev job
+        //Dispatch to queue
         $sciproJob = new ProcessSciproDevPlugin();
         dispatch($sciproJob);
         // Job end

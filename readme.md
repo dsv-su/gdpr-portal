@@ -1,14 +1,19 @@
 
 ##GDPR Portal
 
+1. Overview
+2. Workflow
+3. Plugins
+4. User guide
+
 The GDPR portal is a web application that connects to existing systems and requests GDPR data.
 
 
-## Workflow
+## 2. Workflow
 
 ![Workflow](./public/images/guide/workflow.png)
 
-## Plugins
+## 3. Plugins
 ### Plugin pattern/structure
 The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of three files; A main file, a process file to dispatch the plugin to a que and a configurations file containing credential- and configuration information if needed. This structure will be reworked in the future to allow easier integration. All plugins are handled by the PluginController.
 e.g.
@@ -56,7 +61,7 @@ Status code | Description
 401 | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
 500 | Internal Server Error.
 
-## User guide
+## 4. User guide
 The trialversion of the portal can be found under the following url:
 
 https://methone.dsv.su.se

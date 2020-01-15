@@ -44,28 +44,25 @@ class ProcessSciproDevPlugin implements ShouldQueue
         //-------------------------------------------------------
         //Start request to Sciprodev
 
-        //Status flags
-        $pluginstatus->download_status = 25;
-        //Update and save initiate status
-        $update->save();
-        $pluginstatus->save();
+        //Initiate Status flags
+        $pluginstatus->setDownloadStatus(25);
 
         $status = $scipro->gettoken();
         if ($status == 204)
         {
             //User not found
-            $pluginstatus->status = 204; //Status to status
-            $update->status_flag = 3; //Successful but not found
-            $pluginstatus->download_status = 100; //Status to status
-            $update->download =  $update->download+1; // Finished download
+            $pluginstatus->setStatus(204);
+            $update->setStatusFlag(3); //Successful but not found
+            $pluginstatus->setDownloadStatus(100);
+            $update->setDownloadSuccess();
         }
         else if( $status == 400)
         {
             //Request denied
-            $pluginstatus->status = 400; //Status to status
-            $pluginstatus->download_status = 100; //Status to status
-            $update->download =  0; //Download error
-            $update->status_flag = 0; //Set flag to Error
+            $pluginstatus->setStatus(400);
+            $pluginstatus->setDownloadStatus(100);
+            $update->setDownloadFail();
+            $update->setStatusFlag(0);
         }
         else
         {
@@ -75,7 +72,6 @@ class ProcessSciproDevPlugin implements ShouldQueue
 
             //Create folders for retrived data
             $dir = new CaseStore();
-            //$dir->makedfolders(config('services.scipro-dev.client_name'));
 
             //Store zipfile in directory
             $dir->storeZip(config('services.scipro-dev.client_name'), $status);
@@ -84,17 +80,11 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $dir->unzip(config('services.scipro-dev.client_name'));
 
             //Status flags
-            //$update->download_scipro_dev = 100;
-            $update->status_flag = 3; //Successful download
-
-            $pluginstatus->status = 200; //Status to status
-            $pluginstatus->download_status = 100; //Status to status
-
-            $update->download =  $update->download+1; // Finished download
+            $update->setStatusFlag(3);
+            $pluginstatus->setStatus(200);
+            $pluginstatus->setDownloadStatus(100);
+            $update->setDownloadSuccess();
         }
-        //Update and save status
-        $update->save();
-        $pluginstatus->save();
 
     }
 }
