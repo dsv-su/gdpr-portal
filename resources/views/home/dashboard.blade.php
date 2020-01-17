@@ -1,33 +1,33 @@
-@extends('layouts.master')
+@extends('layouts.master_swe')
 
 @section('content')
-    <h5>GDRP Portal - Welcome {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Available number of Systems: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
+    <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
     <!-- Form -->
     <form action="{{ route('search') }}" method="post" id="form">
         {{ csrf_field() }}
         <div class="a">
-            <input pattern="^(19|20)?[0-9]{6}[- ]?[0-9]{4}$" type="text" id="gdpr_pnr" name="gdpr_pnr" placeholder="Personal ID" />
-            <label for="gdpr_pnr">Personal ID</label>
+            <input pattern="^(19|20)?[0-9]{6}[- ]?[0-9]{4}$" type="text" id="gdpr_pnr" name="gdpr_pnr" placeholder="Personnummer" />
+            <label for="gdpr_pnr">Personnummer</label>
             <div class="requirements">
-                Must be in format YYMMDD-NNNN
+                Måste vara i formatet ÅÅMMDD-NNNN
             </div>
         </div>
         <div class="a">
-            <input type="email" id="gdpr_email" name="gdpr_email" placeholder="Email Address" />
-            <label for="gdpr_email">Email Address</label>
+            <input type="email" id="gdpr_email" name="gdpr_email" placeholder="Epostadress" />
+            <label for="gdpr_email">Epost</label>
             <div class="requirements">
-                Must be a valid email address.
+                Måste vara en epostadress.
             </div>
         </div>
         <div class="a">
-            <input type="text" id="gdpr_uid" name="gdpr_uid" required placeholder="UserId" />
-            <label for="gdpr_uid">UserId</label>
+            <input type="text" id="gdpr_uid" name="gdpr_uid" required placeholder="AnvändarId" />
+            <label for="gdpr_uid">AnvändarId</label>
             <div class="requirements">
-                Must be a valid uid.
+                Måste vara ett användarId.
             </div>
         </div>
         <div class="b">
-            <button type="submit" class="btn btn-outline-primary">Start Request</button>
+            <button type="submit" class="btn btn-outline-primary">Skicka</button>
             <div class="req">
             </div>
         </div>
@@ -38,12 +38,12 @@
         <table class="table table-sm table-fixed">
             <thead>
             <tr>
-                <th scope="col"><i class="fas fa-barcode"></i> Case Id:</th>
-                <th scope="col"><i class="fas fa-search"></i> Request</th>
+                <th scope="col"><i class="fas fa-barcode"></i> ÄrendeId:</th>
+                <th scope="col"><i class="fas fa-search"></i> Förfrågan</th>
                 <th scope="col"><i class="fas fa-spinner"></i> Status</th>
-                <th scope="col"><i class="fas fa-file-upload"></i> Registrar</th>
-                <th scope="col"><i class="far fa-trash-alt"></i> Delete</th>
-                <th scope="col"><i class="fas fa-download"></i> Download</th>
+                <th scope="col"><i class="fas fa-file-upload"></i> Registrator</th>
+                <th scope="col"><i class="far fa-trash-alt"></i> Radera</th>
+                <th scope="col"><i class="fas fa-download"></i> Ladda ner</th>
             </tr>
             </thead>
             @foreach ($cases as $case)
@@ -64,13 +64,13 @@
                                             @elseif ($plugin->status == 400)
                                                 class="progress-bar bg-danger
                                             @endif
-                                            role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}
+                                            role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                             @if ($plugin->status == 200)
                                                 {{ $plugin->download_status }}%
                                             @elseif ($plugin->status == 204)
-                                                User not found
+                                                Personen kan inte hittas
                                             @elseif ($plugin->status == 400)
-                                                System error
+                                                Systemfel
                                             @endif
                                         </div>
                                      </div>
@@ -79,33 +79,33 @@
                         </td>
                         <td>
                             @if ( $case->registrar == 1)
-                                <i class="fas fa-check"></i><button class="btn btn-success btn-sm" type="button" disabled>Send</button>
+                                <i class="fas fa-check"></i><button class="btn btn-success btn-sm" type="button" disabled>Skicka</button>
                             @elseif ($case->registrar == 0 && $case->download < 2)
-                                <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button" disabled>Send</button>
+                                <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button" disabled>Skicka</button>
                             @elseif ($case->registrar == 0 && $case->download >= 2)
-                                <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Send</button>
+                                <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Skicka</button>
                             @endif
 
                         </td>
                         <td>
                             @if ($case->downloaded == 1)
-                                <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</a>
+                                <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Radera</a>
                             @endif
                             <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
                         </td>
                         <td>
                             @if ($case->status_flag == 0)
-                                <span class="badge badge-danger">Failed</span>
+                                <span class="badge badge-danger">Misslyckades</span>
                             @elseif ($case->downloaded == 1)
-                                    <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Downloaded</a>
+                                    <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Nerladdad</a>
                             @elseif ($case->download_status == 100)
-                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Download</a>
+                                 <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Ladda ner</a>
                             @elseif ($case->download_status < 100 && $case->progress == 0)
-                                 <span class="badge badge-warning">Nothing to download</span>
+                                 <span class="badge badge-warning">Inget att ladda ner</span>
                             @elseif ($case->progress == 1)
                                      <button class="btn btn-primary" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                              Downloading...
+                                              Laddar ner...
                                      </button>
                             @endif
                         </td>

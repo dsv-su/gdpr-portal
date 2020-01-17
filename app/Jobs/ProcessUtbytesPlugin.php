@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Plugin\Moodle;
+use App\Plugin\Utbytes;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessMoodlePlugin implements ShouldQueue
+class ProcessUtbytesPlugin implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,9 +19,7 @@ class ProcessMoodlePlugin implements ShouldQueue
      *
      * @return void
      */
-    public $tries = 3;
     protected $case, $status;
-
 
     public function __construct($case, $status)
     {
@@ -50,9 +48,9 @@ class ProcessMoodlePlugin implements ShouldQueue
         //Start request to Moodle
         $this->status->setDownloadStatus(25);
 
-        $moodle = new Moodle();
+        $utbytes = new Utbytes();
 
-        $status = $moodle->getMoodle($pnr, $email, $uid);
+        $status = $utbytes->getUtbytes($pnr, $email, $uid);
         if ($status == 204)
         {
             //User not found
@@ -77,13 +75,13 @@ class ProcessMoodlePlugin implements ShouldQueue
 
             //Create folders for retrived data
             $dir = new CaseStore();
-            $dir->makesystemfolder(config('services.moodle-test.client_name'));
+            $dir->makesystemfolder(config('services.utbytes.client_name'));
 
             //Store zipfile in directory
-            $dir->storeZip(config('services.moodle-test.client_name'), $status);
+            $dir->storeZip(config('services.utbytes.client_name'), $status);
 
             //Unzip
-            $dir->unzip(config('services.moodle-test.client_name'));
+            $dir->unzip(config('services.utbytes.client_name'));
 
             //Status flags
             $this->case->setStatusFlag(3);
@@ -92,6 +90,5 @@ class ProcessMoodlePlugin implements ShouldQueue
             $this->status->setDownloadStatus(100);
 
         }
-
     }
 }

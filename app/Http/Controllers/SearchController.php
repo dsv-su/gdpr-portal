@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Events\FinishedJobs;
 use App\Jobs\ProcessMoodlePlugin;
-use App\Jobs\ProcessSciproDevPlugin;
+use App\Jobs\ProcessUtbytesPlugin;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
@@ -56,26 +56,16 @@ class SearchController extends Controller
             $gdpr_userid = 'devuser';
         }
 
+        // New status instance
+        $status = new Status;
+
         // 3. Generate unique case -id
 
         if(!$record = Searchcase::latest()->first())
         {
-            //Store initial request data to model
-            $request = Searchcase::create([
-                'case_id' => config('services.case.start'),
-                'visability' => 1,
-                'gdpr_userid' => $gdpr_userid,
-                'request_pnr' => $search_request[0],
-                'request_email' => $search_request[1],
-                'request_uid' => $search_request[2],
-                'status_processed' => 0,
-                'status_flag' => 1,
-                'registrar' => false,
-                'progress' => 1,
-                'download' => 0,
-                'download_status' => 1,
-                'downloaded' => 0,
-            ]);
+
+            $request = new Searchcase();
+            $request = $request->initCase($gdpr_userid,$search_request);
 
             $caseid = config('services.case.start');
             //Store case_id in cache for 60min
@@ -86,23 +76,10 @@ class SearchController extends Controller
             $id = $request->id;
 
             Cache::put('requestid', $id, 60);
+
             //Create plugin status
-            //--------------------------------------------------
+            $status->initPluginStatus($id);
 
-            $plugins = Plugin::all();
-            foreach ( $plugins as $plugin)
-            {
-                Status::create([
-                    'searchcase_id' => $id,
-                    'plugin_id' => $plugin->id,
-                    'plugin_name' => $plugin->name,
-                    'status' => 200,
-                    'download_status' => 0,
-            ]);
-
-            }
-
-            //--------------------------------------------------
         }
         else
         {
@@ -119,41 +96,18 @@ class SearchController extends Controller
             Cache::put('search', $userid, 60);
 
             // 5. Store initial requestdata to model
-            $request = Searchcase::create([
-                'case_id' => $caseid,
-                'visability' => 1,
-                'gdpr_userid' => $gdpr_userid,
-                'request_pnr' => $search_request[0],
-                'request_email' => $search_request[1],
-                'request_uid' => $search_request[2],
-                'status_processed' => 0,
-                'status_flag' => 1,
-                'registrar' => false,
-                'progress' => 1,
-                'download' => 0,
-                'download_status' => 1,
-                'downloaded' => 0,
-            ]);
+
+            $request = new Searchcase();
+            $request = $request->initnewCase($gdpr_userid, $caseid, $search_request);
+
             $id = $request->id;
+
             //Store primary key
             Cache::put('requestid', $id, 60);
+
             //Create plugin status
-            //--------------------------------------------------
+            $status->initPluginStatus($id);
 
-            $plugins = Plugin::all();
-            foreach ( $plugins as $plugin)
-            {
-                Status::create([
-                    'searchcase_id' => $id,
-                    'plugin_id' => $plugin->id,
-                    'plugin_name' => $plugin->name,
-                    'status' => 200,
-                    'download_status' => 0,
-                ]);
-
-            }
-
-            //--------------------------------------------------
         }
 
         // 6. Start JobsPlugins
@@ -164,15 +118,27 @@ class SearchController extends Controller
 
         //Retrive case
         $case = Searchcase::find(Cache::get('requestid'));
+
+
+        //**************************************************************************************************************
+        //Start Moodle job
         $casestatus = Status::where([
             ['searchcase_id', '=', Cache::get('requestid')],
             ['plugin_id', '=', 1],
         ])->first();
 
-        //**************************************************************************************************************
-        //Start Moodle job
         $moodleJob = new ProcessMoodlePlugin($case, $casestatus);
         dispatch($moodleJob);
+        //**************************************************************************************************************
+
+        //**************************************************************************************************************
+        //Start Utbytes job
+        $casestatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 2],
+        ])->first();
+        $utbytesJob = new ProcessUtbytesPlugin($case, $casestatus);
+        dispatch($utbytesJob);
         //**************************************************************************************************************
 
         //**************************************************************************************************************

@@ -26,6 +26,10 @@ class DashboardController extends Controller
                     'status' => 0,
                 ]);
                 Plugin::create([
+                    'name' => 'Utbytes',
+                    'status' => 0,
+                ]);
+                Plugin::create([
                     'name' => 'Scipro-dev',
                     'status' => 0,
                 ]);

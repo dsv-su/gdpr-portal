@@ -20,7 +20,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    Your request <strong>ID#{{$details['case']}}</strong> has now been processed; the user has <strong>not</strong> been found in any systems. Please check that you have entered <strong>Personnummer</strong> and/or <strong>Emailaddress</strong> and/or <strong>UserId</strong> correct.
+                                    Your request <strong>ID#{{$details['case']}}</strong> has now been processed; the user has <strong>not</strong> been found in any systems. Please check that you have entered <strong>PersonalId</strong> and/or <strong>Emailaddress</strong> and/or <strong>UserId</strong> correct.
                                 </td>
                             </tr>
                             <tr>

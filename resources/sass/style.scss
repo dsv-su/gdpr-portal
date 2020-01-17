@@ -2,6 +2,7 @@
 
 form {
     //max-width: 450px;
+    font-family: Roboto;
     border-radius: 25px;
     border: 2px solid #41D873;
     padding: 20px;
@@ -114,7 +115,7 @@ form {
 
 body {
     background: #FFF;
-    font-family: 'PT Sans', sans-serif;
+    font-family: Roboto;
     padding: 10px;
 }
 
@@ -123,6 +124,7 @@ body {
 }
 /* --- The Table Structure --- */
 table {
+    font-family: Roboto;
     border-collapse: separate;
     //border-spacing: 0;
     //border: 2px solid #41D873;

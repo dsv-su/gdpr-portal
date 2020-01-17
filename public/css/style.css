@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
 form {
+  font-family: Roboto;
   border-radius: 25px;
   border: 2px solid #41D873;
   padding: 20px;
@@ -89,11 +90,12 @@ form {
 
 body {
   background: #FFF;
-  font-family: 'PT Sans', sans-serif;
+  font-family: Roboto;
   padding: 10px; }
 
 /* --- The Table Structure --- */
 table {
+  font-family: Roboto;
   border-collapse: separate; }
 
 table tr th,

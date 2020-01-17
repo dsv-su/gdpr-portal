@@ -4,21 +4,20 @@ namespace App\Plugin;
 
 use GuzzleHttp\Client;
 
-class Moodle
+class Utbytes
 {
     private $endpoint_url;
 
     public function __construct()
     {
-        $this->endpoint_url  = config('services.moodle-test.endpoint_uri');
+        $this->endpoint_url = config('services.utbytes.endpoint_uri');
     }
 
-    public function getMoodle($pnr, $email, $uid)
+    public function getUtbytes($pnr, $email, $uid)
     {
         $client = new Client();
         try {
-            $response = $client->get($this->endpoint_url . $uid);
-
+            $response = $client->get($this->endpoint_url . 'email=' . $email . '&pn=' . $pnr);
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;
@@ -31,7 +30,7 @@ class Moodle
             }
         }
 
-        //Processing response from Moodle
+        //Processing response from Utbytes
         if ($response) {
             if ($response->getStatusCode() == 200) {
                 $body = $response->getBody();

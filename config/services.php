@@ -44,6 +44,10 @@ return [
     'moodle-test' => [
         'client_name' => env('MOODLE_NAME'),
         'endpoint_uri' => env('MOODLE_URI'),
+     ],
+    'utbytes' => [
+            'client_name' => env('UTBYTES_NAME'),
+            'endpoint_uri' => env('UTBYTES_URI'),
     ]
 
 ];
