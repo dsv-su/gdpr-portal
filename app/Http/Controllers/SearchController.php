@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Events\FinishedJobs;
 use App\Jobs\ProcessMoodlePlugin;
 use App\Jobs\ProcessUtbytesPlugin;
+use App\Jobs\ProcessDaisyPlugin;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
@@ -83,8 +84,12 @@ class SearchController extends Controller
         }
         else
         {
+            //NextcaseId
+            //*************************************************************
             $expNum = explode('-', $record->case_id);
             $nextCaseNumber = $expNum[0].'-'. (string)((int)$expNum[1]+1);
+            //*************************************************************
+
             // Request case_id
             $caseid = $nextCaseNumber;
 
@@ -100,12 +105,13 @@ class SearchController extends Controller
             $request = new Searchcase();
             $request = $request->initnewCase($gdpr_userid, $caseid, $search_request);
 
+            //Get caseid
             $id = $request->id;
 
-            //Store primary key
+            //Store in cache
             Cache::put('requestid', $id, 60);
 
-            //Create plugin status
+            //Init plugin status
             $status->initPluginStatus($id);
 
         }
@@ -140,9 +146,17 @@ class SearchController extends Controller
         $utbytesJob = new ProcessUtbytesPlugin($case, $casestatus);
         dispatch($utbytesJob);
         //**************************************************************************************************************
-
         //**************************************************************************************************************
-        //Start Scipro dev job
+        //Start Daisy2 job
+        $casestatus = Status::where([
+            ['searchcase_id', '=', Cache::get('requestid')],
+            ['plugin_id', '=', 4],
+        ])->first();
+        $daisyJob = new ProcessDaisyPlugin($case, $casestatus);
+        dispatch($daisyJob);
+        //**************************************************************************************************************
+        //**************************************************************************************************************
+        //Scipro auth
         $scipro->auth();
         //**************************************************************************************************************
 

@@ -29,6 +29,7 @@ class Searchcase extends Model
         ]);
         return $this->request;
     }
+
     public function initnewCase($user, $caseid, $search)
     {
         //Store initial request data to model
@@ -48,6 +49,13 @@ class Searchcase extends Model
             'downloaded' => 0,
         ]);
         return $this->request;
+    }
+
+    public function setStatusProcessed()
+    {
+        //Increase for each processed plugin
+        $this->status_processed++;
+        $this->save();
     }
 
     public function setStatusFlag($value)

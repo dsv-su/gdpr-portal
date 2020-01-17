@@ -42,12 +42,12 @@ class AppServiceProvider extends ServiceProvider
             // $event->connectionName  //database
             // $event->job
             //$event->job->payload()
+
             //Find requestdata for request and update stats
             $update = Searchcase::find(Cache::get('requestid'));
-            $update->status_processed = $update->status_processed + 1;
-            $update->save();
+            $update->setStatusProcessed();
+
             //Check processed flag
-            $update = Searchcase::find(Cache::get('requestid'));
             $systems = Plugin::all()->count();
 
             if ($update->download >0 && $update->status_processed == $systems && $update->status_flag == 3)

@@ -16,7 +16,7 @@ class DashboardController extends Controller
 {
     public function index(Searchcase $searchcase)
     {
-        //Initiate testing plugins at first boot
+        //Initiate testing plugins at first boot ->To be removed
         //-----------------------------------------------
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
@@ -33,6 +33,10 @@ class DashboardController extends Controller
                     'name' => 'Scipro-dev',
                     'status' => 0,
                 ]);
+                Plugin::create([
+                    'name' => 'Daisy2',
+                    'status' => 0,
+                ]);
                 //---endTemporary
             }
         }
@@ -42,6 +46,7 @@ class DashboardController extends Controller
         $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
+
         //Check download status
         if(!$record = Searchcase::latest()->first()) {
         }
@@ -56,7 +61,7 @@ class DashboardController extends Controller
                 }
                 else
                 {
-                    $case->download_status = 0;
+                    $case->setDownloadStatus(0);
                 }
                 $case->save();
             }
@@ -95,7 +100,7 @@ class DashboardController extends Controller
                 }
                 else
                 {
-                    $case->download_status = 0;
+                    $case->setDownloadStatus(0);
                 }
                 $case->save();
             }

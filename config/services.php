@@ -48,6 +48,11 @@ return [
     'utbytes' => [
             'client_name' => env('UTBYTES_NAME'),
             'endpoint_uri' => env('UTBYTES_URI'),
+    ],
+    'daisy' => [
+        'client_name' => env('DAISY_NAME'),
+        'endpoint_uri' => env('DAISY_URI'),
+        'authcode' => env('DAISY_AUTHCODE'),
     ]
 
 ];
