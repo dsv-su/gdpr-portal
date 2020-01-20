@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="a">
-            <input type="text" id="gdpr_uid" name="gdpr_uid" required placeholder="AnvändarId" />
+            <input type="text" id="gdpr_uid" name="gdpr_uid" placeholder="AnvändarId" />
             <label for="gdpr_uid">AnvändarId</label>
             <div class="requirements">
                 Måste vara ett användarId.
@@ -62,7 +62,7 @@
                                             @elseif ($plugin->status == 204)
                                                 class="progress-bar bg-warning"
                                             @elseif ($plugin->status == 400)
-                                                class="progress-bar bg-danger
+                                                class="progress-bar bg-danger"
                                             @endif
                                             role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                             @if ($plugin->status == 200)
@@ -72,7 +72,7 @@
                                             @elseif ($plugin->status == 400)
                                                 Systemfel
                                             @endif
-                                        </div>
+                                            </div>
                                      </div>
                                 @endif
                             @endforeach
@@ -98,9 +98,9 @@
                                 <span class="badge badge-danger">Misslyckades</span>
                             @elseif ($case->downloaded == 1)
                                     <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Nerladdad</a>
-                            @elseif ($case->download_status == 100)
+                            @elseif ($case->download_status > 0)
                                  <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Ladda ner</a>
-                            @elseif ($case->download_status < 100 && $case->progress == 0)
+                            @elseif ($case->download_status == 0 && $case->progress == 0)
                                  <span class="badge badge-warning">Inget att ladda ner</span>
                             @elseif ($case->progress == 1)
                                      <button class="btn btn-primary" type="button" disabled>
@@ -115,6 +115,37 @@
                 </tbody>
         </table>
     </div>
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Varning!</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Portalen är i testläge och alla sökningar loggas!
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(window).on('load', function() {
+            $('#myModal').modal('show');
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             var auto_refresh = setInterval(

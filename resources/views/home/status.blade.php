@@ -25,7 +25,7 @@
                                 @elseif ($plugin->status == 204)
                                 class="progress-bar bg-warning"
                                 @elseif ($plugin->status == 400)
-                                class="progress-bar bg-danger
+                                class="progress-bar bg-danger"
                                 @endif
                                 role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                 @if ($plugin->status == 200)
@@ -60,14 +60,14 @@
                         <span class="badge badge-danger">Misslyckades</span>
                     @elseif ($case->downloaded == 1)
                         <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Nerladdad</a>
-                    @elseif ($case->download_status == 100)
+                    @elseif ($case->download_status > 0)
                         <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-file-download"></i> Ladda ner</a>
-                    @elseif ($case->download_status < 100 && $case->progress == 0)
+                    @elseif ($case->download_status == 0 && $case->progress == 0)
                         <span class="badge badge-warning">Inget att ladda ner</span>
                     @elseif ($case->progress == 1)
                         <button class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Ladda ner...
+                            Laddar ner...
                         </button>
                     @endif
                 </td>
