@@ -21,22 +21,11 @@ class DashboardController extends Controller
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
                 //---Temporary seeds to database
-                Plugin::create([
-                    'name' => 'Ilearn2test',
-                    'status' => 0,
-                ]);
-                Plugin::create([
-                    'name' => 'Utbytes',
-                    'status' => 0,
-                ]);
-                Plugin::create([
-                    'name' => 'Scipro-dev',
-                    'status' => 0,
-                ]);
-                Plugin::create([
-                    'name' => 'Daisy2',
-                    'status' => 0,
-                ]);
+                $plugin = new Plugin();
+                $plugin->newPlugin('Ilearn2test');
+                $plugin->newPlugin('Utbytes');
+                $plugin->newPlugin('Scipro-dev');
+                $plugin->newPlugin('Daisy2');
                 //---endTemporary
             }
         }
@@ -125,9 +114,10 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
+
     //-----------------------------------------------
     //
-    // Developing functions
+    // Developing and testing functions
     //
     //-----------------------------------------------
 

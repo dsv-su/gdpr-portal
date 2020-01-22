@@ -41,6 +41,9 @@ return [
         'start' => env('CASE_START_ID'),
         'ttl' => env('CASE_TTL'),
     ],
+    'registrator' => [
+        'epost' => env('REGISTRATOR'),
+    ],
     'moodle-test' => [
         'client_name' => env('MOODLE_NAME'),
         'endpoint_uri' => env('MOODLE_URI'),

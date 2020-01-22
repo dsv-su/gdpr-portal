@@ -8,5 +8,11 @@ class Plugin extends Model
 {
     protected $fillable = ['name', 'status'];
 
-
+    public function newPlugin($name)
+    {
+        Plugin::create([
+            'name' => $name,
+            'status' => 0,
+        ]);
+    }
 }

@@ -32,6 +32,12 @@ Route::get('/plugin_configuration', 'PluginController@index')->name('plugin');
 Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('plugin_update');
 
 //Test
+Route::get('/emailtest/{id}', 'EmailController@sendEmail')->name('send');
+Route::get('/mail', function () {
+    $details = App\Searchcase::find(1);
+
+    return new App\Mail\RegistrarSend($details);
+});
 Route::get('/t', 'DashboardController@testview')->name('tview');
 Route::get('/newstatus','DashboardController@teststatus');
 Route::get('/test', 'DashboardController@test')->name('test');

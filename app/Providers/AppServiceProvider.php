@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
 
             //Find requestdata for request and update stats
             $update = Searchcase::find(Cache::get('requestid'));
+            //Stats
             $update->setStatusProcessed();
 
             //Check processed flag

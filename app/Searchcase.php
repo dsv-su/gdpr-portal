@@ -51,6 +51,13 @@ class Searchcase extends Model
         return $this->request;
     }
 
+    public function setRegistrar()
+    {
+        $this->registrar = true;
+        $this->sent_registrar = now();
+        $this->save();
+    }
+
     public function setStatusProcessed()
     {
         //Increase for each processed plugin
@@ -66,7 +73,7 @@ class Searchcase extends Model
 
     public function setDownloadSuccess()
     {
-        $this->download = $this->download + 1;
+        $this->download++;
         $this->save();
     }
 

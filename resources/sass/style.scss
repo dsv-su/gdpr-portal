@@ -129,6 +129,13 @@ table {
     //border-spacing: 0;
     //border: 2px solid #41D873;
 }
+table b {
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/check.svg);
+    background-size: 18px;
+    background-repeat: no-repeat;
+    //background-position: 10px 10px;
+    opacity: 100%;
+}
 table tr th,
 table tr td {
     //border-right: 1px solid #bbb;

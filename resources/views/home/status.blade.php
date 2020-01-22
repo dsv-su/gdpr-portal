@@ -43,11 +43,11 @@
                 </td>
                 <td>
                     @if ( $case->registrar == 1)
-                        <i class="fas fa-check"></i><button class="btn btn-success btn-sm" type="button" disabled>Skicka</button>
-                    @elseif ($case->registrar == 0 && $case->download < 2)
-                        <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button" disabled>Skicka</button>
-                    @elseif ($case->registrar == 0 && $case->download >= 2)
-                        <i class="fas fa-times"></i>  <button class="btn btn-success btn-sm" type="button">Skicka</button>
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> Skickat: {{ $case->sent_registrar }}
+                    @elseif ($case->registrar == 0 && $case->download >= 2 && $case->downloaded == 1)
+                        <i class="fas fa-times"></i>  <a href="{{ route('send' , ['id'=> $case->id]) }}" class="btn btn-outline-success btn-sm" type="button">Skicka</a>
+                     @else
+                        <i class="fas fa-times"></i>
                     @endif
                 </td>
                 <td>@if ($case->downloaded == 1)

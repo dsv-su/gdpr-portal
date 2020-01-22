@@ -35,7 +35,7 @@ class ProcessNotFound implements ShouldQueue
         $user = Cache::get('requester_email');
 
         $details = [
-            'title' => 'Message from the GDPR portal regarding you request.',
+            'title' => 'Meddelande från GDPR portalen',
             'url' => 'https://methone.dsv.su.se',
             'case' => Cache::get('request')
         ];

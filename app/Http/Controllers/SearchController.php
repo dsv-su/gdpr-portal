@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Events\FinishedJobs;
 use App\Jobs\ProcessMoodlePlugin;
 use App\Jobs\ProcessUtbytesPlugin;
 use App\Jobs\ProcessDaisyPlugin;
@@ -11,11 +9,8 @@ use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
-use App\Plugin\Moodle;
-use App\Plugin;
 use App\Status;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 
 class SearchController extends Controller
@@ -26,16 +21,16 @@ class SearchController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function search(Request $request, Scipro $scipro, Searchcase $searchcase)
+    public function search(Request $request, Scipro $scipro)
     {
-        /*
-         * 1. Request and store form entry (in cache)
-         * 2. Check server/dev
+        /***************************************************
+         * 1. Request and store formdata
+         * 2. Check which server is running
          * 3. Generate unique request id
-         * 4. Store request data (in cache)
+         * 4. Store request data
          * 5. Store initiate request data in database table
          * 6. Perform request to plugin scripts
-         *
+         ***************************************************
         */
 
         // 1. Requesting data from form

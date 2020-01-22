@@ -98,6 +98,12 @@ table {
   font-family: Roboto;
   border-collapse: separate; }
 
+table b {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/check.svg);
+  background-size: 18px;
+  background-repeat: no-repeat;
+  opacity: 100%; }
+
 table tr th,
 table tr td {
   box-shadow: 2px 2px 1px #e5dfcc; }

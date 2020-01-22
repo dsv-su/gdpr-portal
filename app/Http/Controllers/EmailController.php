@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MailGDPRNotify;
+use App\Searchcase;
+use App\Mail\RegistrarSend;
 use Mail;
 
 use Illuminate\Http\Request;
@@ -10,14 +11,19 @@ use Illuminate\Http\Request;
 class EmailController extends Controller
 {
     //To test email settings on server
-    public function sendEmail()
+    public function sendEmail($id)
     {
-        $user = 'ryan@dsv.su.se';
-        $details = [
-            'title' => 'Testmail från GDPR Portalen',
-            'url' => 'https://methone.dsv.su.se'
-        ];
-        Mail::to($user)->send(new MailGDPRNotify($details));
+        $registrar = config('services.registrator.epost');
+        $case = Searchcase::find($id);
+
+        //Register sent date
+        $case->setRegistrar();
+
+        //return new RegistrarSend($case);
+        Mail::to($registrar)
+              ->queue(new RegistrarSend($case));
+
+        return redirect()->route('home');
 
     }
 }
