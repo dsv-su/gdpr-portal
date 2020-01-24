@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Searchcase extends Model
 {
-    protected $fillable = ['case_id', 'visability', 'gdpr_userid', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'download', 'download_status', 'downloaded'];
+    protected $fillable = ['case_id', 'visability', 'gdpr_userid', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'plugins_processed', 'download_status', 'downloaded'];
     private $request;
 
     public function initCase($user, $search)
@@ -23,7 +23,7 @@ class Searchcase extends Model
             'status_flag' => 1,
             'registrar' => false,
             'progress' => 1,
-            'download' => 0,
+            'plugins_processed' => 0,
             'download_status' => 1,
             'downloaded' => 0,
         ]);
@@ -44,7 +44,7 @@ class Searchcase extends Model
             'status_flag' => 1,
             'registrar' => false,
             'progress' => 1,
-            'download' => 0,
+            'plugins_processed' => 0,
             'download_status' => 1,
             'downloaded' => 0,
         ]);
@@ -71,15 +71,15 @@ class Searchcase extends Model
         $this->save();
     }
 
-    public function setDownloadSuccess()
+    public function setPluginSuccess()
     {
-        $this->download++;
+        $this->plugins_processed++;
         $this->save();
     }
 
-    public function setDownloadFail()
+    public function setPluginFail()
     {
-        $this->download = 0;
+        $this->plugins_processed = 0;
         $this->save();
     }
 

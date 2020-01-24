@@ -24,15 +24,15 @@
                                 class="progress-bar"
                                 @elseif ($plugin->status == 204)
                                 class="progress-bar bg-warning"
-                                @elseif ($plugin->status == 400)
+                                @elseif ($plugin->status == 400 or $plugin->status == 404)
                                 class="progress-bar bg-danger"
                                 @endif
-                                role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
+                                role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                 @if ($plugin->status == 200)
                                     {{ $plugin->download_status }}%
                                 @elseif ($plugin->status == 204)
                                 Personen kan inte hittas
-                                @elseif ($plugin->status == 400)
+                                @elseif ($plugin->status == 400 or $plugin->status == 404)
                                     Systemfel
                                 @endif
 

@@ -26,7 +26,7 @@ class CreateSearchcasesTable extends Migration
             $table->boolean('registrar');
             $table->date('sent_registrar')->nullable();
             $table->integer('progress');
-            $table->integer('download');
+            $table->integer('plugins_processed');
             $table->integer('download_status');
             $table->integer('downloaded');
             $table->timestamps();

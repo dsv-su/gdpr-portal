@@ -21,6 +21,7 @@ class CreateStatusesTable extends Migration
             $table->foreign('plugin_id')->references('id')->on('plugins')->onDelete('cascade');
             $table->string('plugin_name');
             $table->integer('status');
+            $table->integer('progress_status');
             $table->integer('download_status');
             $table->timestamps();
         });

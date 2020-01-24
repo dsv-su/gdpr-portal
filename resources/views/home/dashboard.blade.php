@@ -61,15 +61,15 @@
                                                 class="progress-bar"
                                             @elseif ($plugin->status == 204)
                                                 class="progress-bar bg-warning"
-                                            @elseif ($plugin->status == 400)
+                                            @elseif ($plugin->status == 400 or $plugin->status == 404)
                                                 class="progress-bar bg-danger"
                                             @endif
-                                            role="progressbar" style="width: {{ $plugin->download_status }}%;" aria-valuenow="{{ $plugin->download_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
+                                            role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                             @if ($plugin->status == 200)
                                                 {{ $plugin->download_status }}%
                                             @elseif ($plugin->status == 204)
                                                 Personen kan inte hittas
-                                            @elseif ($plugin->status == 400)
+                                             @elseif ($plugin->status == 400 or $plugin->status == 404)
                                                 Systemfel
                                             @endif
                                             </div>
@@ -115,36 +115,6 @@
                 </tbody>
         </table>
     </div>
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Varning!</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    Portalen är i testläge och alla sökningar loggas!
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $(window).on('load', function() {
-            $('#myModal').modal('show');
-        });
-    </script>
 
     <script>
         $(document).ready(function () {

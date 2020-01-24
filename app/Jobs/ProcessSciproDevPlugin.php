@@ -47,23 +47,30 @@ class ProcessSciproDevPlugin implements ShouldQueue
         //Start request to Sciprodev
 
         //Initiate Status flags
+        $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
         $status = $scipro->gettoken();
         if ($status == 204)
         {
+            //**********************************************************************
             //User not found
+            //**********************************************************************
+            // Status flags
             $this->status->setStatus(204);
-            $this->case->setStatusFlag(3); //Successful but not found
-            $this->status->setDownloadStatus(100);
-            $this->case->setDownloadSuccess();
+            $this->status->setProgressStatus(100);
+            $this->status->setDownloadStatus(0);
+
         }
         else if( $status == 400)
         {
+            //*********************************************************************
             //Request denied
+            //*********************************************************************
+            //Status flags
             $this->status->setStatus(400);
-            $this->status->setDownloadStatus(100);
-            $this->case->setDownloadFail();
+            $this->status->setProgressStatus(100);
+            $this->status->setDownloadStatus(0);
             $this->case->setStatusFlag(0);
         }
         else
@@ -82,11 +89,10 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $dir->unzip(config('services.scipro-dev.client_name'));
 
             //Status flags
-            $this->case->setStatusFlag(3);
             $this->status->setStatus(200);
+            $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(100);
-            $this->case->setDownloadSuccess();
         }
-
+        $this->case->setPluginSuccess();
     }
 }

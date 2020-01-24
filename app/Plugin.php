@@ -15,4 +15,5 @@ class Plugin extends Model
             'status' => 0,
         ]);
     }
+
 }

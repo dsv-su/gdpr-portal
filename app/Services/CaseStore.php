@@ -101,10 +101,8 @@ class CaseStore extends Model
         Storage::deleteDirectory('/public/'.$case->case_id);
         //Reset flags
         $case->visability = 0;
-        //$case->status_scipro_dev = 0;
-        //$case->status_moodle_test = 0;
-        $case->registrar = 0;
-        $case->download = 0;
+        //$case->registrar = 0;
+        //$case->plugins_processed = 0;
         $case->save();
         //Delete status data
         $deletedRows = Status::where('searchcase_id', $id)->delete();
@@ -122,10 +120,8 @@ class CaseStore extends Model
         Storage::deleteDirectory('/public/'.$case->case_id);
         // Reset flags
         $case->visability = 0;
-        //$case->status_scipro_dev = 0;
-        //$case->status_moodle_test = 0;
-        $case->registrar = 0;
-        $case->download = 0;
+        //$case->registrar = 0;
+        //$case->plugins_processed = 0;
         $case->save();
         //Delete status data
         $deletedRows = Status::where('searchcase_id', $id)->delete();

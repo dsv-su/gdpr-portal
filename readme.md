@@ -2,18 +2,124 @@
 ##GDPR Portal
 
 1. Overview
-2. Workflow
-3. Plugins
-4. User guide
+2. Requirements
+3. Installation
+4. Workflow
+5. Plugins
+6. User guide
 
-The GDPR portal is a web application that connects to existing systems and requests GDPR data.
+## 1. Overview
+
+The main objective of the GDPR portal is to intergrate existing systems and requests concerning GDPR dataextracts to a common tool.
+
+## 2. Requirements
+Requirements are best determined using Server Requirements page of corresponding Laravel 6 version
+Currently used version is 6
+
+PHP version 7.3.*
+
+SSH access to the server (terminal access)
+
+Composer
+
+## 3. Installation
+
+* Make sure that composer is installed globally or install it in place
+
+* Clone the repository
+
+* Please make sure to switch to production branch if you are running on production server
+
+* In case of development instance, please make sure to build the static assets. Refer to working with compiled assets for more information
+
+* Move into the directory
+
+* Install the dependencies composer install
+
+* Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with data)
+
+* Either create application key manually or do that with a command php artisan key:generate
+
+* Make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
+
+* The redirect URL addresses are in the form BASE-URL/auth/PROVIDER-name/callback
+
+* Open the config/mail.php file and set the needed values within the from element
+
+* Create the database as needed (according to configuration provided)
+
+* Run php artisan migrate from terminal (this should create database and more)
+
+* Running php artisan serve would serve the app in development (or configure the server of your choice)
+
+## 4. Database
+
+### 4.1 Status flags
+
+####  case
+
+status_processed | .
+-----------------|-------
+number of plugins + 1 (notification) |
+
+status_flag
+
+value | state
+------|------
+0 | System error; One or more systems reported a 400 or 404
+1 | Initial status
+2 | User not found
+3 | Request successful
+
+registrar
+
+value | state
+------|------
+0 | Downloaded zip has Not been sent to registrar
+1 | Downloaded zip has been sent to registrera at date (see sent_registrar)
+
+sent_registrar
+
+value | state
+------|------
+date | date when zip file was sent to registrar
+
+progress
+
+value | state
+------|------
+0 | Progress of request has been completed
+1 | Request is under progress
+
+plugins_processed
+
+plugins_processed | .
+------------------|------
+number of plugins that have been processed |
+
+download_status | .
+----------------|-----
+total download in % | 
+
+downloaded | .
+-----------|-------
+value | state 
+0 | No
+1| Yes
+
+#### statuses
+//TODO
+
+#### plugin
+//TODO
 
 
-## 2. Workflow
+## 5. Workflow
 
 ![Workflow](./public/images/guide/workflow.png)
 
-## 3. Plugins
+## 6. Plugins
+
 ### Plugin pattern/structure
 The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of three files; A main file, a process file to dispatch the plugin to a que and a configurations file containing credential- and configuration information if needed. This structure will be reworked in the future to allow easier integration. All plugins are handled by the PluginController.
 e.g.
@@ -61,7 +167,7 @@ Status code | Description
 401 | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
 500 | Internal Server Error.
 
-## 4. User guide
+## 7. User guide
 The trialversion of the portal can be found under the following url:
 
 https://methone.dsv.su.se

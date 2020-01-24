@@ -46,6 +46,7 @@ class ProcessUtbytesPlugin implements ShouldQueue
         */
 
         //Start request to Moodle
+        $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
         $utbytes = new Utbytes();
@@ -53,18 +54,24 @@ class ProcessUtbytesPlugin implements ShouldQueue
         $status = $utbytes->getUtbytes($pnr, $email, $uid);
         if ($status == 204)
         {
+            //**********************************************************************
             //User not found
+            //**********************************************************************
+            // Status flags
             $this->status->setStatus(204);
-            $this->status->setDownloadStatus(100);
-            $this->case->setStatusFlag(3); //Successful but not found
-            $this->case->setDownloadSuccess(); //Successful but not found
+            $this->status->setProgressStatus(100);
+            $this->status->setDownloadStatus(0);
         }
         else if( $status == 404)
         {
+            //*********************************************************************
             //Request denied
-            $this->case->setDownloadFail(); //Download error
-            $this->status->setStatus(204);
-            $this->status->setDownloadStatus(100);
+            //*********************************************************************
+            //Status flags
+            $this->case->setStatusFlag(0); //Download error
+            $this->status->setStatus(404);
+            $this->status->setProgressStatus(100);
+            $this->status->setDownloadStatus(0);
 
         }
         else
@@ -84,11 +91,11 @@ class ProcessUtbytesPlugin implements ShouldQueue
             $dir->unzip(config('services.utbytes.client_name'));
 
             //Status flags
-            $this->case->setStatusFlag(3);
-            $this->case->setDownloadSuccess();
             $this->status->setStatus(200);
+            $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(100);
 
         }
+        $this->case->setPluginSuccess();
     }
 }

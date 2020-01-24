@@ -46,7 +46,7 @@ class DashboardController extends Controller
             {
                 if($case->status_flag == 3)
                 {
-                    $case->download_status = ($case->download/$plugins)*100;
+                    $case->download_status = ($case->plugins_processed/$plugins)*100;
                 }
                 else
                 {
@@ -85,7 +85,7 @@ class DashboardController extends Controller
             {
                 if($case->status_flag == 3)
                 {
-                    $case->download_status = ($case->download/$plugins)*100;
+                    $case->download_status = ($case->plugins_processed/$plugins)*100;
                 }
                 else
                 {
