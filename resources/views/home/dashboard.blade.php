@@ -80,7 +80,7 @@
                         <td>
                             @if ( $case->registrar == 1)
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>Skickat: {{ $case->sent_registrar }}
-                            @elseif ($case->registrar == 0 && $case->download >= 2 && $case->downloaded == 1)
+                            @elseif ($case->registrar == 0 && $case->status_flag == 3 && $case->downloaded == 1)
                                 <i class="fas fa-times"></i>  <a href="{{ route('send' , ['id'=> $case->id]) }}" class="btn btn-outline-success btn-sm" type="button">Skicka</a>
                             @else
                                 <i class="fas fa-times"></i>

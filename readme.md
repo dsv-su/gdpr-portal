@@ -10,7 +10,7 @@
 
 ## 1. Overview
 
-The main objective of the GDPR portal is to intergrate existing systems and requests concerning GDPR dataextracts to a common tool.
+The main objective of the GDPR portal is to intergrate existing systems GDPR dataextracts through a common tool.
 
 ## 2. Requirements
 Requirements are best determined using Server Requirements page of corresponding Laravel 6 version
@@ -30,29 +30,33 @@ Composer
 
 * Please make sure to switch to production branch if you are running on production server
 
-* In case of development instance, please make sure to build the static assets. Refer to working with compiled assets for more information
+* In case of development instance, please make sure to build the static assets. Refer to compiled assets for more information
 
 * Move into the directory
 
 * Install the dependencies composer install
 
-* Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with data)
+* Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with your data)
 
 * Either create application key manually or do that with a command php artisan key:generate
 
 * Make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
 
-* The redirect URL addresses are in the form BASE-URL/auth/PROVIDER-name/callback
+* The redirect URL addresses are in the form BASE-URL/auth/PLUGIN-name/callback
 
 * Open the config/mail.php file and set the needed values within the from element
 
-* Create the database as needed (according to configuration provided)
+* Create the database
 
 * Run php artisan migrate from terminal (this should create database and more)
 
 * Running php artisan serve would serve the app in development (or configure the server of your choice)
 
+* Run php artisan queue:work to start the ques.
+
 ## 4. Database
+
+//TODO
 
 ### 4.1 Status flags
 

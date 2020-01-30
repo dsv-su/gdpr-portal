@@ -144,32 +144,6 @@ class DashboardController extends Controller
         return $_SERVER;
     }
 
-    public function testview()
-    {
-        $data['systems'] = Plugin::count();
-        $data['cases'] = Searchcase::all();
-        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
-        {
-            $data['gdpr_user'] = $_SERVER['displayName'];
-            //TODO change cache to eloquent
-            Cache::put('requester_email', $_SERVER['mail'], 60);
-        }
-        else {
-            $data['gdpr_user'] = 'Ryan Dias';
-            Cache::put('requester_email', 'ryan@dsv.su.se', 60);
-        }
-
-        $data['pluginstatuses'] = Status::all();
-        return view('home.new_dashboard', $data);
-    }
-
-    public function teststatus(Searchcase $searchcase)
-    {
-        $data['cases'] = Searchcase::all();
-        $data['pluginstatuses'] = Status::all();
-
-        return view('home.new_status', $data);
-    }
     public function phpinfo()
     {
         return phpinfo();

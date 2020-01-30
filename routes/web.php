@@ -31,15 +31,11 @@ Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
 Route::get('/plugin_configuration', 'PluginController@index')->name('plugin');
 Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('plugin_update');
 
-//Test
-Route::get('/emailtest/{id}', 'EmailController@sendEmail')->name('send');
-Route::get('/mail', function () {
-    $details = App\Searchcase::find(1);
+//Email registrar
+Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
-    return new App\Mail\RegistrarSend($details);
-});
-Route::get('/t', 'DashboardController@testview')->name('tview');
-Route::get('/newstatus','DashboardController@teststatus');
+//Testing
+
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
 
