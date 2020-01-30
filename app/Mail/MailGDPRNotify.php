@@ -29,7 +29,7 @@ class MailGDPRNotify extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.finished')
+        return $this->view('emails.finished_swe')
             ->with('details', $this->details);;
     }
 }
