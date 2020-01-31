@@ -7,6 +7,7 @@ use App\Jobs\ProcessNotFinished;
 use App\Jobs\ProcessNotFound;
 use App\Searchcase;
 use App\Plugin;
+use App\Services\CaseStore;
 use App\Status;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
@@ -54,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
             $systems = Plugin::all()->count();
 
             if ($update->plugins_processed == $systems && !$update->status_flag == 0 && $update->progress > 0) {
-                //Scan statuscodes of each plugin for case
+                //Scan statuscodes of each plugin for case to check:
                 $statuses = DB::table('statuses')
                             ->select('status')
                             ->where('searchcase_id', '=', Cache::get('requestid'))
@@ -71,19 +72,31 @@ class AppServiceProvider extends ServiceProvider
 
                 if ( $count == $systems )
                     {
-                        //Sucessfully finished but user not found
-                        $update->progress = 0; //Kill progress flag
+                        //| ---------------------------------------------------------
+                        //| 1. Sucessfully finished but user not found in any system
+                        //| ---------------------------------------------------------
+
+                        // Set status flags
+                        $update->setProgress(0); //Kill progress flag
                         $update->setStatusFlag(2);
-                        $update->save();
+
+                        // Remove case folders
+                        $zip = new CaseStore();
+                        $zip->delete_empty_case(Cache::get('requestid'));
+
+                        //Notify user
                         $request_finished_empty = new ProcessNotFound();
                         dispatch($request_finished_empty);
                     }
                 else
                     {
-                        //Successfully finished
-                        $update->progress = 0; //Kill progress flag
+                        //| ---------------------------------------------------------
+                        //| 2. Successfully finished
+                        //| ---------------------------------------------------------
+
+                        $update->setProgress(0); //Kill progress flag
                         $update->setStatusFlag(3);
-                        $update->save();
+
                         $request_finished = new ProcessFinished();
                         dispatch($request_finished);
                     }
@@ -91,10 +104,13 @@ class AppServiceProvider extends ServiceProvider
             }
             elseif ($update->plugins_processed == $systems && $update->status_flag == 0 && $update->progress > 0)
             {
-                //Unsuccessfull -> notify
-                $update->progress = 0; //Kill progress flag
+                //| ----------------------------------------------------------------
+                //| Unsuccessfull -> notify
+                //| ----------------------------------------------------------------
+
+                $update->setProgress(0); //Kill progress flag
                 $update->setStatusFlag(0);
-                $update->save();
+
                 $request_finished_error = new ProcessNotFinished();
                 dispatch($request_finished_error);
 

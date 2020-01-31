@@ -109,6 +109,16 @@ class CaseStore extends Model
 
     }
 
+    public function delete_empty_case($id)
+    {
+        //Get the case
+        $case = Searchcase::find($id);
+        //Delete directory structure
+        Storage::deleteDirectory('/public/'.$case->case_id);
+        //Delete status data
+        //$deletedRows = Status::where('searchcase_id', $id)->delete();
+    }
+
     //ForceDelete: Only during developing and deploying testing
     public function dev_delete_case($id)
     {
@@ -131,7 +141,8 @@ class CaseStore extends Model
     public function dev_delete()
     {
     //Delete directory structure
-    Storage::deleteDirectory('/public/raw');
-    Storage::deleteDirectory('/public/zip');
+    //Storage::deleteDirectory('/public/raw');
+    //Storage::deleteDirectory('/public/zip');
+    //Storage::deleteDirectory('/public/2019-1');
     }
 }

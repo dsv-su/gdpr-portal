@@ -35,7 +35,7 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
 //Testing
-
+Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
 

@@ -71,6 +71,12 @@ class Searchcase extends Model
         $this->save();
     }
 
+    public function setProgress($value)
+    {
+        $this->progress = $value;
+        $this->save();
+    }
+
     public function setPluginSuccess()
     {
         $this->plugins_processed++;
