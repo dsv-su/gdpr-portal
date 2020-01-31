@@ -55,7 +55,11 @@ class AppServiceProvider extends ServiceProvider
             $systems = Plugin::all()->count();
 
             if ($update->plugins_processed == $systems && !$update->status_flag == 0 && $update->progress > 0) {
-                //Scan statuscodes of each plugin for case to check:
+                //| ------------------------------------------------------------------
+                //| All plugins have been processed
+                //| Scan statuscodes of each plugin
+                //| ------------------------------------------------------------------
+
                 $statuses = DB::table('statuses')
                             ->select('status')
                             ->where('searchcase_id', '=', Cache::get('requestid'))
@@ -110,6 +114,10 @@ class AppServiceProvider extends ServiceProvider
 
                 $update->setProgress(0); //Kill progress flag
                 $update->setStatusFlag(0);
+
+                // Remove case folders
+                $zip = new CaseStore();
+                $zip->delete_empty_case(Cache::get('requestid'));
 
                 $request_finished_error = new ProcessNotFinished();
                 dispatch($request_finished_error);
