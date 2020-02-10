@@ -45,3 +45,9 @@ Route::get('/php', 'DashboardController@phpinfo')->name('php');
 
 //Moodle-test
 //Route::get('/moodle', 'TestController@test_moodle');
+
+//Otrs-test
+Route::get('/otrs', 'TestController@test_otrs');
+
+//ini
+Route::get('/ini', 'TestController@plugin_ini');

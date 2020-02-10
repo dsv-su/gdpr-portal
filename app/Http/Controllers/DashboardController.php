@@ -20,13 +20,19 @@ class DashboardController extends Controller
         //-----------------------------------------------
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
-                //---Temporary seeds to database
+
+                // Read gdpr.ini file and store id db
+                $file = base_path().'/gdpr.ini';
+                if (!file_exists($file)) {
+                    $file = base_path().'/example.gdpr.ini';
+                }
+                $plugin_config = parse_ini_file($file, true);
                 $plugin = new Plugin();
-                $plugin->newPlugin('Ilearn2test');
-                $plugin->newPlugin('Utbytes');
-                $plugin->newPlugin('Scipro-dev');
-                $plugin->newPlugin('Daisy2');
-                //---endTemporary
+                foreach ($plugin_config as $config)
+                {
+                $plugin->newPlugin($config['client_name']);
+                }
+
             }
         }
         //-----------------------------------------------
