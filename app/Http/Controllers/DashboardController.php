@@ -24,7 +24,7 @@ class DashboardController extends Controller
                 // Read gdpr.ini file and store id db
                 $file = base_path().'/gdpr.ini';
                 if (!file_exists($file)) {
-                    $file = base_path().'/example.gdpr.ini';
+                    $file = base_path().'/gdpr.ini.example';
                 }
                 $plugin_config = parse_ini_file($file, true);
                 $plugin = new Plugin();
