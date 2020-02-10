@@ -8,7 +8,7 @@ use App\Status;
 use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin;
-use App\Jobs\ProcessFinished;
+use App\Configuration;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -16,27 +16,15 @@ class DashboardController extends Controller
 {
     public function index(Searchcase $searchcase)
     {
-        //Initiate testing plugins at first boot ->To be removed
+        //Initiate testing plugins at first boot
         //-----------------------------------------------
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
-
-                // Read gdpr.ini file and store id db
-                $file = base_path().'/gdpr.ini';
-                if (!file_exists($file)) {
-                    $file = base_path().'/gdpr.ini.example';
-                }
-                $plugin_config = parse_ini_file($file, true);
-                $plugin = new Plugin();
-                foreach ($plugin_config as $config)
-                {
-                $plugin->newPlugin($config['client_name']);
-                }
-
+                $init = new Configuration();
+                $init->initPlugins();
             }
         }
         //-----------------------------------------------
-
 
         $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();

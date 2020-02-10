@@ -13,4 +13,4 @@ yarn-error.log
 /.sass-cache
 .idea
 /users
-.ini
+gdpr.ini
