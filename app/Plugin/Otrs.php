@@ -41,9 +41,13 @@ class Otrs
         //Processing response from Moodle
         if ($response) {
             //$response = json_decode($response->getBody()->getContents(), true);
+
             $body = $response->getBody();
             // Implicitly cast the body to a string and echo it
-            echo $body;
+            $regexp = '/[-_{}]/';
+            $body = preg_split($regexp, $body);
+            dd($body);
+            //echo $body;
             // Explicitly cast the body to a string
             //$stringBody = (string) $body;
             // Read 10 bytes from the body

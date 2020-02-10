@@ -38,6 +38,8 @@ Composer
 
 * Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with your data)
 
+* Make sure that gdpr.ini file is present and configured with the systems (copy gdpr.ini.example to .ini and fill in with your data)
+
 * Either create application key manually or do that with a command php artisan key:generate
 
 * Make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)

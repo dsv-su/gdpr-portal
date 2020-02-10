@@ -1,21 +1,31 @@
 [scipro_dev]
 client_name =
 client_id =
-clent_secret =
+client_secret =
 auth_url =
 base_uri =
 redirect_uri =
 
 [moodle_2_test]
 client_name =
+client_id =
+client_secret =
+auth_url =
 base_uri =
 redirect_uri =
 
 [utbytes]
 client_name =
+client_id =
+client_secret =
+auth_url =
 base_uri =
+redirect_uri =
 
 [daisy2]
-client_name =
+client_name = daisy2
+client_id =
 client_secret =
+auth_url =
 base_uri =
+redirect_uri =
