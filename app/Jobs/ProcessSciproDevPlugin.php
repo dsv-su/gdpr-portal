@@ -23,13 +23,14 @@ class ProcessSciproDevPlugin implements ShouldQueue
      *
      * @return void
      */
-    protected $case, $status;
+    protected $case, $status, $plugin;
 
 
-    public function __construct($case, $status)
+    public function __construct($case, $status, $plugin)
     {
         $this->case = $case;
         $this->status = $status;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -49,8 +50,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
         //Initiate Status flags
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
-
-        $status = $scipro->gettoken();
+        $status = $scipro->gettoken($this->plugin->base_uri, $this->plugin->client_id, $this->plugin->client_secret, $this->plugin->redirect_uri, $this->plugin->endpoint_url);
         if ($status == 204)
         {
             //**********************************************************************
@@ -81,12 +81,13 @@ class ProcessSciproDevPlugin implements ShouldQueue
 
             //Create folders for retrived data
             $dir = new CaseStore();
+            $dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory
-            $dir->storeZip(config('services.scipro-dev.client_name'), $status);
+            $dir->storeZip($this->plugin->name, $status);
 
             //Unzip
-            $dir->unzip(config('services.scipro-dev.client_name'));
+            $dir->unzip($this->plugin->name);
 
             //Status flags
             $this->status->setStatus(200);

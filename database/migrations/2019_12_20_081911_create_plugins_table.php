@@ -21,6 +21,7 @@ class CreatePluginsTable extends Migration
             $table->string('auth_url')->nullable();
             $table->string('base_uri')->nullable();
             $table->string('redirect_uri')->nullable();
+            $table->string('endpoint_url')->nullable();
             $table->integer('status');
             $table->timestamps();
         });

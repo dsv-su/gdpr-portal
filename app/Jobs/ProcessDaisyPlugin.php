@@ -19,12 +19,13 @@ class ProcessDaisyPlugin implements ShouldQueue
      *
      * @return void
      */
-    protected $case, $status;
+    protected $case, $status, $plugin;
 
-    public function __construct($case, $status)
+    public function __construct($case, $status, $plugin)
     {
         $this->case = $case;
         $this->status = $status;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -38,6 +39,8 @@ class ProcessDaisyPlugin implements ShouldQueue
         $pnr = $this->case->request_pnr;
         $email = $this->case->request_email;
         $uid = $this->case->request_uid;
+        $base_uri = $this->plugin->base_uri;
+        $client_secret = $this->plugin->client_secret;
 
         //Strip domainname from userid -> userid@su.se
         /* Disabled
@@ -49,9 +52,9 @@ class ProcessDaisyPlugin implements ShouldQueue
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
-        $utbytes = new Daisy();
+        $daisy = new Daisy();
 
-        $status = $utbytes->getDaisy($pnr, $email, $uid);
+        $status = $daisy->getDaisy($pnr, $email, $uid, $base_uri, $client_secret);
         if ($status == 204)
         {
             //**********************************************************************
@@ -82,13 +85,13 @@ class ProcessDaisyPlugin implements ShouldQueue
 
             //Create folders for retrived data
             $dir = new CaseStore();
-            $dir->makesystemfolder(config('services.daisy.client_name'));
+            $dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory
-            $dir->storeZip(config('services.daisy.client_name'), $status);
+            $dir->storeZip($this->plugin->name, $status);
 
             //Unzip
-            $dir->unzip(config('services.daisy.client_name'));
+            $dir->unzip($this->plugin->name);
 
             //Status flags
             $this->status->setStatus(200);

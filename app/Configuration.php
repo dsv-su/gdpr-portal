@@ -18,7 +18,7 @@ class Configuration extends Model
         $plugin = new Plugin();
         foreach ($plugin_config as $config)
         {
-            $plugin->newPlugin($config['client_name'], $config['client_id'], $config['client_secret'], $config['auth_url'], $config['base_uri'], $config['redirect_uri']);
+            $plugin->newPlugin($config['client_name'], $config['client_id'], $config['client_secret'], $config['auth_url'], $config['base_uri'], $config['redirect_uri'], $config['endpoint_url'] );
         }
     }
 }

@@ -6,18 +6,12 @@ use GuzzleHttp\Client;
 
 class Moodle
 {
-    private $endpoint_url;
 
-    public function __construct()
-    {
-        $this->endpoint_url  = config('services.moodle-test.endpoint_uri');
-    }
-
-    public function getMoodle($pnr, $email, $uid)
+    public function getMoodle($pnr, $email, $uid, $endpoint_url)
     {
         $client = new Client();
         try {
-            $response = $client->get($this->endpoint_url . $uid);
+            $response = $client->get($endpoint_url .'=1&username='. $uid);
 
         } catch (\Exception $e) {
             /**

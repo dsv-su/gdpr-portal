@@ -38,12 +38,19 @@ class TestController extends Controller
         $test->getOtrs('test');
     }
 
+    public function otrs()
+    {
+        $test = new Otrs();
+        $test->testOtrs('test');
+    }
+
     public function plugin_ini()
     {
         //$file = Storage::disk('gdpr')->get('gdpr.ini');
         $file = base_path().'/gdpr.ini';
         $config = parse_ini_file($file, true);
-        dd($config['scipro_dev']['client_name']);
+        //dd($config['scipro_dev']['client_name']);
+        dd($config);
         // convert to data to a json string
         $config = json_encode($config);
         // convert back from json, the second parameter is by

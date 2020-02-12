@@ -451,6 +451,7 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
     );
 
     public static $classMap = array (
+        'App\\Configuration' => __DIR__ . '/../..' . '/app/Configuration.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\FinishedJobs' => __DIR__ . '/../..' . '/app/Events/FinishedJobs.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -491,6 +492,7 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'App\\Plugin' => __DIR__ . '/../..' . '/app/Plugin.php',
         'App\\Plugin\\Daisy' => __DIR__ . '/../..' . '/app/Plugin/Daisy.php',
         'App\\Plugin\\Moodle' => __DIR__ . '/../..' . '/app/Plugin/Moodle.php',
+        'App\\Plugin\\Otrs' => __DIR__ . '/../..' . '/app/Plugin/Otrs.php',
         'App\\Plugin\\Scipro' => __DIR__ . '/../..' . '/app/Plugin/Scipro.php',
         'App\\Plugin\\Utbytes' => __DIR__ . '/../..' . '/app/Plugin/Utbytes.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

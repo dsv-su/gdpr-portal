@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Configuration' => $baseDir . '/app/Configuration.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\FinishedJobs' => $baseDir . '/app/Events/FinishedJobs.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -46,6 +47,7 @@ return array(
     'App\\Plugin' => $baseDir . '/app/Plugin.php',
     'App\\Plugin\\Daisy' => $baseDir . '/app/Plugin/Daisy.php',
     'App\\Plugin\\Moodle' => $baseDir . '/app/Plugin/Moodle.php',
+    'App\\Plugin\\Otrs' => $baseDir . '/app/Plugin/Otrs.php',
     'App\\Plugin\\Scipro' => $baseDir . '/app/Plugin/Scipro.php',
     'App\\Plugin\\Utbytes' => $baseDir . '/app/Plugin/Utbytes.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

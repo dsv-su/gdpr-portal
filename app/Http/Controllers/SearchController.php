@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
 use App\Status;
+use App\Plugin;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -80,10 +81,8 @@ class SearchController extends Controller
         else
         {
             //NextcaseId
-            //*************************************************************
             $expNum = explode('-', $record->case_id);
             $nextCaseNumber = $expNum[0].'-'. (string)((int)$expNum[1]+1);
-            //*************************************************************
 
             // Request case_id
             $caseid = $nextCaseNumber;
@@ -110,8 +109,10 @@ class SearchController extends Controller
             $status->initPluginStatus($id);
 
         }
-
+        /*************************************************************************************
         // 6. Start JobsPlugins
+        /*************************************************************************************
+         */
 
         //Create folders for retrieved data
         $dir = new CaseStore();
@@ -119,40 +120,67 @@ class SearchController extends Controller
 
         //Retrive case
         $case = Searchcase::find(Cache::get('requestid'));
+        $plugin = new Plugin();
 
-
-        //**************************************************************************************************************
+        //***********************************************************************************
         //Start Moodle job
+        //***********************************************************************************
+        //Get casestatus for moodle plugin
+
+        //TODO-->
         $casestatus = Status::where([
             ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_id', '=', 1],
+            ['plugin_name', '=', 'moodle_2_test'],
         ])->first();
+        //Get moodle plugin
+        $moodle_plugin = $plugin->getPlugin('moodle_2_test');
 
-        $moodleJob = new ProcessMoodlePlugin($case, $casestatus);
+        //Start Moodle job
+        $moodleJob = new ProcessMoodlePlugin($case, $casestatus, $moodle_plugin);
         dispatch($moodleJob);
+        //-->
+
         //**************************************************************************************************************
 
         //**************************************************************************************************************
         //Start Utbytes job
+        //TODO-->
+
         $casestatus = Status::where([
             ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_id', '=', 2],
+            ['plugin_name', '=', 'utbytes'],
         ])->first();
-        $utbytesJob = new ProcessUtbytesPlugin($case, $casestatus);
+        //Get utbytes plugin
+        $utbytes_plugin = $plugin->getPlugin('utbytes');
+
+        $utbytesJob = new ProcessUtbytesPlugin($case, $casestatus, $utbytes_plugin);
         dispatch($utbytesJob);
+        //--->
+
         //**************************************************************************************************************
         //**************************************************************************************************************
         //Start Daisy2 job
+        //TODO-->
+
         $casestatus = Status::where([
             ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_id', '=', 4],
+            ['plugin_name', '=', 'daisy2'],
         ])->first();
-        $daisyJob = new ProcessDaisyPlugin($case, $casestatus);
+        //Get daisy plugin
+        $daisy_plugin = $plugin->getPlugin('daisy2');
+
+        $daisyJob = new ProcessDaisyPlugin($case, $casestatus, $daisy_plugin);
         dispatch($daisyJob);
+        //--->
+
         //**************************************************************************************************************
         //**************************************************************************************************************
         //Scipro auth
-        $scipro->auth();
+        //TODO-->
+        //Get scipro plugin
+        $scipro_plugin = $plugin->getPlugin('scipro_dev');
+
+        $scipro->auth($scipro_plugin->auth_url, $scipro_plugin->client_id, $scipro_plugin->redirect_uri);
         //**************************************************************************************************************
 
         // Request end

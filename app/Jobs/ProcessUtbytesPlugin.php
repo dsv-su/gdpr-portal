@@ -19,12 +19,13 @@ class ProcessUtbytesPlugin implements ShouldQueue
      *
      * @return void
      */
-    protected $case, $status;
+    protected $case, $status, $plugin;
 
-    public function __construct($case, $status)
+    public function __construct($case, $status, $plugin)
     {
         $this->case = $case;
         $this->status = $status;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -38,12 +39,7 @@ class ProcessUtbytesPlugin implements ShouldQueue
         $pnr = $this->case->request_pnr;
         $email = $this->case->request_email;
         $uid = $this->case->request_uid;
-
-        //Strip domainname from userid -> userid@su.se
-        /* Disabled
-        $searchNum = explode('@', $search);
-        $search = $searchNum[0];
-        */
+        $endpoint_uri = $this->plugin->base_uri;
 
         //Start request to Moodle
         $this->status->setProgressStatus(25);
@@ -51,7 +47,7 @@ class ProcessUtbytesPlugin implements ShouldQueue
 
         $utbytes = new Utbytes();
 
-        $status = $utbytes->getUtbytes($pnr, $email, $uid);
+        $status = $utbytes->getUtbytes($pnr, $email, $uid, $endpoint_uri);
         if ($status == 204)
         {
             //**********************************************************************
@@ -82,13 +78,13 @@ class ProcessUtbytesPlugin implements ShouldQueue
 
             //Create folders for retrived data
             $dir = new CaseStore();
-            $dir->makesystemfolder(config('services.utbytes.client_name'));
+            $dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory
-            $dir->storeZip(config('services.utbytes.client_name'), $status);
+            $dir->storeZip($this->plugin->name, $status);
 
             //Unzip
-            $dir->unzip(config('services.utbytes.client_name'));
+            $dir->unzip($this->plugin->name);
 
             //Status flags
             $this->status->setStatus(200);

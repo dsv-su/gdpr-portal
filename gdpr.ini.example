@@ -5,6 +5,7 @@ client_secret =
 auth_url =
 base_uri =
 redirect_uri =
+endpoint_url =
 
 [moodle_2_test]
 client_name =
@@ -13,6 +14,7 @@ client_secret =
 auth_url =
 base_uri =
 redirect_uri =
+endpoint_url =
 
 [utbytes]
 client_name =
@@ -21,6 +23,7 @@ client_secret =
 auth_url =
 base_uri =
 redirect_uri =
+endpoint_url =
 
 [daisy2]
 client_name = daisy2
@@ -29,3 +32,4 @@ client_secret =
 auth_url =
 base_uri =
 redirect_uri =
+endpoint_url =
