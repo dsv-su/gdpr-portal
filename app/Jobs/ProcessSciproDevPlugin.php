@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use App\Plugin\Scipro;
 use App\Searchcase;
 use App\Status;
@@ -95,5 +96,14 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $this->status->setDownloadStatus(100);
         }
         $this->case->setPluginSuccess();
+    }
+
+    public function failed(Exception $exception)
+    {
+        //Status flags
+        $this->status->setStatus(400);
+        $this->status->setProgressStatus(100);
+        $this->status->setDownloadStatus(0);
+        $this->case->setStatusFlag(0);
     }
 }

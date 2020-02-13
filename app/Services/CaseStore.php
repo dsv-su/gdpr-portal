@@ -35,6 +35,12 @@ class CaseStore extends Model
         Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip', $file);
     }
 
+    public function storePdf($system, $file)
+    {
+        //Store retried zipfile in directory
+        Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.pdf', $file);
+    }
+
     public function unzip($system)
     {
         // extract retrived archive to raw directory/folder

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use App\Plugin\Moodle;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
@@ -96,5 +97,14 @@ class ProcessMoodlePlugin implements ShouldQueue
 
         }
         $this->case->setPluginSuccess(); //Plugin processed successful
+    }
+
+    public function failed(Exception $exception)
+    {
+        //Status flags
+        $this->status->setStatus(400);
+        $this->status->setProgressStatus(100);
+        $this->status->setDownloadStatus(0);
+        $this->case->setStatusFlag(0);
     }
 }

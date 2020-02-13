@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use App\Plugin\Daisy;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
@@ -100,5 +101,14 @@ class ProcessDaisyPlugin implements ShouldQueue
 
         }
         $this->case->setPluginSuccess();
+    }
+
+    public function failed(Exception $exception)
+    {
+        //Status flags
+        $this->status->setStatus(400);
+        $this->status->setProgressStatus(100);
+        $this->status->setDownloadStatus(0);
+        $this->case->setStatusFlag(0);
     }
 }

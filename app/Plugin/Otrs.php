@@ -6,6 +6,8 @@ use App\Services\GuzzleJson;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Handler\CurlHandler;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class Otrs
 {
@@ -14,7 +16,6 @@ class Otrs
     public function __construct()
     {
         $this->endpoint_url  = 'http://otrs-stage.dsv.su.se/otrs/index.pl';
-        $this->endpoint  = 'http://otrs-stage.dsv.su.se/otrs/index.pl?Action=GdprTicketPrint;TicketID=';
     }
 
     public function getOtrs($text)
@@ -63,19 +64,20 @@ class Otrs
             echo '<br><hr>';
 
             */
-            dd($json->tickets);
+            //($json->tickets);
             $clientpdf = new Client();
 
             foreach ($json->tickets as $value)
             {
-                dd($value->TicketID);
+                //dd($value->TicketID);
                 try {
-                    $pdf = $clientpdf->post($this->endpoint . $value->TicketID, [
+                    $response = $clientpdf->post($this->endpoint_url, [
                         'form_params' => [
                         'Action' => 'Login',
-                        'RequestedURL' => 'Action=AgentGdprHandler&Subaction=Search&Fulltext=test&OutputFormat=JSON',
+                        'RequestedURL' => 'Action=GdprTicketPrint;TicketID='. $value->TicketID,
+                        'Lang' => 'sv',
                         'User' => 'devtest',
-                        'Password' => 'hunter2'
+                        'Password' => 'hunter2',
                     ]
             ]);
 
@@ -91,20 +93,67 @@ class Otrs
                     }
                 }
                 //Processing response from Moodle
-                if ($pdf) {
-                    if ($pdf->getStatusCode() == 200) {
+                if ($response) {
+                    if ($response->getStatusCode() == 200) {
+
+                        //dd($response);
                         $body = $response->getBody();
 
                         // Read contents of the body
-                        $zip = $body->getContents();
+                        $pdf = $body->getContents();
 
                         //dd($response->getStatusCode());
-                        return $zip;
+                        Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$value->TicketID.'.pdf', $pdf);
+                        //return $pdf;
                     } else
                         return $response->getStatusCode();
 
                 }
             }
+        }
+        dd('Done');
+    }
+
+    public function getPdf()
+    {
+        $clientpdf = new Client();
+        try {
+            $response = $clientpdf->post($this->endpoint_url, [
+                'form_params' => [
+                    'Action' => 'Login',
+                    'RequestedURL' => 'Action=GdprTicketPrint;TicketID=240950',
+                    'Lang' => 'sv',
+                    'User' => 'devtest',
+                    'Password' => 'hunter2',
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            /**
+             * If there is an exception; Client error;
+             */
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+
+                return $response->getStatusCode();
+
+            }
+        }
+        //Processing response from Moodle
+        if ($response) {
+            if ($response->getStatusCode() == 200) {
+
+                //dd($response);
+                $body = $response->getBody();
+
+                // Read contents of the body
+                $pdf = $body->getContents();
+                //dd($pdf);
+                //dd($response->getStatusCode());
+                return $pdf;
+            } else
+                return $response->getStatusCode();
+
         }
     }
 

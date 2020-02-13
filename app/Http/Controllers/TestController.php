@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Plugin\Moodle;
 use App\Plugin\Scipro;
 use App\Plugin\Otrs;
+use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -35,14 +36,26 @@ class TestController extends Controller
     public function test_otrs()
     {
         $test = new Otrs();
-        $test->getOtrs('test');
-    }
+        $status = $test->getOtrs('test');
+        //Create folders for retrived data
+        $dir = new CaseStore();
+        $dir->makesystemfolder('otrs');
 
-    public function otrs()
+        //Store zipfile in directory
+        $dir->storePdf('otrs', $status);
+    }
+    public function get_otrs_pdf()
     {
         $test = new Otrs();
-        $test->testOtrs('test');
+        $status = $test->getPdf();
+        //Create folders for retrived data
+        $dir = new CaseStore();
+        $dir->makesystemfolder('otrs');
+
+        //Store zipfile in directory
+        $dir->storePdf('otrs', $status);
     }
+
 
     public function plugin_ini()
     {

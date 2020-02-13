@@ -48,6 +48,7 @@ Route::get('/php', 'DashboardController@phpinfo')->name('php');
 
 //Otrs-test
 Route::get('/otrs', 'TestController@test_otrs');
+Route::get('/opdf', 'TestController@get_otrs_pdf');
 
 //ini
 Route::get('/ini', 'TestController@plugin_ini');
