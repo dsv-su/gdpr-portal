@@ -81,7 +81,7 @@ class ProcessMoodlePlugin implements ShouldQueue
             //********************************************************************
 
             //Create folders for retrived data
-            $dir = new CaseStore();
+            $dir = new CaseStore($this->case);
             $dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory

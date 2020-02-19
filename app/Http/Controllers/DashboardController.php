@@ -56,11 +56,13 @@ class DashboardController extends Controller
         {
             $data['gdpr_user'] = $_SERVER['displayName'];
             //TODO change cache to eloquent
-            Cache::put('requester_email', $_SERVER['mail'], 60);
+            //Cache::put('requester_email', $_SERVER['mail'], 7200);
+
         }
         else {
             $data['gdpr_user'] = 'Ryan Dias';
-            Cache::put('requester_email', 'ryan@dsv.su.se', 60);
+            //Cache::put('requester_email', 'ryan@dsv.su.se', 7200);
+
         }
         return view('home.dashboard', $data);
     }
@@ -95,7 +97,8 @@ class DashboardController extends Controller
     public function download($id)
     {
         //Create zip of retried files and folder
-        $zipdown = new CaseStore();
+        $case = Searchcase::find($id);
+        $zipdown = new CaseStore($case);
         $zipdown->makezip($id);
         return $zipdown->download($id);
     }
@@ -103,7 +106,8 @@ class DashboardController extends Controller
     public function delete($id)
     {
         //Delete zip and retrived files and folder
-        $zip = new CaseStore();
+        $case = Searchcase::find($id);
+        $zip = new CaseStore($case);
         $zip->delete_case($id);
 
         return redirect()->route('home');
@@ -118,7 +122,8 @@ class DashboardController extends Controller
     public function dev_delete($id)
     {
         //Delete zip and retrived files and folder
-        $zip = new CaseStore();
+        $case = Searchcase::find($id);
+        $zip = new CaseStore($case);
         $zip->dev_delete_case($id);
 
         return redirect()->route('home');

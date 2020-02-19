@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\MailGDPRNotify;
+use App\Searchcase;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,9 +21,11 @@ class ProcessFinished implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    private $case;
+
+    public function __construct($case)
     {
-        //
+        $this->case = $case;
     }
 
     /**
@@ -33,8 +36,8 @@ class ProcessFinished implements ShouldQueue
     public function handle()
     {
 
-        $user = Cache::get('requester_email');
-
+        //$user = Cache::get('requester_email');
+        $user = $this->case->gdpr_useremail;
         $details = [
             'title' => 'Meddelande från GDPR portalen',
             'url' => 'https://methone.dsv.su.se',

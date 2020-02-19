@@ -90,7 +90,7 @@ class AppServiceProvider extends ServiceProvider
                         $zip->delete_empty_case(Cache::get('requestid'));
 
                         //Notify user
-                        $request_finished_empty = new ProcessNotFound();
+                        $request_finished_empty = new ProcessNotFound($update);
                         dispatch($request_finished_empty);
                     }
                 else
@@ -102,12 +102,13 @@ class AppServiceProvider extends ServiceProvider
                         $update->setProgress(0); //Kill progress flag
                         $update->setStatusFlag(3);
 
-                        $request_finished = new ProcessFinished();
+                        $request_finished = new ProcessFinished($update);
                         dispatch($request_finished);
                     }
 
             }
-            elseif ($update->plugins_processed == $systems && $update->status_flag == 0 && $update->progress > 0)
+            //elseif ($update->plugins_processed == $systems && $update->status_flag == 0 && $update->progress > 0)
+            elseif ($update->status_flag == 0 && $update->progress > 0)
             {
                 //| ----------------------------------------------------------------
                 //| Unsuccessfull -> notify
@@ -120,7 +121,7 @@ class AppServiceProvider extends ServiceProvider
                 $zip = new CaseStore();
                 $zip->delete_empty_case(Cache::get('requestid'));
 
-                $request_finished_error = new ProcessNotFinished();
+                $request_finished_error = new ProcessNotFinished($update);
                 dispatch($request_finished_error);
 
             }

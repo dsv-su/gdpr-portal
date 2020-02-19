@@ -22,7 +22,7 @@ class CreatePluginsTable extends Migration
             $table->string('base_uri')->nullable();
             $table->string('redirect_uri')->nullable();
             $table->string('endpoint_url')->nullable();
-            $table->integer('status');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

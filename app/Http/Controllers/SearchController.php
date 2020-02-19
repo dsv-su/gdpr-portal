@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessMoodlePlugin;
+use App\Jobs\ProcessSciproDevPlugin;
 use App\Jobs\ProcessUtbytesPlugin;
 use App\Jobs\ProcessDaisyPlugin;
+use App\Jobs\ProcessOtrsPlugin;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
 use App\Searchcase;
@@ -66,13 +68,13 @@ class SearchController extends Controller
 
             $caseid = config('services.case.start');
             //Store case_id in cache for 60min
-            Cache::put('request', $caseid, 60);
+            Cache::put('request', $caseid, 7200);
 
             //Store search in cache for 60 min
-            Cache::put('search', $userid, 60);
+            Cache::put('search', $userid, 7200);
             $id = $request->id;
 
-            Cache::put('requestid', $id, 60);
+            Cache::put('requestid', $id, 7200);
 
             //Create plugin status
             $status->initPluginStatus($id);
@@ -90,9 +92,9 @@ class SearchController extends Controller
             // 4. Store request in cache
 
             //Store case_id in cache for 60min
-            Cache::put('request', $caseid, 60);
+            Cache::put('request', $caseid, 7200);
             //Store search in cache for 60 min
-            Cache::put('search', $userid, 60);
+            Cache::put('search', $userid, 7200);
 
             // 5. Store initial requestdata to model
 
@@ -102,10 +104,10 @@ class SearchController extends Controller
             //Get caseid
             $id = $request->id;
 
-            //Store in cache
-            Cache::put('requestid', $id, 60);
+            //(TODO -> Remove)Store in cache
+            Cache::put('requestid', $id, 7200);
 
-            //Init plugin status
+            //Init plugin status for case
             $status->initPluginStatus($id);
 
         }
@@ -115,77 +117,20 @@ class SearchController extends Controller
          */
 
         //Create folders for retrieved data
-        $dir = new CaseStore();
+        $dir = new CaseStore($request);
         $dir->makedfolders();
 
-        //Retrive case
-        $case = Searchcase::find(Cache::get('requestid'));
-        $plugin = new Plugin();
-
         //***********************************************************************************
-        //Start Moodle job
-        //***********************************************************************************
-        //Get casestatus for moodle plugin
-
-        //TODO-->
-        $casestatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_name', '=', 'moodle_2_test'],
-        ])->first();
-        //Get moodle plugin
-        $moodle_plugin = $plugin->getPlugin('moodle_2_test');
-
-        //Start Moodle job
-        $moodleJob = new ProcessMoodlePlugin($case, $casestatus, $moodle_plugin);
-        dispatch($moodleJob);
-        //-->
-
-        //**************************************************************************************************************
-
-        //**************************************************************************************************************
-        //Start Utbytes job
-        //TODO-->
-
-        $casestatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_name', '=', 'utbytes'],
-        ])->first();
-        //Get utbytes plugin
-        $utbytes_plugin = $plugin->getPlugin('utbytes');
-
-        $utbytesJob = new ProcessUtbytesPlugin($case, $casestatus, $utbytes_plugin);
-        dispatch($utbytesJob);
-        //--->
-
-        //**************************************************************************************************************
-        //**************************************************************************************************************
-        //Start Daisy2 job
-        //TODO-->
-
-        $casestatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_name', '=', 'daisy2'],
-        ])->first();
-        //Get daisy plugin
-        $daisy_plugin = $plugin->getPlugin('daisy2');
-
-        $daisyJob = new ProcessDaisyPlugin($case, $casestatus, $daisy_plugin);
-        dispatch($daisyJob);
-        //--->
-
-        //**************************************************************************************************************
-        //**************************************************************************************************************
         //Scipro auth
+        //***********************************************************************************
+
         //TODO-->
+        $plugin = new Plugin();
         //Get scipro plugin
         $scipro_plugin = $plugin->getPlugin('scipro_dev');
-
+        //$scipro = new Scipro(0, $case);
         $scipro->auth($scipro_plugin->auth_url, $scipro_plugin->client_id, $scipro_plugin->redirect_uri);
-        //**************************************************************************************************************
 
-        // Request end
-
-        return redirect()->route('home');
 
     }
 

@@ -26,6 +26,7 @@ Route::post('/search', 'SearchController@search')->name('search');
 
 //Callbacks
 Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
+Route::get('/plugins', 'PluginController@run');
 
 //Plugin configuration
 Route::get('/plugin_configuration', 'PluginController@index')->name('plugin');
@@ -38,9 +39,10 @@ Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
+Route::get('/video/', 'TestController@video');
 
 //Scipro dev test
-//Route::get('/scipro', 'TestController@test_scipro');
+Route::get('/ts', 'TestController@test_scipro');
 //Route::get('/oauth/callback', 'TestController@callbackScipro');
 
 //Moodle-test

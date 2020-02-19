@@ -14,22 +14,15 @@ class CallbackSciproController extends Controller
     public function callbackScipro(Searchcase $searchcase)
     {
         //**************************************************************************************************************
-        //Scipro plugin_id: 2
         //Store Code from scipro-callback in cache
-        Cache::put('code', $_GET['code'], 60);
-        $case = Searchcase::find(Cache::get('requestid'));
-        $casestatus = Status::where([
-            ['searchcase_id', '=', Cache::get('requestid')],
-            ['plugin_name', '=', 'scipro_dev'],
-        ])->first();
-        //Get scipro plugin
-        $plugin = new Plugin();
-        $scipro_plugin = $plugin->getPlugin('scipro_dev');
+        //Cache::put('code', $_GET['code'], 144000);
+        $scipro_plugin = Plugin::where('name', '=', 'scipro_dev')->first();
+        $scipro_plugin->status = $_GET['code'];
+        $scipro_plugin->save();
+        return redirect()->action('PluginController@run');
 
-        $sciproJob = new ProcessSciproDevPlugin($case, $casestatus, $scipro_plugin);
-        dispatch($sciproJob);
         //**************************************************************************************************************
-        return redirect()->route('home');
+       //return redirect()->route('home');
 
     }
 }

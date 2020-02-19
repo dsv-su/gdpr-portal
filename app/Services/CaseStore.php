@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Searchcase;
 use App\Status;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Zip;
@@ -13,39 +12,45 @@ use File;
 
 class CaseStore extends Model
 {
+    public function __construct($case)
+    {
+        $this->case = $case;
+
+    }
+
     public function makedfolders()
     {
         //Make case directory
-        Storage::makeDirectory('/public/'.Cache::get('request'));
+        Storage::makeDirectory('/public/' . $this->case->case_id);
         //Make zip directory
-        Storage::makeDirectory('/public/'.Cache::get('request').'/zip/');
+        Storage::makeDirectory('/public/'. $this->case->case_id . '/zip/');
         //Make unzipzip directory
-        Storage::makeDirectory('/public/'.Cache::get('request').'/raw/');
+        Storage::makeDirectory('/public/'. $this->case->case_id . '/raw/');
     }
 
     public function makesystemfolder($system)
     {
         //Make system unzipzip directory
-        Storage::makeDirectory('/public/'.Cache::get('request').'/raw/'.$system);
+        Storage::makeDirectory('/public/'.$this->case->case_id.'/raw/'.$system);
     }
 
     public function storeZip($system, $file)
     {
         //Store retried zipfile in directory
-        Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip', $file);
+        Storage::disk('public')->put($this->case->case_id.'/zip/'.$this->case->case_id.'_'.$system.'.zip', $file);
     }
 
     public function storePdf($system, $file)
     {
         //Store retried zipfile in directory
-        Storage::disk('public')->put(Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.pdf', $file);
+        Storage::disk('public')->put($this->case->case_id.'/zip/'.$this->case->case_id.'_'.$system.'.pdf', $file);
     }
 
     public function unzip($system)
     {
         // extract retrived archive to raw directory/folder
-        $target_path = base_path() . '/storage/app/public/'.Cache::get('request').'/zip/'.Cache::get('request').'_'.$system.'.zip';
-        $dest_path = base_path() . '/storage/app/public/'.Cache::get('request').'/raw/'.$system.'/';
+        $target_path = base_path() . '/storage/app/public/'.$this->case->case_id.'/zip/'.$this->case->case_id.'_'.$system.'.zip';
+        $dest_path = base_path() . '/storage/app/public/'.$this->case->case_id.'/raw/'.$system.'/';
         $zip = new ZipArchive();
         //Check if zip has been created
         if($x = $zip->open($target_path))
@@ -147,8 +152,11 @@ class CaseStore extends Model
     public function dev_delete()
     {
     //Delete directory structure
-    //Storage::deleteDirectory('/public/raw');
-    //Storage::deleteDirectory('/public/zip');
-    //Storage::deleteDirectory('/public/2019-1');
+    Storage::deleteDirectory('/public/raw');
+    Storage::deleteDirectory('/public/zip');
+    Storage::deleteDirectory('/public/2020-1');
+    Storage::deleteDirectory('/public/2020-2');
+    Storage::deleteDirectory('/public/2020-3');
+    dd('Done');
     }
 }

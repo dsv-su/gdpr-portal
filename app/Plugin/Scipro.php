@@ -15,12 +15,14 @@ class Scipro
             private $reauth_client, $reauth_config, $grant_type, $refresh_grant_type, $oauth;
             private $stack, $client;
             private $id, $endpoint_url, $response;
-            private $code, $body, $zip;
+            private $body, $zip;
+            protected $code, $case;
 
-            public function __construct($code)
+            public function __construct($code, $case)
             {
                 $this->auth_code = null;
                 $this->code = $code;
+                $this->case = $case;
             }
 
             public function auth($auth_url, $client_id, $redirect_uri)
@@ -69,7 +71,8 @@ class Scipro
                 'auth'    => 'oauth',
             ]);
             //
-            $this->id = Cache::pull('search'); //Pull and destroy cache
+            $this->id = $this->case->request_uid;
+
             $this->endpoint_url = $endpoint_url. '=' . $this->id;
 
             try {

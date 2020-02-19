@@ -43,11 +43,6 @@ class ProcessDaisyPlugin implements ShouldQueue
         $base_uri = $this->plugin->base_uri;
         $client_secret = $this->plugin->client_secret;
 
-        //Strip domainname from userid -> userid@su.se
-        /* Disabled
-        $searchNum = explode('@', $search);
-        $search = $searchNum[0];
-        */
 
         //Start request to Moodle
         $this->status->setProgressStatus(25);
@@ -85,7 +80,7 @@ class ProcessDaisyPlugin implements ShouldQueue
             //********************************************************************
 
             //Create folders for retrived data
-            $dir = new CaseStore();
+            $dir = new CaseStore($this->case);
             $dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory

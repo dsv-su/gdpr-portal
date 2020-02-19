@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Plugin\Moodle;
-use App\Plugin\Scipro;
+use App\Plugin\TestScipro;
 use App\Plugin\Otrs;
 use App\Services\CaseStore;
 use Illuminate\Http\Request;
@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
-    public function test_scipro(Scipro $scipro)
+    public function test_scipro(TestScipro $testscipro)
     {
-
-        $scipro->auth();
+        $testscipro = new TestScipro();
+        $testscipro->auth();
     }
+
     public function callbackScipro()
     {
         //Store code from auth in cache
@@ -36,7 +37,7 @@ class TestController extends Controller
     public function test_otrs()
     {
         $test = new Otrs();
-        $status = $test->getOtrs('test');
+        $status = $test->getOtrs('test', 'http://otrs-stage.dsv.su.se/otrs/index.pl', 'otrs');
         //Create folders for retrived data
         $dir = new CaseStore();
         $dir->makesystemfolder('otrs');
@@ -71,5 +72,9 @@ class TestController extends Controller
         // associative array
         $config = json_decode($config);
 
+    }
+    public function video()
+    {
+        return view('video.test');
     }
 }

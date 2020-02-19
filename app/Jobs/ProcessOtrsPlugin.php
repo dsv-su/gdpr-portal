@@ -3,19 +3,15 @@
 namespace App\Jobs;
 
 use Exception;
-use App\Plugin\Scipro;
-use App\Searchcase;
-use App\Status;
+use App\Plugin\Otrs;
 use App\Services\CaseStore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
-use Zip;
 
-class ProcessSciproDevPlugin implements ShouldQueue
+class ProcessOtrsPlugin implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -25,7 +21,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
      * @return void
      */
     protected $case, $status, $plugin;
-    public $timeout = 7200;
+    public $timeout = 300;
 
     public function __construct($case, $status, $plugin)
     {
@@ -41,13 +37,20 @@ class ProcessSciproDevPlugin implements ShouldQueue
      */
     public function handle()
     {
-        //Start request to Sciprodev
-        $scipro = new Scipro($this->plugin->status, $this->case);
+        // Get personnummer, email and userId from case
+        $pnr = $this->case->request_pnr;
+        $email = $this->case->request_email;
+        $uid = $this->case->request_uid;
+        $endpoint_uri = $this->plugin->endpoint_url;
 
-        //Initiate Status flags
-        $this->status->setProgressStatus(25);
-        $this->status->setDownloadStatus(25);
-        $status = $scipro->gettoken($this->plugin->base_uri, $this->plugin->client_id, $this->plugin->client_secret, $this->plugin->redirect_uri, $this->plugin->endpoint_url);
+        //Start request to Otrs
+        $this->status->setProgressStatus(5);
+        $this->status->setDownloadStatus(5);
+
+        $otrs = new Otrs($this->case);
+
+        $status = $otrs->getOtrs($email, $endpoint_uri, $this->plugin->name, $this->status);
+
         if ($status == 204)
         {
             //**********************************************************************
@@ -57,18 +60,18 @@ class ProcessSciproDevPlugin implements ShouldQueue
             $this->status->setStatus(204);
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(0);
-
         }
-        else if( $status == 400)
+        else if( $status == 404)
         {
             //*********************************************************************
             //Request denied
             //*********************************************************************
             //Status flags
-            $this->status->setStatus(400);
-            $this->status->setProgressStatus(100);
+            $this->case->setStatusFlag(0); //Download error
+            $this->status->setStatus(404);
+            $this->status->setProgressStatus(100); //Progressbar
             $this->status->setDownloadStatus(0);
-            $this->case->setStatusFlag(0);
+
         }
         else
         {
@@ -77,21 +80,23 @@ class ProcessSciproDevPlugin implements ShouldQueue
             //********************************************************************
 
             //Create folders for retrived data
-            $dir = new CaseStore($this->case);
-            $dir->makesystemfolder($this->plugin->name);
+            //$dir = new CaseStore();
+            //$dir->makesystemfolder($this->plugin->name);
 
             //Store zipfile in directory
-            $dir->storeZip($this->plugin->name, $status);
+            //$dir->storeZip($this->plugin->name, $status);
 
             //Unzip
-            $dir->unzip($this->plugin->name);
+            //$dir->unzip($this->plugin->name);
 
             //Status flags
             $this->status->setStatus(200);
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(100);
+
         }
-        $this->case->setPluginSuccess();
+        $this->case->setPluginSuccess(); //Plugin processed successful
+
     }
 
     public function failed(Exception $exception)

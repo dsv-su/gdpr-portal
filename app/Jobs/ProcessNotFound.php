@@ -20,9 +20,11 @@ class ProcessNotFound implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    private $case;
+
+    public function __construct($case)
     {
-        //
+        $this->case = $case;
     }
 
     /**
@@ -32,7 +34,8 @@ class ProcessNotFound implements ShouldQueue
      */
     public function handle()
     {
-        $user = Cache::get('requester_email');
+        //$user = Cache::get('requester_email');
+        $user = $this->case->gdpr_useremail;
 
         $details = [
             'title' => 'Meddelande från GDPR portalen',
