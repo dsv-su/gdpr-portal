@@ -45,18 +45,6 @@ class TestController extends Controller
         //Store zipfile in directory
         $dir->storePdf('otrs', $status);
     }
-    public function get_otrs_pdf()
-    {
-        $test = new Otrs();
-        $status = $test->getPdf();
-        //Create folders for retrived data
-        $dir = new CaseStore();
-        $dir->makesystemfolder('otrs');
-
-        //Store zipfile in directory
-        $dir->storePdf('otrs', $status);
-    }
-
 
     public function plugin_ini()
     {

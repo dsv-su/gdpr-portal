@@ -6,6 +6,7 @@ use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\HandlerStack;
 
 class TestScipro
@@ -26,11 +27,27 @@ class TestScipro
 
     public function auth($auth_url='https://toker-test.dsv.su.se/authorize', $client_id='c23a3055-046c-11ea-8a09-005056ab682e', $redirect_uri='https://gdpr.dev/oauth/callback')
     {
-        //dd($auth_url,$client_id,$redirect_uri);
+/*
+        // If we have no access token or refresh token, we need to get user consent to obtain one
+        $this->auth_url = $auth_url.'?'.http_build_query([
+                'client_id' => $client_id,
+                'redirect_uri' => $redirect_uri,
+                'response_type' => 'code',
+                'scope' => '',
+                'access_type' => '',
+                'principal' => 'Ryan',
+                'entitlement' => 'dsv-user:gdpr',
+            ]);
+
+        // Redirect to authorization endpoint
+        header('Location: '.$this->auth_url);
+
+        exit;
+*/
         $client = new Client();
 
-            $response = $client->post($auth_url, [
-                'form_params' => [
+            $response = $client->request('POST', $auth_url, [
+                'query' => [
                     'principal' => 'Ryan',
                     'entitlements' => 'urn:mace:swami.se:gmai:dsv-user:gdpr',
                     'client_id' => $client_id,
@@ -39,11 +56,16 @@ class TestScipro
                     'response_type' => 'code',
                     'scope' => '',
                     'access_type' => '',
-                    'allow_redirects' => false,
                 ]
             ]);
 
-        dd($response);
+        if($response->hasHeader('content-type'))
+        {
+            $header = GuzzleHttp\Psr7\parse_header($response->getHeader('content-type'));
+            var_dump($header);
+        }
+
+        dd('Done');
 
         // If we have no access token or refresh token, we need to get user consent to obtain one
         $this->auth_url = $auth_url.'?'.http_build_query([

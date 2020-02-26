@@ -28,33 +28,25 @@ Composer
 
 * Clone the repository
 
-* Please make sure to switch to production branch if you are running on production server
-
-* In case of development instance, please make sure to build the static assets. Refer to compiled assets for more information
-
 * Move into the directory
 
-* Install the dependencies composer install
+* Install the dependencies. `composer install`
 
 * Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with your data)
 
-* Make sure that gdpr.ini file is present and configured with the systems (copy gdpr.ini.example to .ini and fill in with your data)
+* Make sure that gdpr.ini file is present and configured with the configuration details for each system (copy gdpr.ini.example to .ini and fill in with your data)
 
-* Either create application key manually or do that with a command php artisan key:generate
+* Either create application key manually or do that with a command `php artisan key:generate`
 
-* Make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
+* In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
 
 * The redirect URL addresses are in the form BASE-URL/auth/PLUGIN-name/callback
 
-* Open the config/mail.php file and set the needed values within the from element
+* If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 
-* Create the database
+* Create the database with `php artisan migrate` (this should create database tables needed)
 
-* Run php artisan migrate from terminal (this should create database and more)
-
-* Running php artisan serve would serve the app in development (or configure the server of your choice)
-
-* Run php artisan queue:work to start the ques.
+* Finally run `php artisan queue:work` OR any process monitor for your OS to start the processes for the pluginshandling.
 
 ## 4. Database
 
@@ -62,7 +54,7 @@ Composer
 
 ### 4.1 Status flags
 
-####  case
+####  for each case
 
 status_processed | .
 -----------------|-------
@@ -159,8 +151,8 @@ Kamermans:
     use kamermans\OAuth2\GrantType\ClientCredentials;
     use kamermans\OAuth2\OAuth2Middleware;
 
-### Passing arguments
-The Plugin should receive information from the PluginController by passing arguments to the constructor and should return a zip-file to be processed. The configuration file for the plugin should contain necessary data for connecting to the server e.g. client_id, client_secret, authorization code, callback uri, auth url, endpoint url.
+### Passing arguments/objects
+The Plugin should receive information from the PluginController by passing arguments (a search array and the plugin-object) to the constructor and should return a zip-file to be processed. The configuration file for the plugin should contain necessary data for connecting to the server e.g. client_id, client_secret, authorization code, callback uri, auth url, endpoint url.
 
 ### Response Status Codes
 
@@ -174,15 +166,19 @@ Status code | Description
 500 | Internal Server Error.
 
 ## 7. User guide
-The trialversion of the portal can be found under the following url:
+The trialversion (release candidate) of the portal can be found under the following url:
 
 https://methone.dsv.su.se
 
-For access to the page, you must first be authenticated by SU IdP. You will be redirected automatically for authentication. The trial version does not require the user to have the entitlement gdpr but this will be added to the production version. When logged in, you can access the dashboard.
+For access to the page, you must first be authenticated by SU IdP, needing the necessary entitlements. You will be redirected automatically for authentication. The trial version does not require the user to have the entitlement gdpr yet but this will be added to the production version.
+
+![Dashboard](./public/images/guide/login.png)
+
+When logged in, you can access the dashboard.
 
 ![Dashboard](./public/images/guide/dashboard.png)
 
-In the Dashboard there is a form and a table to show the status of cases. Searching for GDPR extracts are done by entering information into the form. Input is made with person number in the format YYMMDD-NNNN, e-mail address and User ID. The more information that is entered, the greater the hit can be expected in the systems searched. Validation of the form (according to defined rules) is active to help the user to make as little errors as possible with entry. In the current trial version, search is only possible with user ID.
+In the Dashboard there is a form and a table to show the status of cases. Searching for GDPR extracts are done by entering information into the form. Input is made with a swedish personal identity number (Personnummer) or a co-ordination number in the format YYMMDD-NNNN, and/or valid e-mail address and/or SU User ID. The more information that is entered, the greater the hit can be expected in the systems searched. Validation of the form (according to defined rules) is active to help the user to make as little errors as possible with entry.
 
 ![Dashboard](./public/images/guide/validation.png)
 
@@ -192,9 +188,12 @@ A search is started by submitting the form and a case is generated. This is show
 
 When the search is completed, the user receives an email and can log in to the dashboard again. Some searches may take time and the system works in the background.
 
-![Dashboard](./public/images/guide/finished_status.png)
+![Dashboard](./public/images/guide/mail_finished.png)
 
-When the search is completed, the table shows the status of each system (and cases if more have been processed) that have been searched and the user has the opportunity to download a single file containing files from all searched systems for each individual case. The file can also be sent directly to the registrar for registration (// Todo).
+
+When the search is completed, the table shows the status of each system (and cases if more have been processed) that have been searched and the user has the opportunity to download a single file containing files from all searched systems for each individual case. The file can also be sent directly to the registrar for registration.
+
+![Dashboard](./public/images/guide/finished_status.png)
 
 If a user is not registered in a system, this is displayed in the status and the status indication shows the color yellow, user not found.
 

@@ -25,7 +25,7 @@ class ProcessSciproDevPlugin implements ShouldQueue
      * @return void
      */
     protected $case, $status, $plugin;
-    public $timeout = 7200;
+    //public $timeout = 7200;
 
     public function __construct($case, $status, $plugin)
     {

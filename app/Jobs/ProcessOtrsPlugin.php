@@ -21,7 +21,7 @@ class ProcessOtrsPlugin implements ShouldQueue
      * @return void
      */
     protected $case, $status, $plugin;
-    public $timeout = 300;
+    public $timeout = 7200;
 
     public function __construct($case, $status, $plugin)
     {

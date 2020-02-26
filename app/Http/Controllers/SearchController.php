@@ -130,7 +130,9 @@ class SearchController extends Controller
         $scipro_plugin = $plugin->getPlugin('scipro_dev');
         //$scipro = new Scipro(0, $case);
         $scipro->auth($scipro_plugin->auth_url, $scipro_plugin->client_id, $scipro_plugin->redirect_uri);
-
+        //If callback doesnt work
+        //$request->status_flag = 0;
+        //$request->save();
 
     }
 
