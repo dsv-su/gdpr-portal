@@ -1,12 +1,13 @@
 
-##GDPR Portal
+## GDPR Portal
 
 1. Overview
 2. Requirements
 3. Installation
-4. Workflow
-5. Plugins
-6. User guide
+4. Database
+5. Workflow
+6. Plugins
+7. User guide
 
 ## 1. Overview
 
@@ -14,11 +15,11 @@ The main objective of the GDPR portal is to intergrate existing systems GDPR dat
 
 ## 2. Requirements
 Requirements are best determined using Server Requirements page of corresponding Laravel 6 version
-Currently used version is 6
+Currently used version is 6.5.1
 
 PHP version 7.3.*
 
-SSH access to the server (terminal access)
+SSH access to the server
 
 Composer
 
