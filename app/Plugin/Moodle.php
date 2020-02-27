@@ -6,12 +6,19 @@ use GuzzleHttp\Client;
 
 class Moodle
 {
+    protected $case, $plugin;
 
-    public function getMoodle($pnr, $email, $uid, $endpoint_url)
+    public function __construct($case, $plugin)
+    {
+        $this->case = $case;
+        $this->plugin = $plugin;
+    }
+
+    public function getMoodle()
     {
         $client = new Client();
         try {
-            $response = $client->get($endpoint_url .'=1&username='. $uid);
+            $response = $client->get($this->plugin->base_uri .'=1&username='. $this->case->request_uid);
 
         } catch (\Exception $e) {
             /**

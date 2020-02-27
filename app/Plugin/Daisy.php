@@ -6,12 +6,19 @@ use GuzzleHttp\Client;
 
 class Daisy
 {
+    protected $case, $plugin;
 
-    public function getDaisy($pnr, $email, $uid, $endpoint_url, $authcode)
+    public function __construct($case, $plugin)
+    {
+        $this->case = $case;
+        $this->plugin = $plugin;
+    }
+
+    public function getDaisy()
     {
         $client = new Client();
         try {
-            $response = $client->get($endpoint_url . '?personnummer=' . $pnr. '&anvandarnamn='.$uid. '&epost=' . $email. '&authcode='. $authcode );
+            $response = $client->get($this->plugin->base_uri . '?personnummer=' . $this->case->request_pnr. '&anvandarnamn='. $this->case->request_uid. '&epost=' . $this->case->request_email. '&authcode='. $this->plugin->client_secret );
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;

@@ -36,19 +36,13 @@ class ProcessUtbytesPlugin implements ShouldQueue
      */
     public function handle()
     {
-        // Get personnummer, email and userId from case
-        $pnr = $this->case->request_pnr;
-        $email = $this->case->request_email;
-        $uid = $this->case->request_uid;
-        $endpoint_uri = $this->plugin->base_uri;
-
         //Start request to Moodle
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
-        $utbytes = new Utbytes();
+        $utbytes = new Utbytes($this->case, $this->plugin);
 
-        $status = $utbytes->getUtbytes($pnr, $email, $uid, $endpoint_uri);
+        $status = $utbytes->getUtbytes();
         if ($status == 204)
         {
             //**********************************************************************

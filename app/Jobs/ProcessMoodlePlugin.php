@@ -38,20 +38,13 @@ class ProcessMoodlePlugin implements ShouldQueue
      */
     public function handle()
     {
-        // Get personnummer, email and userId from case
-        $pnr = $this->case->request_pnr;
-        $email = $this->case->request_email;
-        $uid = $this->case->request_uid;
-        $endpoint_uri = $this->plugin->base_uri;
-
-
         //Start request to Moodle
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
-        $moodle = new Moodle();
+        $moodle = new Moodle($this->case, $this->plugin);
 
-        $status = $moodle->getMoodle($pnr, $email, $uid, $endpoint_uri);
+        $status = $moodle->getMoodle();
         if ($status == 204)
         {
             //**********************************************************************

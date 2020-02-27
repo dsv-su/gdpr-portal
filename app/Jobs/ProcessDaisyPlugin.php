@@ -36,21 +36,14 @@ class ProcessDaisyPlugin implements ShouldQueue
      */
     public function handle()
     {
-        // Get personnummer, email and userId from case
-        $pnr = $this->case->request_pnr;
-        $email = $this->case->request_email;
-        $uid = $this->case->request_uid;
-        $base_uri = $this->plugin->base_uri;
-        $client_secret = $this->plugin->client_secret;
-
-
         //Start request to Moodle
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
 
-        $daisy = new Daisy();
+        $daisy = new Daisy($this->case, $this->plugin);
 
-        $status = $daisy->getDaisy($pnr, $email, $uid, $base_uri, $client_secret);
+        $status = $daisy->getDaisy();
+
         if ($status == 204)
         {
             //**********************************************************************

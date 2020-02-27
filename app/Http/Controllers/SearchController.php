@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessMoodlePlugin;
-use App\Jobs\ProcessSciproDevPlugin;
-use App\Jobs\ProcessUtbytesPlugin;
-use App\Jobs\ProcessDaisyPlugin;
-use App\Jobs\ProcessOtrsPlugin;
 use App\Services\CaseStore;
 use App\System;
 use Illuminate\Http\Request;
@@ -70,7 +65,9 @@ class SearchController extends Controller
 
         if(!$record = Searchcase::latest()->first())
         {
+            //Get system configuration
             $system = System::find(1);
+            //Init a new case
             $request = new Searchcase();
             $request = $request->initCase($gdpr_userid,$search_request, $system->case_start_id);
 
@@ -138,80 +135,8 @@ class SearchController extends Controller
         $scipro_plugin = $plugin->getPlugin('scipro_dev');
         //$scipro = new Scipro(0, $case);
         $scipro->auth($scipro_plugin->auth_url, $scipro_plugin->client_id, $scipro_plugin->redirect_uri);
-        //If callback doesnt work
-        //$request->status_flag = 0;
-        //$request->save();
 
     }
 
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

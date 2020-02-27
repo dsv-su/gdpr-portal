@@ -6,12 +6,19 @@ use GuzzleHttp\Client;
 
 class Utbytes
 {
+    protected $case, $plugin;
 
-    public function getUtbytes($pnr, $email, $uid, $endpoint_url)
+    public function __construct($case, $plugin)
+    {
+        $this->case = $case;
+        $this->plugin = $plugin;
+    }
+
+    public function getUtbytes()
     {
         $client = new Client();
         try {
-            $response = $client->get($endpoint_url . 'email=' . $email . '&pn=' . $pnr);
+            $response = $client->get($this->plugin->base_uri . 'email=' . $this->case->request_email . '&pn=' . $this->case->request_pnr);
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;

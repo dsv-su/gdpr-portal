@@ -47,9 +47,9 @@ class ProcessOtrsPlugin implements ShouldQueue
         $this->status->setProgressStatus(5);
         $this->status->setDownloadStatus(5);
 
-        $otrs = new Otrs($this->case);
+        $otrs = new Otrs($this->case, $this->plugin, $this->status);
 
-        $status = $otrs->getOtrs($email, $endpoint_uri, $this->plugin->name, $this->status);
+        $status = $otrs->getOtrs();
 
         if ($status == 204)
         {
