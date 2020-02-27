@@ -33,9 +33,9 @@ Composer
 
 * Install the dependencies. `composer install`
 
-* Make sure that .env file is present and configured as needed (copy .env.example to .env and fill in with your data)
+* Make sure that .env file is present and configured as needed (copy .env.example to .env)
 
-* Make sure that gdpr.ini file is present and configured with the configuration details for each system (copy gdpr.ini.example to .ini and fill in with your data)
+* Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
 * Either create application key manually or do that with a command `php artisan key:generate`
 
