@@ -25,7 +25,6 @@ class ProcessSciproDevPlugin implements ShouldQueue
      * @return void
      */
     protected $case, $status, $plugin;
-    //public $timeout = 7200;
 
     public function __construct($case, $status, $plugin)
     {
@@ -42,12 +41,12 @@ class ProcessSciproDevPlugin implements ShouldQueue
     public function handle()
     {
         //Start request to Sciprodev
-        $scipro = new Scipro($this->plugin->status, $this->case);
+        $scipro = new Scipro($this->case, $this->plugin );
 
         //Initiate Status flags
         $this->status->setProgressStatus(25);
         $this->status->setDownloadStatus(25);
-        $status = $scipro->gettoken($this->plugin->base_uri, $this->plugin->client_id, $this->plugin->client_secret, $this->plugin->redirect_uri, $this->plugin->endpoint_url);
+        $status = $scipro->gettoken();
         if ($status == 204)
         {
             //**********************************************************************
