@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Plugin;
+use App\System;
 use Illuminate\Database\Eloquent\Model;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -29,7 +30,7 @@ class ConfigurationHandler extends Model
         return $files;
     }
 
-    public function handle()
+    public function handle_plugins()
     {
         $plugindir = base_path().'/pluginconfig/';
         $list = $this->getFiles($plugindir);
@@ -62,5 +63,17 @@ class ConfigurationHandler extends Model
             }
         }
 
+    }
+
+    public function handle_system()
+    {
+        // Read gdpr.ini file and store id db
+        $file = base_path().'/systemconfig/gdpr.ini';
+        if (!file_exists($file)) {
+            $file = base_path().'/systemconfig/gdpr.ini.example';
+        }
+        $system_config = parse_ini_file($file, true);
+        $conf = new System();
+        $conf->newSystem($system_config['case_start_id'], $system_config['case_ttl'], $system_config['registrator'], $system_config['db'], $system_config['db_host'], $system_config['db_port'], $system_config['db_database'], $system_config['db_username'], $system_config['db_password']);
     }
 }

@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Str;
 
+$file = base_path().'/systemconfig/gdpr.ini';
+if (!file_exists($file)) {
+    $file = base_path().'/systemconfig/gdpr.ini.example';
+}
+$system_config = parse_ini_file($file, true);
+
 return [
 
     /*
@@ -46,11 +52,16 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            //'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => $system_config['db_host'],
+            //'port' => env('DB_PORT', '3306'),
+            'port' => $system_config['db_port'],
+            //'database' => env('DB_DATABASE', 'forge'),
+            'database' => $system_config['db_database'],
+            //'username' => env('DB_USERNAME', 'forge'),
+            'username' => $system_config['db_username'],
+            //'password' => env('DB_PASSWORD', ''),
+            'password' => $system_config['db_password'],
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

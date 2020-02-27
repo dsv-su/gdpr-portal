@@ -10,7 +10,7 @@ class Searchcase extends Model
     protected $fillable = ['case_id', 'visability', 'gdpr_userid','gdpr_useremail', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'plugins_processed', 'download_status', 'downloaded'];
     private $request;
 
-    public function initCase($user, $search)
+    public function initCase($user, $search, $case_id)
     {
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
@@ -22,9 +22,10 @@ class Searchcase extends Model
 
             $requester_email = 'ryan@dsv.su.se';
         }
+
         //Store initial request data to model
         $this->request = Searchcase::create([
-            'case_id' => config('services.case.start'),
+            'case_id' => $case_id,
             'visability' => 1,
             'gdpr_userid' => $user,
             'gdpr_useremail' => $requester_email,

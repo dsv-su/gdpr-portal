@@ -70,7 +70,7 @@ class TestController extends Controller
         //var_dump($this->getDirContents(base_path().'/pluginconfig/'));
         //var_dump($this->getFiles(base_path().'/pluginconfig/'));
         $list = new ConfigurationHandler();
-        $list->handle();
+        $list->handle_system();
     }
     private function getDirContents($dir, &$results=array())
     {

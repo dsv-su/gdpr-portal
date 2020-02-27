@@ -8,6 +8,7 @@ use App\Jobs\ProcessUtbytesPlugin;
 use App\Jobs\ProcessDaisyPlugin;
 use App\Jobs\ProcessOtrsPlugin;
 use App\Services\CaseStore;
+use App\System;
 use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin\Scipro;
@@ -55,6 +56,13 @@ class SearchController extends Controller
             $gdpr_userid = 'devuser';
         }
 
+        //Check that plugins have been loaded
+        if( Plugin::count() == 0 )
+        {
+            dd('Please initiate script first');
+            return redirect()->route('home');
+        }
+
         // New status instance
         $status = new Status;
 
@@ -62,11 +70,11 @@ class SearchController extends Controller
 
         if(!$record = Searchcase::latest()->first())
         {
-
+            $system = System::find(1);
             $request = new Searchcase();
-            $request = $request->initCase($gdpr_userid,$search_request);
+            $request = $request->initCase($gdpr_userid,$search_request, $system->case_start_id);
 
-            $caseid = config('services.case.start');
+            $caseid = $system->case_start_id;
             //Store case_id in cache for 60min
             Cache::put('request', $caseid, 7200);
 

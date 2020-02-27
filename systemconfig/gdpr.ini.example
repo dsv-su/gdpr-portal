@@ -1,0 +1,9 @@
+case_start_id=2020-1
+case_ttl=30
+registrator=ryan@dsv.su.se
+db=mysql
+db_host=127.0.0.1
+db_port=3306
+db_database=
+db_username=
+db_password=

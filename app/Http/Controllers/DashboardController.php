@@ -20,7 +20,8 @@ class DashboardController extends Controller
                 //$init = new Configuration();
                 //$init->initPlugins();
                 $init = new ConfigurationHandler();
-                $init->handle();
+                $init->handle_plugins();
+                $init->handle_system();
             }
         }
         //-----------------------------------------------
