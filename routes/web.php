@@ -35,7 +35,9 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 //Email registrar
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
-//Testing
+//**********************************************************************************************
+//Testing routes - to be removed in production
+//**********************************************************************************************
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
@@ -50,7 +52,7 @@ Route::get('/ts', 'TestController@test_scipro');
 
 //Otrs-test
 Route::get('/otrs', 'TestController@test_otrs');
-Route::get('/opdf', 'TestController@get_otrs_pdf');
 
 //ini
-Route::get('/ini', 'TestController@plugin_ini');
+//Route::get('/ini', 'TestController@plugin_ini');
+Route::get('/ini', 'TestController@ini');

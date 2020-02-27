@@ -6,9 +6,12 @@ use App\Plugin\Moodle;
 use App\Plugin\TestScipro;
 use App\Plugin\Otrs;
 use App\Services\CaseStore;
+use App\Services\ConfigurationHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class TestController extends Controller
 {
@@ -52,15 +55,60 @@ class TestController extends Controller
         $file = base_path().'/gdpr.ini';
         $config = parse_ini_file($file, true);
         //dd($config['scipro_dev']['client_name']);
-        dd($config);
+        //dd($config);
         // convert to data to a json string
         $config = json_encode($config);
         // convert back from json, the second parameter is by
         // default false, which will return an object rather than an
         // associative array
         $config = json_decode($config);
+        //dd($config);
+        dd($config->otrs);
+    }
+    public function ini()
+    {
+        //var_dump($this->getDirContents(base_path().'/pluginconfig/'));
+        //var_dump($this->getFiles(base_path().'/pluginconfig/'));
+        $list = new ConfigurationHandler();
+        $list->handle();
+    }
+    private function getDirContents($dir, &$results=array())
+    {
+        $files = scandir($dir);
+
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } else if ($value != "." && $value != "..") {
+                getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
+
+        return $results;
 
     }
+
+    private function getFiles($dir)
+    {
+        $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+
+        $files = array();
+
+        foreach ($rii as $file) {
+
+            if ($file->isDir()){
+                continue;
+            }
+
+            //$files[] = $file->getPathname();
+            $files[] = $file->getFilename();
+
+        }
+        return $files;
+    }
+
     public function video()
     {
         return view('video.test');

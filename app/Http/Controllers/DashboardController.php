@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessNotFinished;
 use App\Services\CaseStore;
+use App\Services\ConfigurationHandler;
 use App\Status;
-use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Plugin;
-use App\Configuration;
-use Illuminate\Support\Facades\Cache;
 
 
 class DashboardController extends Controller
@@ -20,8 +17,10 @@ class DashboardController extends Controller
         //-----------------------------------------------
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
-                $init = new Configuration();
-                $init->initPlugins();
+                //$init = new Configuration();
+                //$init->initPlugins();
+                $init = new ConfigurationHandler();
+                $init->handle();
             }
         }
         //-----------------------------------------------
