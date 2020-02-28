@@ -127,7 +127,7 @@ e.g.
 
 (2) ProcessScipro.php (job handler)
 
-(3) Services.php (configuration and credentials)
+(3) Scipro.ini (configuration and credentials)
 
 ![Pluginstructure](./public/images/guide/flow.png)
 
@@ -204,4 +204,4 @@ A system error is indicated in red and then the entire request must be performed
 
 ![Dashboard](./public/images/guide/error_status.png)
 
-After the request is completed and downloaded, cases can be removed manually. After 30 days the case and all files concerning the case is automatically deleted by the system. (//TODO)
+After the request is completed and downloaded, cases can be removed manually.

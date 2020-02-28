@@ -15,6 +15,7 @@ use RecursiveIteratorIterator;
 
 class TestController extends Controller
 {
+    //Test connection to scipro with auth-> and callback.
     public function test_scipro(TestScipro $testscipro)
     {
         $testscipro = new TestScipro();
