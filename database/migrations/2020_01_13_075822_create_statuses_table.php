@@ -23,6 +23,7 @@ class CreateStatusesTable extends Migration
             $table->integer('status');
             $table->integer('progress_status');
             $table->integer('download_status');
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }

@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Jobs\ProcessSciproDevPlugin;
 use App\Plugin;
 use App\Searchcase;
 use App\Status;
-use Illuminate\Support\Facades\Cache;
 
-class CallbackSciproController extends Controller
+class ProviderCallbackController extends Controller
 {
     public function callbackScipro(Searchcase $searchcase)
     {
         //**************************************************************************************************************
+        $case = Searchcase::latest()->first();
+        $plugin = Plugin::where('name', '=', 'scipro_dev')->first();
         //Store Code from scipro-callback in cache
-        //Cache::put('code', $_GET['code'], 144000);
-        $scipro_plugin = Plugin::where('name', '=', 'scipro_dev')->first();
-        $scipro_plugin->status = $_GET['code'];
-        $scipro_plugin->save();
+        $status = Status::where([
+            ['searchcase_id','=', $case->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
+        $status->code = $_GET['code'];
+        $status->save();
+
         return redirect()->action('PluginController@run');
 
         //**************************************************************************************************************
-       //return redirect()->route('home');
-
     }
 }

@@ -133,8 +133,9 @@ class SearchController extends Controller
         $plugin = new Plugin();
         //Get scipro plugin
         $scipro_plugin = $plugin->getPlugin('scipro_dev');
-        $scipro = new Scipro($request, $scipro_plugin);
+        $scipro = new Scipro($request, $scipro_plugin, $status);
         $scipro->auth();
+
 
     }
 

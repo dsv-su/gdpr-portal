@@ -38,10 +38,11 @@ class ProcessSciproDevPlugin implements ShouldQueue
      *
      * @return void
      */
+
     public function handle()
     {
         //Start request to Sciprodev
-        $scipro = new Scipro($this->case, $this->plugin );
+        $scipro = new Scipro($this->case, $this->plugin, $this->status);
 
         //Initiate Status flags
         $this->status->setProgressStatus(25);

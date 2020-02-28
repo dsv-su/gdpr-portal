@@ -11,7 +11,6 @@ use App\Searchcase;
 use App\Status;
 use Illuminate\Http\Request;
 use App\Plugin;
-use Illuminate\Support\Facades\Cache;
 
 class PluginController extends Controller
 {

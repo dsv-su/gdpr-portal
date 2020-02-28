@@ -120,19 +120,17 @@ value | state
 ## 6. Plugins
 
 ### Plugin pattern/structure
-The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of three files; A main file, a process file to dispatch the plugin to a que and a configurations file containing credential- and configuration information if needed. This structure will be reworked in the future to allow easier integration. All plugins are handled by the PluginController.
+The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of two files; A main file and a configurations file containing credential- and configuration information if needed. All plugins are handled by the PluginController.
 e.g.
 
-(1) SciproPlugin.php (core-file)
+(1) Plugin.php (core-file)
 
-(2) ProcessScipro.php (job handler)
-
-(3) Scipro.ini (configuration and credentials)
+(2) Plugin.ini (configuration and credentials)
 
 ![Pluginstructure](./public/images/guide/flow.png)
 
 ### Plugin workflow
-The Plugincontroller dispatches each plugin in order to a job process explicitly defining which queue it should be dispatched to, passing retrieved information entered by the user. A database table is used to hold the jobs processes and also failed processes (e.g. unable to connect to a system or server).
+The Plugincontroller dispatches each plugin in order to a job process (que), it is also possible to explicitly define a custom queue to dispatch to. Database tables is used to hold the jobs processes, failed processes (e.g. unable to connect to a system or server), progress and log information.
 Through the Plugin a connection to external systems should be achieved and a zip file containing gdpr data should be retrieved. In able to access this file, the plugin in most cases must be authorized by the system to access that particular information (client id and a client secret has to be issued if required by the system). 
 Once the zip file has been retrieved from the external system it is stored and unpacked on the server disc identified by its case id. Once the entire queue has been processed and all files have been stored and unpacked the entire retrieved data will be packed and ready for downloading by the user. A mail will be sent to notify the user that the download is ready or if an error has occurred a mail will be sent to notify the user about the current status.
 

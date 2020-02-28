@@ -2,6 +2,9 @@
 
 namespace App\Plugin;
 
+use App\Plugin;
+use App\Searchcase;
+use App\Status;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
@@ -16,14 +19,13 @@ class Scipro
 
             private $id, $endpoint_url, $response;
             private $body, $zip;
-            protected $code, $case;
+            protected $code, $case, $status;
 
-            public function __construct($case, $plugin)
+            public function __construct(Searchcase $case, Plugin $plugin, Status $status)
             {
-                //$this->auth_code = null;
-                //$this->code = $code;
                 $this->case = $case;
                 $this->plugin = $plugin;
+                $this->status = $status;
             }
 
             public function auth()
@@ -55,7 +57,7 @@ class Scipro
                 // 'debug' => true,
             ]);
             $this->reauth_config = [
-                'code' => $this->plugin->status,
+                'code' => $this->status->code,
                 'client_id' => $this->plugin->client_id,
                 'client_secret' => $this->plugin->client_secret,
                 'redirect_uri' => $this->plugin->redirect_uri,

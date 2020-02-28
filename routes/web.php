@@ -25,7 +25,7 @@ Route::get('/dev-delete/{id}', 'DashboardController@dev_delete')->name('dev_dele
 Route::post('/search', 'SearchController@search')->name('search');
 
 //Callbacks
-Route::get('/oauth/callback', 'CallbackSciproController@callbackScipro');
+Route::get('/oauth/callback', 'ProviderCallbackController@callbackScipro');
 Route::get('/plugins', 'PluginController@run');
 
 //Plugin configuration
