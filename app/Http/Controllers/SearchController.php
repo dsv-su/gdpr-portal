@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CaseStore;
 use App\System;
+use App\Toker;
 use Illuminate\Http\Request;
 use App\Searchcase;
-use App\Plugin\Scipro;
 use App\Status;
 use App\Plugin;
 use Illuminate\Support\Facades\Cache;
@@ -17,10 +17,10 @@ class SearchController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function search(Request $request, Scipro $scipro)
+    public function search(Request $request)
     {
         /***************************************************
          * 1. Request and store formdata
@@ -28,7 +28,7 @@ class SearchController extends Controller
          * 3. Generate unique request id
          * 4. Store request data
          * 5. Store initiate request data in database table
-         * 6. Perform request to plugin scripts
+         * 6. Get token from Toker
          ***************************************************
         */
 
@@ -59,7 +59,7 @@ class SearchController extends Controller
         }
 
         // New status instance
-        $status = new Status;
+        $status = new Status();
 
         // 3. Generate unique case -id
 
@@ -117,7 +117,7 @@ class SearchController extends Controller
 
         }
         /*************************************************************************************
-        // 6. Start JobsPlugins
+        //  Create folders
         /*************************************************************************************
          */
 
@@ -125,16 +125,20 @@ class SearchController extends Controller
         $dir = new CaseStore($request);
         $dir->makedfolders();
 
-        //***********************************************************************************
-        //Scipro auth
-        //***********************************************************************************
+        /*************************************************************************************
+        // 6. Get toker token
+        /*************************************************************************************
+         */
+        $pluginO = new Plugin();
+        $plugin = $pluginO->getPlugin('Scipro');
+        $status = Status::where([
+            ['searchcase_id','=', $request->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
 
-        //TODO-->
-        $plugin = new Plugin();
-        //Get scipro plugin
-        $scipro_plugin = $plugin->getPlugin('scipro_dev');
-        $scipro = new Scipro($request, $scipro_plugin, $status);
-        $scipro->auth();
+        $toker = new Toker($request, $plugin, $status);
+
+        $toker->auth();
 
 
     }

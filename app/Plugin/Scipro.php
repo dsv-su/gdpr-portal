@@ -2,9 +2,6 @@
 
 namespace App\Plugin;
 
-use App\Plugin;
-use App\Searchcase;
-use App\Status;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
@@ -19,9 +16,9 @@ class Scipro
 
             private $id, $endpoint_url, $response;
             private $body, $zip;
-            protected $code, $case, $status;
+            protected $case, $plugin, $status, $code;
 
-            public function __construct(Searchcase $case, Plugin $plugin, Status $status)
+            public function __construct($case, $plugin, $status)
             {
                 $this->case = $case;
                 $this->plugin = $plugin;
@@ -41,6 +38,9 @@ class Scipro
                         //'entitlement' => 'dsv-user:gdpr',
                     ]);
 
+                $this->status->auth = 1;
+                $this->status->save();
+
                 // Redirect to authorization endpoint
                 header('Location: '.$this->auth_url);
 
@@ -48,7 +48,7 @@ class Scipro
             }
 
 
-            public function gettoken()
+            public function getScipro()
         {
             // Authorization client - this is used to request OAuth access tokens
             $this->reauth_client = new Client([
@@ -62,12 +62,14 @@ class Scipro
                 'client_secret' => $this->plugin->client_secret,
                 'redirect_uri' => $this->plugin->redirect_uri,
             ];
+
             $this->grant_type = new AuthorizationCode($this->reauth_client, $this->reauth_config);
             $this->refresh_grant_type = new RefreshToken($this->reauth_client, $this->reauth_config);
             $this->oauth = new OAuth2Middleware($this->grant_type, $this->refresh_grant_type);
 
             $this->stack = HandlerStack::create();
             $this->stack->push($this->oauth);
+
             // This is the normal Guzzle client
             $this->client = new Client([
                 'handler' => $this->stack,
@@ -86,9 +88,9 @@ class Scipro
                 If there is an exception; Client error;
                  */
                 if ($e->hasResponse()) {
-                    $response = $e->getResponse();
+                    $this->response = $e->getResponse();
 
-                    return $response->getStatusCode();
+                    return $this->response->getStatusCode();
 
                 }
             }
@@ -100,7 +102,7 @@ class Scipro
                     $this->body = $this->response->getBody();
                     // Read contents of the body
                     $this->zip = $this->body->getContents();
-
+                    $this->status->setZip();
                     return $this->zip;
                 } else {
                     return $this->response->getStatusCode();

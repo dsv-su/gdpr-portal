@@ -21,11 +21,14 @@ Route::get('/download/{id}', 'DashboardController@download')->name('download');
 Route::get('/delete/{id}', 'DashboardController@delete')->name('delete');
 Route::get('/dev-delete/{id}', 'DashboardController@dev_delete')->name('dev_delete');
 
+//Override failed gdpr-request
+Route::get('/override/{id}', 'DashboardController@override')->name('override');
+
 //Initiate a Request
 Route::post('/search', 'SearchController@search')->name('search');
 
 //Callbacks
-Route::get('/oauth/callback', 'ProviderCallbackController@callbackScipro');
+Route::get('/oauth/callback', 'CallbackController@callback');
 Route::get('/plugins', 'PluginController@run');
 
 //Plugin configuration
@@ -41,6 +44,7 @@ Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
+Route::get('/{provider}/callback', 'Testcontroller@callback')->name('callback');
 Route::get('/video/', 'TestController@video');
 
 //Scipro dev test

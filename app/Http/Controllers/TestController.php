@@ -15,6 +15,11 @@ use RecursiveIteratorIterator;
 
 class TestController extends Controller
 {
+    public function callback($provider)
+    {
+        dd($provider);
+    }
+
     //Test connection to scipro with auth-> and callback.
     public function test_scipro(TestScipro $testscipro)
     {
@@ -71,7 +76,8 @@ class TestController extends Controller
         //var_dump($this->getDirContents(base_path().'/pluginconfig/'));
         //var_dump($this->getFiles(base_path().'/pluginconfig/'));
         $list = new ConfigurationHandler();
-        $list->handle_system();
+        //$list->handle_system();
+        $list->handle_plugins();
     }
     private function getDirContents($dir, &$results=array())
     {

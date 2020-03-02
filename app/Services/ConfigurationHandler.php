@@ -34,35 +34,35 @@ class ConfigurationHandler extends Model
     {
         $plugindir = base_path().'/pluginconfig/';
         $list = $this->getFiles($plugindir);
-
-        foreach ($list as $filename)
-        {
+        //dd($list);
+        foreach ($list as $filename) {
             // Read the plugin .ini file and store in table
-            $file = $plugindir . $filename;
-            if (!file_exists($file)) {
-                $file = $plugindir . $filename.'.example';
-            }
-            $config = parse_ini_file($file, true);
-            $config = json_encode($config);
+            if (substr($filename, -3) == 'ini') {
 
-            $config = json_decode($config);
-            //Store in Plugin
-            $plugin = new Plugin();
-            $plugintable = $plugin->getFillable();
-            foreach($config as $key=>$item) {
-                $plugin->name = $key;
-                foreach($plugintable as $pluginitem) {
-                    foreach ($item as $key2 => $item2) {
-                        if ($pluginitem == $key2)
-                        {
-                            $plugin->$pluginitem = $item2;
-                        }
-                        }
+                $file = $plugindir . $filename;
+                if (!file_exists($file)) {
+                    $file = $plugindir . $filename . '.example';
                 }
-                $plugin->save();
+                $config = parse_ini_file($file, true);
+                $config = json_encode($config);
+
+                $config = json_decode($config);
+                //Store in Plugin
+                $plugin = new Plugin();
+                $plugintable = $plugin->getFillable();
+                foreach ($config as $key => $item) {
+                    $plugin->name = $key;
+                    foreach ($plugintable as $pluginitem) {
+                        foreach ($item as $key2 => $item2) {
+                            if ($pluginitem == $key2) {
+                                $plugin->$pluginitem = $item2;
+                            }
+                        }
+                    }
+                    $plugin->save();
+                }
             }
         }
-
     }
 
     public function handle_system()

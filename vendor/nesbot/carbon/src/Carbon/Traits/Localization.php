@@ -11,12 +11,21 @@
 namespace Carbon\Traits;
 
 use Carbon\CarbonInterface;
+use Carbon\Exceptions\NotLocaleAwareException;
 use Carbon\Language;
 use Carbon\Translator;
 use Closure;
 use InvalidArgumentException;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+
+if (!interface_exists('Symfony\\Component\\Translation\\TranslatorInterface')) {
+    class_alias(
+        'Symfony\\Contracts\\Translation\\TranslatorInterface',
+        'Symfony\\Component\\Translation\\TranslatorInterface'
+    );
+}
 
 /**
  * Trait Localization.
@@ -129,6 +138,16 @@ trait Localization
     }
 
     /**
+     * Return true if the current instance has its own translator.
+     *
+     * @return bool
+     */
+    public function hasLocalTranslator()
+    {
+        return isset($this->localTranslator);
+    }
+
+    /**
      * Get the translator of the current instance or the default if none set.
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
@@ -170,7 +189,11 @@ trait Localization
             );
         }
 
-        $result = $translator->getCatalogue($locale ?? $translator->getLocale())->get($key);
+        if (!$locale && $translator instanceof LocaleAwareInterface) {
+            $locale = $translator->getLocale();
+        }
+
+        $result = $translator->getCatalogue($locale)->get($key);
 
         return $result === $key ? $default : $result;
     }
@@ -214,7 +237,13 @@ trait Localization
             $parameters[':count'] = $parameters['%count%'];
         }
 
-        return (string) $translator->transChoice($key, $number, $parameters);
+        // @codeCoverageIgnoreStart
+        $choice = method_exists($translator, 'transChoice')
+            ? $translator->transChoice($key, $number, $parameters)
+            : $translator->trans($key, $parameters);
+        // @codeCoverageIgnoreEnd
+
+        return (string) $choice;
     }
 
     /**
@@ -403,7 +432,7 @@ trait Localization
      */
     public function translateTimeStringTo($timeString, $to = null)
     {
-        return static::translateTimeString($timeString, $this->getLocalTranslator()->getLocale(), $to);
+        return static::translateTimeString($timeString, $this->getTranslatorLocale(), $to);
     }
 
     /**
@@ -417,10 +446,10 @@ trait Localization
     public function locale(string $locale = null, ...$fallbackLocales)
     {
         if ($locale === null) {
-            return $this->getLocalTranslator()->getLocale();
+            return $this->getTranslatorLocale();
         }
 
-        if (!$this->localTranslator || $this->localTranslator->getLocale() !== $locale) {
+        if (!$this->localTranslator || $this->getTranslatorLocale($this->localTranslator) !== $locale) {
             $translator = Translator::get($locale);
 
             if (!empty($fallbackLocales)) {
@@ -448,7 +477,7 @@ trait Localization
      */
     public static function getLocale()
     {
-        return static::translator()->getLocale();
+        return static::getLocaleAwareTranslator()->getLocale();
     }
 
     /**
@@ -461,7 +490,7 @@ trait Localization
      */
     public static function setLocale($locale)
     {
-        return static::translator()->setLocale($locale) !== false;
+        return static::getLocaleAwareTranslator()->setLocale($locale) !== false;
     }
 
     /**
@@ -641,7 +670,7 @@ trait Localization
      */
     public static function getAvailableLocales()
     {
-        $translator = static::translator();
+        $translator = static::getLocaleAwareTranslator();
 
         return $translator instanceof Translator
             ? $translator->getAvailableLocales()
@@ -662,5 +691,36 @@ trait Localization
         }
 
         return $languages;
+    }
+
+    protected function getTranslatorLocale($translator = null): ?string
+    {
+        if (func_num_args() === 0) {
+            $translator = $this->getLocalTranslator();
+        }
+
+        $translator = static::getLocaleAwareTranslator($translator);
+
+        return $translator ? $translator->getLocale() : null;
+    }
+
+    /**
+     * Throw an error if passed object is not LocaleAwareInterface.
+     *
+     * @param LocaleAwareInterface|null $translator
+     *
+     * @return LocaleAwareInterface|null
+     */
+    protected static function getLocaleAwareTranslator($translator = null)
+    {
+        if (func_num_args() === 0) {
+            $translator = static::translator();
+        }
+
+        if ($translator && !($translator instanceof LocaleAwareInterface || method_exists($translator, 'getLocale'))) {
+            throw new NotLocaleAwareException($translator);
+        }
+
+        return $translator;
     }
 }

@@ -112,7 +112,13 @@ class DashboardController extends Controller
 
         return redirect()->route('home');
     }
-
+    public function override($id)
+    {
+        $case = Searchcase::find($id);
+        $case->status_flag = 3;
+        $case->save();
+        return redirect()->back();
+    }
     //-----------------------------------------------
     //
     // Developing and testing functions

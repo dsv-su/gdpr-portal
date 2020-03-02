@@ -2,16 +2,26 @@
 
 namespace App\Plugin;
 
+use App\Plugin;
+use App\Searchcase;
+use App\Status;
 use GuzzleHttp\Client;
 
 class Daisy
 {
-    protected $case, $plugin;
+    protected $case, $plugin, $status;
 
-    public function __construct($case, $plugin)
+    public function __construct(Searchcase $case, Plugin $plugin, Status $status)
     {
         $this->case = $case;
         $this->plugin = $plugin;
+        $this->status = $status;
+    }
+
+    public function auth()
+    {
+        $this->status->auth = 1;
+        $this->status->save();
     }
 
     public function getDaisy()
@@ -40,6 +50,7 @@ class Daisy
                 $zip = $body->getContents();
 
                 //dd($response->getStatusCode());
+                $this->status->setZip();
                 return $zip;
             } else
                 return $response->getStatusCode();

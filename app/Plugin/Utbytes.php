@@ -6,12 +6,19 @@ use GuzzleHttp\Client;
 
 class Utbytes
 {
-    protected $case, $plugin;
+    protected $case, $plugin, $status;
 
-    public function __construct($case, $plugin)
+    public function __construct($case, $plugin, $status)
     {
         $this->case = $case;
         $this->plugin = $plugin;
+        $this->status = $status;
+    }
+
+    public function auth()
+    {
+        $this->status->auth = 1;
+        $this->status->save();
     }
 
     public function getUtbytes()
@@ -40,6 +47,7 @@ class Utbytes
                 $zip = $body->getContents();
 
                 //dd($response->getStatusCode());
+                $this->status->setZip();
                 return $zip;
             } else
                 return $response->getStatusCode();

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status'];
+    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status', 'auth', 'callback','que'];
 
     public function initPluginStatus($caseid)
     {
+        // FREJA
         $plugins = Plugin::all();
         foreach ( $plugins as $plugin)
         {
@@ -20,6 +21,9 @@ class Status extends Model
                 'status' => 200,
                 'progress_status' => 0,
                 'download_status' => 0,
+                'auth' => 0,
+                'callback' => 0,
+                'zip' => 0,
             ]);
 
         }
@@ -46,5 +50,10 @@ class Status extends Model
     public function getStatus()
     {
         return $this->status;
+    }
+    public function setZip()
+    {
+        $this->zip = 1;
+        $this->save();
     }
 }

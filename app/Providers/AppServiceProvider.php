@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
             //$event->job->payload()
 
             //Find requestdata for request and update stats
-            $update = Searchcase::find(Cache::get('requestid'));
+            $update = Searchcase::latest()->first();
             //Stats
             $update->setStatusProcessed();
 
@@ -63,8 +63,9 @@ class AppServiceProvider extends ServiceProvider
 
                 $statuses = DB::table('statuses')
                             ->select('status')
-                            ->where('searchcase_id', '=', Cache::get('requestid'))
+                            ->where('searchcase_id', '=', $update->id)
                             ->get();
+
                 $count = 0;
                 foreach( $statuses as $status)
                 {
@@ -86,8 +87,8 @@ class AppServiceProvider extends ServiceProvider
                         $update->setStatusFlag(2);
 
                         // Remove case folders
-                        $zip = new CaseStore();
-                        $zip->delete_empty_case(Cache::get('requestid'));
+                        $zip = new CaseStore($update);
+                        $zip->delete_empty_case($update->id);
 
                         //Notify user
                         $request_finished_empty = new ProcessNotFound($update);
@@ -119,7 +120,7 @@ class AppServiceProvider extends ServiceProvider
 
                 // Remove case folders
                 $zip = new CaseStore();
-                $zip->delete_empty_case(Cache::get('requestid'));
+                $zip->delete_empty_case($update->id);
 
                 $request_finished_error = new ProcessNotFinished($update);
                 dispatch($request_finished_error);

@@ -57,7 +57,7 @@
                 </td>
                 <td>
                     @if ($case->status_flag == 0)
-                        <span class="badge badge-danger">Misslyckades</span>
+                        <span class="badge badge-danger">Misslyckades</span> <a href="{{ route('override', ['id'=>$case->id ]) }}" type="button" class="btn btn-outline-primary btn-sm">Override</a>
                     @elseif ($case->downloaded == 1)
                         <a href="{{ route('download', ['id'=>$case->id ]) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-check"></i> Nerladdad</a>
                     @elseif ($case->download_status > 0)

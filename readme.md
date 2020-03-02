@@ -41,7 +41,7 @@ Composer
 
 * In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
 
-* The redirect URL addresses are in the form BASE-URL/auth/PLUGIN-name/callback
+* The redirect URL addresses are in the form BASE-URL/PLUGIN-name/callback
 
 * If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 
