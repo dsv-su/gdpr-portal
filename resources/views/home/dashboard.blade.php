@@ -63,6 +63,8 @@
                                                 class="progress-bar bg-warning"
                                             @elseif ($plugin->status == 400 or $plugin->status == 404)
                                                 class="progress-bar bg-danger"
+                                            @elseif ($plugin->status == 409)
+                                                class="progress-bar progress-bar-striped bg-danger"
                                             @endif
                                             role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                             @if ($plugin->status == 200)

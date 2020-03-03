@@ -43,11 +43,8 @@ class ProcessPlugin implements ShouldQueue
         $this->status->setDownloadStatus(5);
 
         $system = 'App\Plugin\\'. $this->plugin->name;
-
         $system_instance = new $system($this->case, $this->plugin, $this->status);
-
         $getPlugin = 'get'. $this->plugin->name;
-        print $getPlugin;
         $response = $system_instance->$getPlugin();
 
         if ($response == 204)
@@ -60,7 +57,7 @@ class ProcessPlugin implements ShouldQueue
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(0);
         }
-        else if( $response == 404)
+        else if( $response == 400 or $response == 404)
         {
             //*********************************************************************
             //Request denied
@@ -88,11 +85,19 @@ class ProcessPlugin implements ShouldQueue
 
                 //Unzip
                 $dir->unzip($this->plugin->name);
+                $this->status->setStatus(200);
+                $this->status->setProgressStatus(100);
+                $this->status->setDownloadStatus(100);
+            }
+            else
+            {
+                $this->status->setStatus($response);
+                $this->status->setProgressStatus(100);
+                //$this->status->setDownloadStatus(0); //Moved to plugin
             }
             //Status flags
-            $this->status->setStatus(200);
-            $this->status->setProgressStatus(100);
-            $this->status->setDownloadStatus(100);
+
+
 
         }
         $this->case->setPluginSuccess(); //Plugin processed successful

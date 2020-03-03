@@ -129,8 +129,8 @@ class SearchController extends Controller
         // 6. Get toker token
         /*************************************************************************************
          */
-        $pluginO = new Plugin();
-        $plugin = $pluginO->getPlugin('Scipro');
+        $pluginObject = new Plugin();
+        $plugin = $pluginObject->getPlugin('Scipro');
         $status = Status::where([
             ['searchcase_id','=', $request->id],
             ['plugin_id', '=', $plugin->id],

@@ -105,6 +105,7 @@ class Scipro
                     $this->status->setZip();
                     return $this->zip;
                 } else {
+                    $this->status->setDownloadStatus(0);
                     return $this->response->getStatusCode();
                 }
 

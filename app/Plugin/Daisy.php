@@ -53,7 +53,11 @@ class Daisy
                 $this->status->setZip();
                 return $zip;
             } else
+            {
+                $this->status->setDownloadStatus(0);
                 return $response->getStatusCode();
+            }
+
 
         }
     }

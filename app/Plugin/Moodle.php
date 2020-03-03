@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 
 class Moodle
 {
+    private $response;
     protected $case, $plugin, $status;
 
     public function __construct($case, $plugin, $status)
@@ -25,24 +26,24 @@ class Moodle
     {
         $client = new Client();
         try {
-            $response = $client->get($this->plugin->base_uri .'=1&username='. $this->case->request_uid);
+            $this->response = $client->get($this->plugin->base_uri .'=1&username='. $this->case->request_uid);
 
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;
              */
             if ($e->hasResponse()) {
-                $response = $e->getResponse();
+                $this->response = $e->getResponse();
 
-                return $response->getStatusCode();
+                return $this->response->getStatusCode();
 
             }
         }
 
         //Processing response from Moodle
-        if ($response) {
-            if ($response->getStatusCode() == 200) {
-                $body = $response->getBody();
+        if ($this->response) {
+            if ($this->response->getStatusCode() == 200) {
+                $body = $this->response->getBody();
 
                 // Read contents of the body
                 $zip = $body->getContents();
@@ -51,7 +52,11 @@ class Moodle
                 $this->status->setZip();
                 return $zip;
             } else
-                return $response->getStatusCode();
+            {
+                $this->status->setDownloadStatus(0);
+                return $this->response->getStatusCode();
+            }
+
 
         }
     }

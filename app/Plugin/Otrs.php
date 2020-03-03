@@ -116,6 +116,7 @@ class Otrs
                             }
             }
         }
+        $this->status->setDownloadStatus(100);
         return 200;
     }
 }

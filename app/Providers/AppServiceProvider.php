@@ -8,8 +8,6 @@ use App\Jobs\ProcessNotFound;
 use App\Searchcase;
 use App\Plugin;
 use App\Services\CaseStore;
-use App\Status;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -118,9 +116,9 @@ class AppServiceProvider extends ServiceProvider
                 $update->setProgress(0); //Kill progress flag
                 $update->setStatusFlag(0);
 
-                // Remove case folders
-                $zip = new CaseStore();
-                $zip->delete_empty_case($update->id);
+                // Remove case folders -> Uncomment to remove Override function
+                //$zip = new CaseStore($update);
+                //$zip->delete_empty_case($update->id);
 
                 $request_finished_error = new ProcessNotFinished($update);
                 dispatch($request_finished_error);
