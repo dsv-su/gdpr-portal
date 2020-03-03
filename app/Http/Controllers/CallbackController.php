@@ -6,7 +6,6 @@ use App\Jobs\ProcessPlugin;
 use App\Plugin;
 use App\Searchcase;
 use App\Status;
-use Illuminate\Http\Request;
 
 class CallbackController extends Controller
 {

@@ -35,17 +35,14 @@ class PluginController extends Controller
             ])->first();
             if($casestatus->auth == 0)
             {
+                // Uncomment if other tokens are required
                 //$plugin_instance = new $name($case, $plugin, $casestatus);
                 //$plugin_instance->auth();
                 // Dispatch to que
                 $pluginjob = new ProcessPlugin($case, $plugin, $casestatus);
                 dispatch($pluginjob);
             }
-
-
         }
-
-
         return redirect()->route('home');
 
     }

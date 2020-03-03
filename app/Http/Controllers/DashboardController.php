@@ -17,8 +17,7 @@ class DashboardController extends Controller
         //-----------------------------------------------
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
-                //$init = new Configuration();
-                //$init->initPlugins();
+                //Load system and plugins configuration
                 $init = new ConfigurationHandler();
                 $init->handle_plugins();
                 $init->handle_system();
@@ -30,7 +29,7 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
 
-        //Check download status
+        //TODO -> This should be reworked <- Check download status
         if(!$record = Searchcase::latest()->first()) {
         }
         else {
@@ -55,14 +54,9 @@ class DashboardController extends Controller
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             $data['gdpr_user'] = $_SERVER['displayName'];
-            //TODO change cache to eloquent
-            //Cache::put('requester_email', $_SERVER['mail'], 7200);
-
         }
         else {
             $data['gdpr_user'] = 'Ryan Dias';
-            //Cache::put('requester_email', 'ryan@dsv.su.se', 7200);
-
         }
         return view('home.dashboard', $data);
     }
@@ -71,7 +65,7 @@ class DashboardController extends Controller
     {
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
-        //Check download status
+        //TODO -> Check download status
         if(!$record = Searchcase::latest()->first()) {
         }
         else {

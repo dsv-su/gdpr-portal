@@ -23,16 +23,19 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         /***************************************************
-         * 1. Request and store formdata
-         * 2. Check which server is running
+         * 1. Handle formdata and start a new case
+         * 2. Check which server is running dev/methone to issue correct loginformation
          * 3. Generate unique request id
-         * 4. Store request data
-         * 5. Store initiate request data in database table
+         * 4. Store initiate request data to Model
+         * 5. Create folders for case
          * 6. Get token from Toker
          ***************************************************
         */
 
-        // 1. Requesting data from form
+        /*************************************************************************************
+        //  1. Handle formdata and start a new case
+        /************************************************************************************/
+
         $personnr = $request->input('gdpr_pnr');
         $email = $request->input('gdpr_email');
         $userid = $request->input('gdpr_uid');
@@ -42,7 +45,10 @@ class SearchController extends Controller
         $search_request[] = $request->input('gdpr_email');
         $search_request[] = $request->input('gdpr_uid');
 
-        // 2. Check server/dev
+        /*************************************************************************************
+        //  2. Check which server is running dev/methone to issue correct loginformation
+        /************************************************************************************/
+
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
         {
             $gdpr_userid = $_SERVER['eppn'];
@@ -54,14 +60,16 @@ class SearchController extends Controller
         //Check that plugins have been loaded
         if( Plugin::count() == 0 )
         {
-            dd('Please initiate script first');
+            dd('Please initiate script first by going bach and refreshing page!');
             return redirect()->route('home');
         }
 
         // New status instance
         $status = new Status();
 
-        // 3. Generate unique case -id
+        /*************************************************************************************
+        //  3. Generate unique request id
+        /************************************************************************************/
 
         if(!$record = Searchcase::latest()->first())
         {
@@ -71,18 +79,8 @@ class SearchController extends Controller
             $request = new Searchcase();
             $request = $request->initCase($gdpr_userid,$search_request, $system->case_start_id);
 
-            $caseid = $system->case_start_id;
-            //Store case_id in cache for 60min
-            Cache::put('request', $caseid, 7200);
-
-            //Store search in cache for 60 min
-            Cache::put('search', $userid, 7200);
-            $id = $request->id;
-
-            Cache::put('requestid', $id, 7200);
-
             //Create plugin status
-            $status->initPluginStatus($id);
+            $status->initPluginStatus($request->id);
 
         }
         else
@@ -94,14 +92,9 @@ class SearchController extends Controller
             // Request case_id
             $caseid = $nextCaseNumber;
 
-            // 4. Store request in cache
-
-            //Store case_id in cache for 60min
-            Cache::put('request', $caseid, 7200);
-            //Store search in cache for 60 min
-            Cache::put('search', $userid, 7200);
-
-            // 5. Store initial requestdata to model
+        /*************************************************************************************
+        //  4. Store initiate request data to Model
+        /************************************************************************************/
 
             $request = new Searchcase();
             $request = $request->initnewCase($gdpr_userid, $caseid, $search_request);
@@ -109,17 +102,14 @@ class SearchController extends Controller
             //Get caseid
             $id = $request->id;
 
-            //(TODO -> Remove)Store in cache
-            Cache::put('requestid', $id, 7200);
-
             //Init plugin status for case
             $status->initPluginStatus($id);
 
         }
         /*************************************************************************************
-        //  Create folders
-        /*************************************************************************************
-         */
+        //  5. Create folders
+        /************************************************************************************/
+
 
         //Create folders for retrieved data
         $dir = new CaseStore($request);
@@ -127,8 +117,8 @@ class SearchController extends Controller
 
         /*************************************************************************************
         // 6. Get toker token
-        /*************************************************************************************
-         */
+        /*************************************************************************************/
+
         $pluginObject = new Plugin();
         $plugin = $pluginObject->getPlugin('Scipro');
         $status = Status::where([
@@ -139,7 +129,6 @@ class SearchController extends Controller
         $toker = new Toker($request, $plugin, $status);
 
         $toker->auth();
-
 
     }
 
