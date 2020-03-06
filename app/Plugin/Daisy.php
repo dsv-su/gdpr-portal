@@ -2,21 +2,10 @@
 
 namespace App\Plugin;
 
-use App\Plugin;
-use App\Searchcase;
-use App\Status;
 use GuzzleHttp\Client;
 
-class Daisy
+class Daisy extends GenericPlugin
 {
-    protected $case, $plugin, $status;
-
-    public function __construct(Searchcase $case, Plugin $plugin, Status $status)
-    {
-        $this->case = $case;
-        $this->plugin = $plugin;
-        $this->status = $status;
-    }
 
     public function auth()
     {

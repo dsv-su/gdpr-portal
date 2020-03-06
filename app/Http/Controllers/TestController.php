@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Plugin;
 use App\Plugin\Moodle;
 use App\Plugin\TestScipro;
 use App\Plugin\Otrs;
+use App\Searchcase;
 use App\Services\CaseStore;
 use App\Services\ConfigurationHandler;
+use App\Status;
+use App\Toker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +22,22 @@ class TestController extends Controller
     public function callback($provider)
     {
         dd($provider);
+    }
+
+    public function gettoken()
+    {
+
+        $case = Searchcase::latest()->first();
+        $plugindriver = new Plugin();
+        $plugin = $plugindriver->getPlugin('Scipro');
+        $status = Status::where([
+            ['searchcase_id','=', $case->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
+
+        $token = new Toker($case, $plugin, $status);
+        $token->getToken($status->code);
+
     }
 
     //Test connection to scipro with auth-> and callback.

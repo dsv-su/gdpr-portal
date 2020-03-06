@@ -4,23 +4,9 @@ namespace App\Plugin;
 
 use GuzzleHttp\Client;
 
-class Moodle
+class Moodle extends GenericPlugin
 {
     private $response;
-    protected $case, $plugin, $status;
-
-    public function __construct($case, $plugin, $status)
-    {
-        $this->case = $case;
-        $this->plugin = $plugin;
-        $this->status = $status;
-    }
-
-    public function auth()
-    {
-        $this->status->auth = 1;
-        $this->status->save();
-    }
 
     public function getMoodle()
     {

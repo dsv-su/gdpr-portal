@@ -23,7 +23,7 @@ SSH access to the server
 
 Composer
 
-## 3. Installation
+## 3. Installation (for deploying your own application)
 
 * Make sure that composer is installed globally or install it in place
 
@@ -119,26 +119,88 @@ value | state
 
 ## 6. Plugins
 
+## Implementing a new plugin
+//This section is in working progress --> 
+
 ### Plugin pattern/structure
-The plugin (a kind of controller) handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists of two files; A main file and a configurations file containing credential- and configuration information if needed. All plugins are handled by the PluginController.
-e.g.
-
-(1) Plugin.php (core-file)
-
-(2) Plugin.ini (configuration and credentials)
-
-![Pluginstructure](./public/images/guide/flow.png)
+The plugin handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists basically of two files; A main file with a class that establishes a connection to a system and returns one or more files and a configurations file containing credential- and configuration information to the system. All plugins are handled by the PluginController.
 
 ### Plugin workflow
-The Plugincontroller dispatches each plugin in order to a job process (que), it is also possible to explicitly define a custom queue to dispatch to. Database tables is used to hold the jobs processes, failed processes (e.g. unable to connect to a system or server), progress and log information.
-Through the Plugin a connection to external systems should be achieved and a zip file containing gdpr data should be retrieved. In able to access this file, the plugin in most cases must be authorized by the system to access that particular information (client id and a client secret has to be issued if required by the system). 
+The Plugincontroller dispatches each plugin in order to a job process (que). Database tables is used to hold the jobs processes, failed processes (e.g. unable to connect to a system or server), progress and log information.
+Through the Plugin a connection to external systems should be achieved and a zip file or more files containing requested gdpr data should be retrieved. 
 Once the zip file has been retrieved from the external system it is stored and unpacked on the server disc identified by its case id. Once the entire queue has been processed and all files have been stored and unpacked the entire retrieved data will be packed and ready for downloading by the user. A mail will be sent to notify the user that the download is ready or if an error has occurred a mail will be sent to notify the user about the current status.
 
-## Implementing a new plugin
+### Plugin configuration file
+For each Plugin you need a plugin configuration file. The plugin configuration file must be stored in the folder `/pluginconfig` and suffixed `.ini` for the system to not know the file and accept it.
+
+e.g.
+
+`/pluginconfig/plugin.ini` (configuration- and credentials file)
+
+It is also good to create an example file with the same name but with a suffix .example that describes what attributes are needed for the given system.
+
+`/pluginconfig/plugin.example` (example-file)
+
+The following configuration and credential attributes are allowed:
+
+    [Name of the system]
+    client_id =
+    client_secret =
+    auth =
+    auth_url =
+    base_uri =
+    redirect_uri =
+    endpoint_url =
+    owner_email =
+
+
+1.) Necessary attributes:
+
+[Name]
+
+This Name attribute should be the same as the Class name given in the Plugin-core file (plugin.php)
+
+2.) Alternative attributes:
+
+    auth
+
+This attritute tells the system what authentification system the plugin uses. The following authenification systems are built in:
+
+    auth = toker
+    or
+    auth = toker-test
+
+For systems that have not yet fully implemented a working source "plugin", there is the option to email the system owner. In this case, the auth attribute should be set to email. 
+
+    auth = email
+    owner_email =
+
+
+### Plugin core file
+
+The plugin core file should establish a connection to the provider-system and return one or more files.
+
+Plugin.php (core) should be named after the systems it connects to.
+
+    Important! The class must have the same name as the in the configurations file for the plugin-autoloader to recognize it.
+
+GenricPlugin
+
+The abstract class GenricPlugin establishes a base of interfaces and abstract classes that allow easily with the Portal and should be used
+
+    class MyPlugin extends GenericPlugin
+
 //TODO
 
+Dependency injection
+
+You can inject the (Case $case, Plugin $plugin, Status $status) instances into your class, either via constructor injection or method injection in case of a controller.
+
+
+
+
 ### Installed Packages
-The following client libraries are installed.
+The following client libraries are installed and can be used with your Plugin. If you need other libraries you can add them via composer.
 
 Guzzle 6: 	
         
@@ -153,7 +215,7 @@ Kamermans:
 ### Passing arguments/objects
 The Plugin should receive information from the PluginController by passing arguments (a search array and the plugin-object) to the constructor and should return a zip-file to be processed. The configuration file for the plugin should contain necessary data for connecting to the server e.g. client_id, client_secret, authorization code, callback uri, auth url, endpoint url.
 
-### Response Status Codes
+### Response Status Codes //TODO
 
 Status code | Description
 ------------ | -------------

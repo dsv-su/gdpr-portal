@@ -33,6 +33,7 @@ class DashboardController extends Controller
         if(!$record = Searchcase::latest()->first()) {
         }
         else {
+
             $plugins = Plugin::count();
             $cases = Searchcase::all();
             foreach ($cases as $case)

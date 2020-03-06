@@ -2,11 +2,15 @@
 
 namespace App;
 
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use kamermans\OAuth2\GrantType\AuthorizationCode;
+use kamermans\OAuth2\GrantType\RefreshToken;
+use kamermans\OAuth2\OAuth2Middleware;
 
 class Toker extends Model
 {
-    private $auth_url;
+    private $auth_url, $accessToken, $provider;
 
     public function __construct($case, $plugin, $status)
     {
@@ -35,5 +39,10 @@ class Toker extends Model
         header('Location: '.$this->auth_url);
 
         exit;
+    }
+
+    public function getToken($code)
+    {
+
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Searchcase;
 use App\Status;
 use App\Plugin;
-use Illuminate\Support\Facades\Cache;
 
 
 class SearchController extends Controller
@@ -29,16 +28,11 @@ class SearchController extends Controller
          * 4. Store initiate request data to Model
          * 5. Create folders for case
          * 6. Get token from Toker
-         ***************************************************
-        */
+         ***************************************************/
 
         /*************************************************************************************
         //  1. Handle formdata and start a new case
         /************************************************************************************/
-
-        $personnr = $request->input('gdpr_pnr');
-        $email = $request->input('gdpr_email');
-        $userid = $request->input('gdpr_uid');
 
         //Store formdata in array
         $search_request[] = $request->input('gdpr_pnr');
@@ -116,20 +110,25 @@ class SearchController extends Controller
         $dir->makedfolders();
 
         /*************************************************************************************
-        // 6. Get toker token
+        // 6. Get toker token for plugins
         /*************************************************************************************/
 
-        $pluginObject = new Plugin();
-        $plugin = $pluginObject->getPlugin('Scipro');
-        $status = Status::where([
-            ['searchcase_id','=', $request->id],
-            ['plugin_id', '=', $plugin->id],
-        ])->first();
+        $plugins = Plugin::all();
+        foreach ($plugins as $plugin)
+        {
+            if($plugin->auth == 'toker' or $plugin->auth == 'toker-test')
+            {
+                $status = Status::where([
+                    ['searchcase_id','=', $request->id],
+                    ['plugin_id', '=', $plugin->id],
+                ])->first();
+                $toker = new Toker($request, $plugin, $status);
 
-        $toker = new Toker($request, $plugin, $status);
-
-        $toker->auth();
-
+                $toker->auth();
+                exit;
+            }
+        }
+        return redirect()->action('PluginController@run');
     }
 
 

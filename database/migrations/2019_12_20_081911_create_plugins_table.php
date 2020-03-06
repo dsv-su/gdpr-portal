@@ -18,6 +18,7 @@ class CreatePluginsTable extends Migration
             $table->string('name');
             $table->string('client_id')->nullable();
             $table->string('client_secret')->nullable();
+            $table->string('auth')->nullable();
             $table->string('auth_url')->nullable();
             $table->string('base_uri')->nullable();
             $table->string('redirect_uri')->nullable();

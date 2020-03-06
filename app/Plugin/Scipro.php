@@ -8,7 +8,7 @@ use kamermans\OAuth2\OAuth2Middleware;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
-class Scipro
+class Scipro extends GenericPlugin
 {
             private $auth_url;
             private $reauth_client, $reauth_config, $grant_type, $refresh_grant_type, $oauth;
@@ -16,14 +16,7 @@ class Scipro
 
             private $id, $endpoint_url, $response;
             private $body, $zip;
-            protected $case, $plugin, $status, $code;
-
-            public function __construct($case, $plugin, $status)
-            {
-                $this->case = $case;
-                $this->plugin = $plugin;
-                $this->status = $status;
-            }
+            protected $code;
 
             public function auth()
             {
