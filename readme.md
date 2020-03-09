@@ -4,9 +4,9 @@
 1. Overview
 2. Requirements
 3. Installation
-4. Database
-5. Workflow
-6. Plugins
+4. Workflow
+5. Plugins
+6. Database
 7. User guide
 
 ## 1. Overview
@@ -49,75 +49,15 @@ Composer
 
 * Finally run `php artisan queue:work` OR any process monitor for your OS to start the processes for the pluginshandling.
 
-## 4. Database
-
-![Database](./public/images/guide/database.png)
-
-### 4.1 Status flags
-
-####  for each case
-
-status_processed | .
------------------|-------
-number of plugins + 1 (notification) |
-
-status_flag
-
-value | state
-------|------
-0 | System error; One or more systems reported a 400 or 404
-1 | Initial status
-2 | User not found
-3 | Request successful
-
-registrar
-
-value | state
-------|------
-0 | Downloaded zip has Not been sent to registrar
-1 | Downloaded zip has been sent to registrera at date (see sent_registrar)
-
-sent_registrar
-
-value | state
-------|------
-date | date when zip file was sent to registrar
-
-progress
-
-value | state
-------|------
-0 | Progress of request has been completed
-1 | Request is under progress
-
-plugins_processed
-
-plugins_processed | .
-------------------|------
-number of plugins that have been processed |
-
-download_status | .
-----------------|-----
-total download in % | 
-
-downloaded | .
------------|-------
-value | state 
-0 | No
-1| Yes
-
-#### statuses
-//TODO
-
-#### plugin
-//TODO
 
 
-## 5. Workflow
+
+
+## 4. Workflow
 
 ![Workflow](./public/images/guide/workflow.png)
 
-## 6. Plugins
+## 5. Plugins
 
 ## Implementing a new plugin
 //This section is in working progress --> 
@@ -237,6 +177,70 @@ HTTP Status code | Message code | Description
 409 | mismatch | The user data given exist in dublicate. Mismatch data given.
 500 | error | Internal Server Error
 300 | pending | Waiting for manual upload of data.
+
+## 6. Database
+
+![Database](./public/images/guide/database.png)
+
+### 6.1 Status flags
+
+####  for each case
+
+status_processed | .
+-----------------|-------
+number of plugins + 1 (notification) |
+
+status_flag
+
+value | state
+------|------
+0 | System error; One or more systems reported a 400 or 404
+1 | Initial status
+2 | User not found
+3 | Request successful
+
+registrar
+
+value | state
+------|------
+0 | Downloaded zip has Not been sent to registrar
+1 | Downloaded zip has been sent to registrera at date (see sent_registrar)
+
+sent_registrar
+
+value | state
+------|------
+date | date when zip file was sent to registrar
+
+progress
+
+value | state
+------|------
+0 | Progress of request has been completed
+1 | Request is under progress
+
+plugins_processed
+
+plugins_processed | .
+------------------|------
+number of plugins that have been processed |
+
+download_status | .
+----------------|-----
+total download in % | 
+
+downloaded | .
+-----------|-------
+value | state 
+0 | No
+1| Yes
+
+#### statuses
+//TODO
+
+#### plugin
+//TODO
+
 
 ## 7. User guide
 The trialversion (release candidate) of the portal can be found under the following url:
