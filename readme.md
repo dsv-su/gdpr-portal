@@ -228,7 +228,7 @@ The Plugin should return a status code if the resource is not returned and repor
 
 
 HTTP Status code | Message code | Description
------------- | -------------
+------------ | ------------- | --------------
 200 | ok | The request has succeeded. The client can read the result of the request in the body and the headers of the response.
 204 | not_found | User not Found - The requested user could not be found.
 400 | error | Bad Request - The request could not be understood by the server due to malformed syntax.
