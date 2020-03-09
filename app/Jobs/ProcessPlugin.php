@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ProcessPlugin implements ShouldQueue
 {
@@ -47,27 +48,45 @@ class ProcessPlugin implements ShouldQueue
         $getPlugin = 'get'. $this->plugin->name;
         $response = $system_instance->$getPlugin();
 
-        if ($response == 204)
+        if ($response == 204 or $response == 'not_found')
         {
             //**********************************************************************
             //User not found
             //**********************************************************************
             // Status flags
-            $this->status->setStatus(204);
+            //TODO Move this to new class
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'User not found - system reported 204');
+            $this->status->setStatus('not_found'); //204
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(0);
         }
-        else if( $response == 400 or $response == 404)
+        else if( $response == 400 or $response == 401 or $response == 404 or $response == 500 or $response == 'error')
         {
             //*********************************************************************
-            //Request denied
+            //Request Error
             //*********************************************************************
             //Status flags
+            //TODO Move this to new class
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'System Error - system reported 400 or 404');
+
             $this->case->setStatusFlag(0); //Download error
-            $this->status->setStatus(404);
+            $this->status->setStatus('error'); // 404
             $this->status->setProgressStatus(100); //Progressbar
             $this->status->setDownloadStatus(0);
 
+        }
+        else if( $response == 409 or $response == 'mismatch')
+        {
+            //*********************************************************************
+            //Request Mismatch
+            //*********************************************************************
+            //TODO Move this to new class
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'Mismatch - there is a mismatch in the request, please check the identity of the searched person');
+
+            $this->case->setStatusFlag(0); //Download error
+            $this->status->setStatus('mismatch'); // 404
+            $this->status->setProgressStatus(100); //Progressbar
+            $this->status->setDownloadStatus(0);
         }
         else
         {
@@ -85,13 +104,14 @@ class ProcessPlugin implements ShouldQueue
 
                 //Unzip
                 $dir->unzip($this->plugin->name);
-                $this->status->setStatus(200);
+                $this->status->setStatus('ok'); // 200
                 $this->status->setProgressStatus(100);
                 $this->status->setDownloadStatus(100);
             }
             else
             {
-                $this->status->setStatus($response);
+
+                $this->status->setStatus('ok'); //$response
                 $this->status->setProgressStatus(100);
                 //$this->status->setDownloadStatus(0); //Moved to plugin
             }

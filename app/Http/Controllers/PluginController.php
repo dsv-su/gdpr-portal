@@ -33,7 +33,7 @@ class PluginController extends Controller
                 ['searchcase_id', '=', $case->id],
                 ['plugin_name', '=', $plugin->name],
             ])->first();
-            if($casestatus->auth == 0)
+            if($casestatus->auth == 0 and $casestatus->auth_system == null)
             {
                 // Uncomment if other tokens are required
                 //$plugin_instance = new $name($case, $plugin, $casestatus);
@@ -41,6 +41,13 @@ class PluginController extends Controller
                 // Dispatch to que
                 $pluginjob = new ProcessPlugin($case, $plugin, $casestatus);
                 dispatch($pluginjob);
+            }
+            elseif ($casestatus->auth == 0 and $casestatus->auth_system == 'email')
+            {
+                //Send email
+                $casestatus->setProgressStatus(100);
+                $casestatus->setStatus('pending');
+                $case->setPluginSuccess(); //Plugin processed successful
             }
         }
         return redirect()->route('home');

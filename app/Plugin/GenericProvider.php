@@ -17,7 +17,8 @@ abstract class GenericPlugin
 
     public function auth()
     {
-
+        $this->status->auth = 1;
+        $this->status->save();
     }
 
     //abstract public function getResource($token);

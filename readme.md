@@ -51,7 +51,7 @@ Composer
 
 ## 4. Database
 
-//TODO
+![Database](./public/images/guide/database.png)
 
 ### 4.1 Status flags
 
@@ -186,17 +186,24 @@ Plugin.php (core) should be named after the systems it connects to.
 
 GenricPlugin
 
-The abstract class GenricPlugin establishes a base of interfaces and abstract classes that allow easily with the Portal and should be used
+The abstract class GenricPlugin establishes a base of interfaces and abstract classes that allow easily integration with the Portal and should be used
 
     class MyPlugin extends GenericPlugin
 
-//TODO
+The GenricPlugin class injects the following  instances to your subclass via the constructor:
+    
+    Case $case, Plugin $plugin, Status $status
+The Case $case instance holds the latest generated case.
 
-Dependency injection
+The Plugin $plugin instance holds the called plugin.
 
-You can inject the (Case $case, Plugin $plugin, Status $status) instances into your class, either via constructor injection or method injection in case of a controller.
+The Status $status instance holds the plugin-case-status.
 
+#### Plugin Authorization
 
+The GenricPlugin has a built in method to the Toker, issueing signed tokens, allowing the system to access resources that are permitted with that token.
+If you need to use a different system, you need to create a method, auth() for this in your subclass.
+If you dont use a signed token system you can pass an array of HTTP authentication parameters to use with the request.
 
 
 ### Installed Packages
@@ -215,16 +222,21 @@ Kamermans:
 ### Passing arguments/objects
 The Plugin should receive information from the PluginController by passing arguments (a search array and the plugin-object) to the constructor and should return a zip-file to be processed. The configuration file for the plugin should contain necessary data for connecting to the server e.g. client_id, client_secret, authorization code, callback uri, auth url, endpoint url.
 
-### Response Status Codes //TODO
+### Response Status Codes
 
-Status code | Description
+The Plugin should return a status code if the resource is not returned and report a status. There are two ways to return status codes. One option is to return HTTP codes or if the system lacks this option, to return the message codes below:
+
+
+HTTP Status code | Message code | Description
 ------------ | -------------
-200 | OK - The request has succeeded. The client can read the result of the request in the body and the headers of the response.
-202| Accepted - The request has been accepted for processing, but the processing has not been completed.
-204 | User not Found - The requested user could not be found.
-400 | Bad Request - The request could not be understood by the server due to malformed syntax.
-401 | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
-500 | Internal Server Error.
+200 | ok | The request has succeeded. The client can read the result of the request in the body and the headers of the response.
+204 | not_found | User not Found - The requested user could not be found.
+400 | error | Bad Request - The request could not be understood by the server due to malformed syntax.
+401 | error | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
+404 | error | Provider Server Error. Offline.
+409 | mismatch | The user data given exist in dublicate. Mismatch data given.
+500 | error | Internal Server Error
+300 | pending | Waiting for manual upload of data.
 
 ## 7. User guide
 The trialversion (release candidate) of the portal can be found under the following url:

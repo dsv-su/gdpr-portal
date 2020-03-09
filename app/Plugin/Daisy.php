@@ -7,12 +7,6 @@ use GuzzleHttp\Client;
 class Daisy extends GenericPlugin
 {
 
-    public function auth()
-    {
-        $this->status->auth = 1;
-        $this->status->save();
-    }
-
     public function getDaisy()
     {
         $client = new Client();

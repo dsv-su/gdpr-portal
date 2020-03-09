@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status', 'auth', 'callback','que'];
+    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status', 'auth', 'auth_system', 'callback','que'];
 
     public function initPluginStatus($caseid)
     {
@@ -22,6 +22,7 @@ class Status extends Model
                 'progress_status' => 0,
                 'download_status' => 0,
                 'auth' => 0,
+                'auth_system' => $plugin->auth,
                 'callback' => 0,
                 'zip' => 0,
             ]);
@@ -31,7 +32,23 @@ class Status extends Model
 
     public function setStatus($value)
     {
-        $this->status = $value;
+        switch($value)
+        {
+            case 'ok':
+                $this->status = 200;
+                break;
+            case 'not_found':
+                $this->status = 204;
+                break;
+            case 'error':
+                $this->status = 400;
+                break;
+            case 'mismatch':
+                $this->status = 409;
+                break;
+            case 'pending':
+                $this->status = 300;
+        }
         $this->save();
     }
 

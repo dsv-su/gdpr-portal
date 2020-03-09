@@ -6,11 +6,6 @@ use GuzzleHttp\Client;
 
 class Utbytes extends GenericPlugin
 {
-    public function auth()
-    {
-        $this->status->auth = 1;
-        $this->status->save();
-    }
 
     public function getUtbytes()
     {
@@ -43,6 +38,7 @@ class Utbytes extends GenericPlugin
             } else
             {
                 $this->status->setDownloadStatus(0);
+
                 return $response->getStatusCode();
             }
 

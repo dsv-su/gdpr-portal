@@ -9,12 +9,6 @@ class Otrs extends GenericPlugin
 {
     private $response;
 
-    public function auth()
-    {
-        $this->status->auth = 1;
-        $this->status->save();
-    }
-
     public function getOtrs()
     {
         $client = new Client(['cookies' => true]);
@@ -103,6 +97,7 @@ class Otrs extends GenericPlugin
                                             Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/' . $value->TicketID . '.pdf', $pdf);
 
                                         } else
+
                                             return $this->response->getStatusCode();
 
                                     }
