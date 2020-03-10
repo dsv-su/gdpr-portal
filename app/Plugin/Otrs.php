@@ -53,10 +53,11 @@ class Otrs extends GenericPlugin
             //dd($json);
             if ($json == null)
             {
-                return 204;
+                return 'not_found';
             }
             else {
                 $files = count($json->tickets); //Number of files
+                //dd($files);
                 $progress = 15;
                             foreach ($json->tickets as $value) {
 
@@ -84,7 +85,7 @@ class Otrs extends GenericPlugin
 
                                          }
 
-                                    //Processing response from Moodle
+                                    //Processing response from Otrs
                                     if ($this->response) {
                                         if ($this->response->getStatusCode() == 200) {
 
@@ -97,14 +98,35 @@ class Otrs extends GenericPlugin
                                             Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/' . $value->TicketID . '.pdf', $pdf);
 
                                         } else
+                                        {
+                                            $this->status->setDownloadStatus(0);
+                                            switch($this->response->getStatusCode())
+                                            {
+                                                case 204:
+                                                    return 'not_found';
+                                                    break;
+                                                case 400:
+                                                    return 'error';
+                                                    break;
+                                                case 401:
+                                                    return 'error';
+                                                    break;
+                                                case 404:
+                                                    return 'error';
+                                                    break;
+                                                case 409:
+                                                    return 'mismatch';
+                                                    break;
+                                            }
+                                            return 'ok';
+                                        }
 
-                                            return $this->response->getStatusCode();
 
                                     }
                             }
             }
         }
         $this->status->setDownloadStatus(100);
-        return 200;
+        return 'ok';
     }
 }

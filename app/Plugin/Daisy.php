@@ -18,7 +18,24 @@ class Daisy extends GenericPlugin
              */
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
-
+                switch($response->getStatusCode())
+                {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400:
+                        return 'error';
+                        break;
+                    case 401:
+                        return 'error';
+                        break;
+                    case 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
                 return $response->getStatusCode();
 
             }
@@ -38,7 +55,26 @@ class Daisy extends GenericPlugin
             } else
             {
                 $this->status->setDownloadStatus(0);
-                return $response->getStatusCode();
+                switch($response->getStatusCode())
+                {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400:
+                        return 'error';
+                        break;
+                    case 401:
+                        return 'error';
+                        break;
+                    case 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
+
+                return 'error';
             }
 
 

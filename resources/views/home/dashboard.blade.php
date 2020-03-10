@@ -67,6 +67,8 @@
                                                 class="progress-bar progress-bar-striped bg-danger"
                                             @elseif ($plugin->status == 300)
                                                 class="progress-bar bg-success"
+                                            @elseif ($plugin->status == 301)
+                                            class="progress-bar bg-success"
                                             @endif
                                             role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}
                                             @if ($plugin->status == 204)
@@ -75,7 +77,9 @@
                                                 Systemfel
                                             @elseif ($plugin->status == 300)
                                                 Väntar
-                                            @endif
+                                             @elseif ($plugin->status == 301)
+                                                 Kontaktar
+                                             @endif
                                             </div>
                                      </div>
                                 @endif

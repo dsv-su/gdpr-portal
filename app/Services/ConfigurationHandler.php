@@ -36,7 +36,7 @@ class ConfigurationHandler extends Model
         $list = $this->getFiles($plugindir);
         //dd($list);
         foreach ($list as $filename) {
-            // Read the plugin .ini file and store in table
+            // Read the .ini file and store in table
             if (substr($filename, -3) == 'ini') {
 
                 $file = $plugindir . $filename;
@@ -44,23 +44,33 @@ class ConfigurationHandler extends Model
                     $file = $plugindir . $filename . '.example';
                 }
                 $config = parse_ini_file($file, true);
-                $config = json_encode($config);
 
-                $config = json_decode($config);
-                //Store in Plugin
-                $plugin = new Plugin();
-                $plugintable = $plugin->getFillable();
-                foreach ($config as $key => $item) {
-                    $plugin->name = $key;
-                    foreach ($plugintable as $pluginitem) {
-                        foreach ($item as $key2 => $item2) {
-                            if ($pluginitem == $key2) {
-                                $plugin->$pluginitem = $item2;
+                foreach ($config as $configkey=>$configvalue) {
+                    $pluginrow = array([$configkey => $configvalue]);
+
+                    foreach ($pluginrow as $config) {
+
+                        $config = json_encode($config);
+
+                        $config = json_decode($config);
+
+                        //Store in Plugin
+                        $plugin = new Plugin();
+                        $plugintable = $plugin->getFillable();
+                        foreach ($config as $key => $item) {
+                            $plugin->name = $key;
+                            foreach ($plugintable as $pluginitem) {
+                                foreach ($item as $key2 => $item2) {
+                                    if ($pluginitem == $key2) {
+                                        $plugin->$pluginitem = $item2;
+                                    }
+                                }
                             }
+                            $plugin->save();
                         }
                     }
-                    $plugin->save();
                 }
+
             }
         }
     }

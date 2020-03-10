@@ -40,7 +40,7 @@ class ProcessPlugin implements ShouldQueue
     public function handle()
     {
         //Start request to Plugin
-        $this->status->setProgressStatus(5);
+        $this->status->setProgressStatus(100);
         $this->status->setDownloadStatus(5);
 
         $system = 'App\Plugin\\'. $this->plugin->name;
@@ -48,7 +48,7 @@ class ProcessPlugin implements ShouldQueue
         $getPlugin = 'get'. $this->plugin->name;
         $response = $system_instance->$getPlugin();
 
-        if ($response == 204 or $response == 'not_found')
+        if ( $response == 'not_found')
         {
             //**********************************************************************
             //User not found
@@ -60,7 +60,7 @@ class ProcessPlugin implements ShouldQueue
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(0);
         }
-        else if( $response == 400 or $response == 401 or $response == 404 or $response == 500 or $response == 'error')
+        else if(  $response == 'error')
         {
             //*********************************************************************
             //Request Error
@@ -75,7 +75,7 @@ class ProcessPlugin implements ShouldQueue
             $this->status->setDownloadStatus(0);
 
         }
-        else if( $response == 409 or $response == 'mismatch')
+        else if(  $response == 'mismatch')
         {
             //*********************************************************************
             //Request Mismatch

@@ -6,28 +6,29 @@ use GuzzleHttp\Client;
 
 class Utbytes extends GenericPlugin
 {
+    private $response;
 
     public function getUtbytes()
     {
         $client = new Client();
         try {
-            $response = $client->get($this->plugin->base_uri . 'email=' . $this->case->request_email . '&pn=' . $this->case->request_pnr);
+            $this->response = $client->get($this->plugin->base_uri . 'email=' . $this->case->request_email . '&pn=' . $this->case->request_pnr);
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;
              */
             if ($e->hasResponse()) {
-                $response = $e->getResponse();
+                $this->response = $e->getResponse();
 
-                return $response->getStatusCode();
+                return $this->response->getStatusCode();
 
             }
         }
 
         //Processing response from Utbytes
-        if ($response) {
-            if ($response->getStatusCode() == 200) {
-                $body = $response->getBody();
+        if ($this->response) {
+            if ($this->response->getStatusCode() == 200) {
+                $body = $this->response->getBody();
 
                 // Read contents of the body
                 $zip = $body->getContents();
@@ -38,8 +39,26 @@ class Utbytes extends GenericPlugin
             } else
             {
                 $this->status->setDownloadStatus(0);
+                switch($this->response->getStatusCode())
+                {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400:
+                        return 'error';
+                        break;
+                    case 401:
+                        return 'error';
+                        break;
+                    case 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
 
-                return $response->getStatusCode();
+                return 'error';
             }
 
 

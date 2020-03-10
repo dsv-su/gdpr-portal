@@ -40,9 +40,27 @@ class Moodle extends GenericPlugin
             } else
             {
                 $this->status->setDownloadStatus(0);
-                return $this->response->getStatusCode();
-            }
+                switch($this->response->getStatusCode())
+                {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400:
+                        return 'error';
+                        break;
+                    case 401:
+                        return 'error';
+                        break;
+                    case 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
 
+                return 'error';
+            }
 
         }
     }
