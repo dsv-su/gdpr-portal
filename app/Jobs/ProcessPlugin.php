@@ -43,6 +43,9 @@ class ProcessPlugin implements ShouldQueue
         $this->status->setProgressStatus(100);
         $this->status->setDownloadStatus(5);
 
+        //Prepare reporting
+        $dir = new CaseStore($this->case);
+
         $system = 'App\Plugin\\'. $this->plugin->name;
         $system_instance = new $system($this->case, $this->plugin, $this->status);
         //For classname = methodname
@@ -56,8 +59,7 @@ class ProcessPlugin implements ShouldQueue
             //User not found
             //**********************************************************************
             // Status flags
-            //TODO Move this to new class
-            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'User not found - system reported 204');
+            $dir->errorMessage($this->plugin, $response);
             $this->status->setStatus('not_found'); //204
             $this->status->setProgressStatus(100);
             $this->status->setDownloadStatus(0);
@@ -68,9 +70,7 @@ class ProcessPlugin implements ShouldQueue
             //Request Error
             //*********************************************************************
             //Status flags
-            //TODO Move this to new class
-            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'System Error - system reported 400 or 404');
-
+            $dir->errorMessage($this->plugin, $response);
             $this->case->setStatusFlag(0); //Download error
             $this->status->setStatus('error'); // 404
             $this->status->setProgressStatus(100); //Progressbar
@@ -82,9 +82,8 @@ class ProcessPlugin implements ShouldQueue
             //*********************************************************************
             //Request Mismatch
             //*********************************************************************
-            //TODO Move this to new class
-            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/Felmeddelande' . '.txt', 'Mismatch - there is a mismatch in the request, please check the identity of the searched person');
 
+            $dir->errorMessage($this->plugin, $response);
             $this->case->setStatusFlag(0); //Download error
             $this->status->setStatus('mismatch'); // 404
             $this->status->setProgressStatus(100); //Progressbar
@@ -98,7 +97,7 @@ class ProcessPlugin implements ShouldQueue
 
             //Create folders for retrived data
             if( $this->status->zip == 1 ) {
-                $dir = new CaseStore($this->case);
+
                 $dir->makesystemfolder($this->plugin->name);
 
                 //Store zipfile in directory

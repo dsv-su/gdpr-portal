@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Plugin;
 use App\Searchcase;
 use App\Status;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,23 @@ class CaseStore extends Model
     public function __construct($case)
     {
         $this->case = $case;
+
+    }
+
+    public function errorMessage(Plugin $plugin, $error)
+    {
+        switch ($error)
+        {
+            case 'error':
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$plugin->name. '/error_400' . '.txt', 'System Fel - systemet returnerade 400 eller 404');
+            break;
+            case 'not_found':
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$plugin->name. '/error_204' . '.txt', 'Användaren hittades inte - systemet returnerade 204');
+            break;
+            case 'mismatch':
+            Storage::disk('public')->put($this->case->case_id . '/raw/'.$plugin->name. '/error_409' . '.txt', 'Användardatan överensstämmer inte - det finns dubbletter.');
+            break;
+        }
 
     }
 

@@ -20,8 +20,20 @@ class Moodle extends GenericPlugin
              */
             if ($e->hasResponse()) {
                 $this->response = $e->getResponse();
-
-                return $this->response->getStatusCode();
+                switch($this->response->getStatusCode())
+                {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400 or 401 or 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
+                //return $this->response->getStatusCode();
+                return 'error';
 
             }
         }
