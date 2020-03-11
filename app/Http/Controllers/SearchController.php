@@ -112,7 +112,6 @@ class SearchController extends Controller
         /*************************************************************************************
         // 6. Get toker token for plugins
         /*************************************************************************************/
-
         $plugins = Plugin::all();
         foreach ($plugins as $plugin)
         {

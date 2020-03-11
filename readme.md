@@ -33,7 +33,7 @@ Composer
 
 * Install the dependencies. `composer install`
 
-* Make sure that .env file is present and configured as needed (copy .env.example to .env)
+* Make sure that .env file is present (copy .env.example to .env)
 
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
@@ -41,7 +41,7 @@ Composer
 
 * In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
 
-* The redirect URL addresses are in the form BASE-URL/PLUGIN-name/callback
+* The redirect URL addresses are in the form BASE-URL/PLUGIN-name/callback if you need to define a callback
 
 * If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 
@@ -60,7 +60,6 @@ Composer
 ## 5. Plugins
 
 ## Implementing a new plugin
-//This section is in working progress --> 
 
 ### Plugin pattern/structure
 The plugin handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists basically of two files; A main file with a class that establishes a connection to a system and returns one or more files and a configurations file containing credential- and configuration information to the system. All plugins are handled by the PluginController.
@@ -93,23 +92,44 @@ The following configuration and credential attributes are allowed:
     endpoint_url =
     owner_email =
 
+If you have systems that use the same plugin you can stack them in the same configuration file.
+e.g.
 
+    [System1]
+    client_id =
+    client_secret =
+    auth =
+    auth_url =
+    base_uri =
+    redirect_uri =
+    endpoint_url =
+    owner_email =
+    
+    [System2]
+    client_id =
+    client_secret =
+    auth =
+    auth_url =
+    base_uri =
+    redirect_uri =
+    endpoint_url =
+    owner_email =
+    
+    
 1.) Necessary attributes:
 
 [Name]
 
-This Name attribute should be the same as the Class name given in the Plugin-core file (plugin.php)
+The only compulsory attribute for a plugin is the Name attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file (plugin.php -> system1.php)
 
 2.) Alternative attributes:
 
     auth
 
-This attritute tells the system what authentification system the plugin uses. The following authenification systems are built in:
+If a alternative token authentification system is used this attribute should be set to "other". The default authenification system used is toker.
 
-    auth = toker
-    or
-    auth = toker-test
-
+    auth = other
+    
 For systems that have not yet fully implemented a working source "plugin", there is the option to email the system owner. In this case, the auth attribute should be set to email. 
 
     auth = email
@@ -122,7 +142,7 @@ The plugin core file should establish a connection to the provider-system and re
 
 Plugin.php (core) should be named after the systems it connects to.
 
-    Important! The class must have the same name as the in the configurations file for the plugin-autoloader to recognize it.
+    Important! The class must have the same name as the filename for the plugin-autoloader to recognize it.
 
 GenricPlugin
 
@@ -133,6 +153,7 @@ The abstract class GenricPlugin establishes a base of interfaces and abstract cl
 The GenricPlugin class injects the following  instances to your subclass via the constructor:
     
     Case $case, Plugin $plugin, Status $status
+    
 The Case $case instance holds the latest generated case.
 
 The Plugin $plugin instance holds the called plugin.
@@ -142,7 +163,7 @@ The Status $status instance holds the plugin-case-status.
 #### Plugin Authorization
 
 The GenricPlugin has a built in method to the Toker, issueing signed tokens, allowing the system to access resources that are permitted with that token.
-If you need to use a different system, you need to create a method, auth() for this in your subclass.
+If you need to use a different system, you need to create a method, auth() for this in your subclass and add the auth = other attribute in your configuration file.
 If you dont use a signed token system you can pass an array of HTTP authentication parameters to use with the request.
 
 
@@ -164,19 +185,19 @@ The Plugin should receive information from the PluginController by passing argum
 
 ### Response Status Codes
 
-The Plugin should return a status code if the resource is not returned and report a status. There are two ways to return status codes. One option is to return HTTP codes or if the system lacks this option, to return the message codes below:
+The Plugin should return a status code if the resource is not returned and report a status.  The message codes below have been designed for this purpose:
 
 
-HTTP Status code | Message code | Description
+Message code | corresponds to HTTP Status code |  Description
 ------------ | ------------- | --------------
-200 | ok | The request has succeeded. The client can read the result of the request in the body and the headers of the response.
-204 | not_found | User not Found - The requested user could not be found.
-400 | error | Bad Request - The request could not be understood by the server due to malformed syntax.
-401 | error | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
-404 | error | Provider Server Error. Offline.
-409 | mismatch | The user data given exist in dublicate. Mismatch data given.
-500 | error | Internal Server Error
-300 | pending | Waiting for manual upload of data.
+ok | (200) | The request has succeeded. The client can read the result of the request in the body and the headers of the response.
+not_found | (204) | User not Found - The requested user could not be found.
+error | (400) | Bad Request - The request could not be understood by the server due to malformed syntax.
+error | (401) | Unauthorized - The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
+error | (404) | Provider Server Error. Offline.
+mismatch | (409) | The user data given exist in dublicate. Mismatch data given.
+error | (500) | Internal Server Error
+pending | (300) | Waiting for manual upload of data.
 
 ## 6. Database
 
