@@ -8,7 +8,7 @@ class Utbytes extends GenericPlugin
 {
     private $response;
 
-    public function getUtbytes()
+    public function getResource() //getUtbytes()
     {
         $client = new Client();
         try {
@@ -44,13 +44,7 @@ class Utbytes extends GenericPlugin
                     case 204:
                         return 'not_found';
                         break;
-                    case 400:
-                        return 'error';
-                        break;
-                    case 401:
-                        return 'error';
-                        break;
-                    case 404:
+                    case 400 or 401 or 404:
                         return 'error';
                         break;
                     case 409:

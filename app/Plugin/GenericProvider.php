@@ -21,5 +21,5 @@ abstract class GenericPlugin
         $this->status->save();
     }
 
-    //abstract public function getResource($token);
+    abstract public function getResource();
 }

@@ -45,8 +45,10 @@ class ProcessPlugin implements ShouldQueue
 
         $system = 'App\Plugin\\'. $this->plugin->name;
         $system_instance = new $system($this->case, $this->plugin, $this->status);
-        $getPlugin = 'get'. $this->plugin->name;
-        $response = $system_instance->$getPlugin();
+        //For classname = methodname
+        //$getPlugin = 'get'. $this->plugin->name;
+        //$response = $system_instance->$getPlugin();
+        $response = $system_instance->getResource();
 
         if ( $response == 'not_found')
         {

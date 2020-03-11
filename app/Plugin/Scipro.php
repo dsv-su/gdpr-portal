@@ -41,7 +41,7 @@ class Scipro extends GenericPlugin
             }
 
 
-            public function getScipro()
+            public function getResource() //getScipro()
         {
             // Authorization client - this is used to request OAuth access tokens
             $this->reauth_client = new Client([
@@ -104,13 +104,7 @@ class Scipro extends GenericPlugin
                         case 204:
                             return 'not_found';
                             break;
-                        case 400:
-                            return 'error';
-                            break;
-                        case 401:
-                            return 'error';
-                            break;
-                        case 404:
+                        case 400 or 401 or 404:
                             return 'error';
                             break;
                         case 409:
