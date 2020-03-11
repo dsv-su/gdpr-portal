@@ -43,7 +43,7 @@ return array(
     'App\\Notifications\\RequestFinished' => $baseDir . '/app/Notifications/RequestFinished.php',
     'App\\Plugin' => $baseDir . '/app/Plugin.php',
     'App\\Plugin\\Daisy' => $baseDir . '/app/Plugin/Daisy.php',
-    'App\\Plugin\\GenericPlugin' => $baseDir . '/app/Plugin/GenericProvider.php',
+    'App\\Plugin\\GenericPlugin' => $baseDir . '/app/Plugin/GenericPlugin.php',
     'App\\Plugin\\Moodle' => $baseDir . '/app/Plugin/Moodle.php',
     'App\\Plugin\\Otrs' => $baseDir . '/app/Plugin/Otrs.php',
     'App\\Plugin\\Scipro' => $baseDir . '/app/Plugin/Scipro.php',

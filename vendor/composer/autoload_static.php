@@ -498,7 +498,7 @@ class ComposerStaticInitee1a0fa2a4348a3a2c0005e6b9edfef5
         'App\\Notifications\\RequestFinished' => __DIR__ . '/../..' . '/app/Notifications/RequestFinished.php',
         'App\\Plugin' => __DIR__ . '/../..' . '/app/Plugin.php',
         'App\\Plugin\\Daisy' => __DIR__ . '/../..' . '/app/Plugin/Daisy.php',
-        'App\\Plugin\\GenericPlugin' => __DIR__ . '/../..' . '/app/Plugin/GenericProvider.php',
+        'App\\Plugin\\GenericPlugin' => __DIR__ . '/../..' . '/app/Plugin/GenericPlugin.php',
         'App\\Plugin\\Moodle' => __DIR__ . '/../..' . '/app/Plugin/Moodle.php',
         'App\\Plugin\\Otrs' => __DIR__ . '/../..' . '/app/Plugin/Otrs.php',
         'App\\Plugin\\Scipro' => __DIR__ . '/../..' . '/app/Plugin/Scipro.php',
