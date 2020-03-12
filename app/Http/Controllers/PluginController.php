@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessPlugin;
+use App\Mail\GDPRExtractRequest;
 use App\Searchcase;
 use App\Status;
 use Illuminate\Http\Request;
 use App\Plugin;
-
+use Illuminate\Support\Facades\Mail;
 
 class PluginController extends Controller
 {
@@ -45,6 +46,9 @@ class PluginController extends Controller
             elseif ($casestatus->auth == 0 and $casestatus->auth_system == 'email')
             {
                 //Send email
+                Mail::to($plugin->owner_email)
+                    ->queue(new GDPRExtractRequest($case));
+
                 $casestatus->setProgressStatus(100);
                 $casestatus->setStatus('pending');
                 $case->setPluginSuccess(); //Plugin processed successful

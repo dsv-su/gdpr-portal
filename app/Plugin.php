@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Plugin extends Model
 {
-    protected $fillable = ['name', 'client_id', 'client_secret', 'auth', 'auth_url', 'base_uri', 'redirect_uri', 'endpoint_url', 'status'];
+    protected $fillable = ['name', 'client_id', 'client_secret', 'auth', 'auth_url', 'base_uri', 'redirect_uri', 'endpoint_url','owner_email', 'status'];
 
     public function getPlugin($name)
     {

@@ -38,6 +38,10 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 //Email registrar
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
+//File upload
+Route::get('/file', 'FileController@index')->name('home');
+Route::post('/file/upload', 'FileController@store')->name('file.upload');
+
 //**********************************************************************************************
 //Testing routes - to be removed in production
 //**********************************************************************************************

@@ -9,6 +9,16 @@ class Searchcase extends Model
     protected $fillable = ['case_id', 'visability', 'gdpr_userid','gdpr_useremail', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'plugins_processed', 'download_status', 'downloaded'];
     private $request;
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function uploads()
+    {
+        return $this->hasMany(Upload::class);
+    }
+
     public function initCase($user, $search, $case_id)
     {
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Searchcase;
 use App\Mail\RegistrarSend;
 use App\System;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 
@@ -28,4 +28,5 @@ class EmailController extends Controller
         return redirect()->route('home');
 
     }
+
 }
