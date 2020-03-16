@@ -27,7 +27,8 @@ class SearchController extends Controller
          * 3. Generate unique request id
          * 4. Store initiate request data to Model
          * 5. Create folders for case
-         * 6. Get token from Toker
+         * 6 Check which plugins to run
+         * 7. Get token from Toker
          ***************************************************/
 
         /*************************************************************************************
@@ -38,6 +39,12 @@ class SearchController extends Controller
         $search_request[] = $request->input('gdpr_pnr');
         $search_request[] = $request->input('gdpr_email');
         $search_request[] = $request->input('gdpr_uid');
+
+        $plugins = Plugin::all();
+        foreach ($plugins as $plugin)
+        {
+            $plugin_activate[] = $request->input($plugin->name);
+        }
 
         /*************************************************************************************
         //  2. Check which server is running dev/methone to issue correct loginformation
@@ -54,7 +61,7 @@ class SearchController extends Controller
         //Check that plugins have been loaded
         if( Plugin::count() == 0 )
         {
-            dd('Please initiate script first by going bach and refreshing page!');
+            dd('Please initiate script first by going back and refreshing page!');
             return redirect()->route('home');
         }
 
@@ -110,9 +117,31 @@ class SearchController extends Controller
         $dir->makedfolders();
 
         /*************************************************************************************
-        // 6. Get toker token for plugins
-        /*************************************************************************************/
+        //  6. Check which plugins to run
+        /************************************************************************************/
         $plugins = Plugin::all();
+        $x = 0;
+        foreach ($plugins as $plugin)
+        {
+            $status = Status::where([
+                ['searchcase_id','=', $request->id],
+                ['plugin_id', '=', $plugin->id],
+                ])->first();
+                if($plugin_activate[$x] == 1)
+                {
+                    $status->auth = $plugin_activate[$x];
+                    $request->setPluginSuccess(); //Plugin processed successful
+                    $status->setStatus('not_selected');
+                    $status->save();
+                    $request->save();
+                }
+                $x++;
+        }
+
+        /*************************************************************************************
+        // 7. Get toker token for plugins
+        /*************************************************************************************/
+
         foreach ($plugins as $plugin)
         {
             if($plugin->auth == 'toker' or $plugin->auth == 'toker-test')

@@ -21,21 +21,27 @@ class DashboardController extends Controller
                 $init = new ConfigurationHandler();
                 $init->handle_plugins();
                 $init->handle_system();
+                $collapse = 0;
             }
         }
         //-----------------------------------------------
 
         $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
+        $data['plugins'] = Plugin::all();
         $data['pluginstatuses'] = Status::all();
 
         //TODO -> This should be reworked <- Check download status
         if(!$record = Searchcase::latest()->first()) {
+            $collapse = 0;
+            $data['init'] = 0;
         }
         else {
-
+            $collapse = $record->progress;
             $plugins = Plugin::count();
             $cases = Searchcase::all();
+            if (!empty($cases))
+                $data['init'] = 1;
             foreach ($cases as $case)
             {
                 if($case->status_flag == 3)
@@ -59,6 +65,9 @@ class DashboardController extends Controller
         else {
             $data['gdpr_user'] = 'Ryan Dias';
         }
+
+        $data['collapse'] = $collapse;
+
         return view('home.dashboard', $data);
     }
 
@@ -68,8 +77,10 @@ class DashboardController extends Controller
         $data['pluginstatuses'] = Status::all();
         //TODO -> Check download status
         if(!$record = Searchcase::latest()->first()) {
+            $data['init'] = 0;
         }
         else {
+            $collapse = $record->progress;
             $plugins = Plugin::count();
             $cases = Searchcase::all();
             foreach ($cases as $case)
@@ -86,6 +97,7 @@ class DashboardController extends Controller
             }
 
         }
+        $data['collapse'] = $collapse;
         return view('home.status', $data);
     }
 

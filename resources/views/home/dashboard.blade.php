@@ -27,15 +27,35 @@
             </div>
         </div>
         <div class="b">
-            <button type="submit" class="btn btn-outline-primary">Skicka</button>
+            <button type="submit" class="btn btn-outline-primary" data-toggle="collapse" data-target="#collapse" id="send">Skicka</button>
             <div class="req">
             </div>
         </div>
-    </form>
+
     <br>
-    <!-- End form-->
-    <div class="row row-no-gutters"id="cases" >
-        <table class="table table-sm table-fixed">
+    <!-- Start collapsable div-->
+    @if ($collapse == 0)
+        <div class="collapse show" id="collapse">
+    @elseif ($collapse == 1)
+        <div class="collapse" id="collapse">
+    @endif
+            <div class="d">
+                <table class="table">
+                    <tr>
+                @foreach ($plugins as $plugin)
+                    <td>
+                    <input type="hidden" name="{{ $plugin->name }}" value=1>
+                    {{ $plugin->name }}&nbsp;&nbsp;<input type="checkbox" id="{{ $plugin->name }}" name=" {{ $plugin->name }}" value=0 checked>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                @endforeach
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+    <!-- End Collapseable form -->
+    <div class="row row-no-gutters" >
+        <table class="table table-sm table-fixed" id="cases">
             <thead>
             <tr>
                 <th scope="col"><i class="fas fa-barcode"></i> ÄrendeId:</th>
@@ -68,9 +88,11 @@
                                             @elseif ($plugin->status == 300)
                                                 class="progress-bar bg-success"
                                             @elseif ($plugin->status == 301)
-                                            class="progress-bar bg-success"
+                                                class="progress-bar bg-success"
+                                            @elseif ($plugin->status == 307)
+                                                class="progress-bar bg-info"
                                             @endif
-                                            role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}
+                                            role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
                                             @if ($plugin->status == 204)
                                                 Personen kan inte hittas
                                             @elseif ($plugin->status == 400 or $plugin->status == 404)
@@ -79,6 +101,8 @@
                                                 Väntar
                                              @elseif ($plugin->status == 301)
                                                  Kontaktar
+                                             @elseif ($plugin->status == 307)
+                                                 Inte vald
                                              @endif
                                             </div>
                                      </div>
@@ -126,11 +150,21 @@
 
     <script>
         $(document).ready(function () {
+            <?php if ($init == 1) { ?>
             var auto_refresh = setInterval(
                 function() {
                     $('#cases').load('<?php echo url('/status');?>').fadeIn("slow");
                 },1000);
-
+            <?php } ?>
+            $( "#gdpr_pnr" ).change(function() {
+                $('.collapse').show();
+            });
+            $( "#gdpr_email" ).change(function() {
+                $('.collapse').show();
+            });
+            $( "#gdpr_uid" ).change(function() {
+                $('.collapse').show();
+            });
         });
     </script>
 @endsection

@@ -48,6 +48,10 @@ class Status extends Model
                 break;
             case 'pending':
                 $this->status = 300;
+                break;
+            case 'not_selected':
+                $this->status = 307;
+                break;
         }
         $this->save();
     }

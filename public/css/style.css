@@ -87,6 +87,9 @@ form {
     border: 0;
     padding: 10px;
     font-size: 1.0rem; }
+  form > div.d {
+    display: inline-block;
+    border: 2px solid #41D873; }
 
 body {
   background: #FFF;
@@ -103,6 +106,10 @@ table b {
   background-size: 18px;
   background-repeat: no-repeat;
   opacity: 100%; }
+
+table list {
+  font-size: 2.5rem;
+  box-shadow: 2px 2px 2px 2px #e5dfcc; }
 
 table tr th,
 table tr td {

@@ -12,7 +12,7 @@
 */
 //Endpoint
 Route::get('/', 'DashboardController@index')->name('home');
-Route::get('/status','DashboardController@status');
+Route::get('/status','DashboardController@status')->name('home_status');
 
 //Download completed gdpr-request
 Route::get('/download/{id}', 'DashboardController@download')->name('download');
@@ -39,8 +39,9 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
 //File upload
-Route::get('/file', 'FileController@index')->name('home');
+Route::get('/file', 'FileController@index');
 Route::post('/file/upload', 'FileController@store')->name('file.upload');
+Route::post('upload', 'FileController@upload')->name('upload');
 
 //**********************************************************************************************
 //Testing routes - to be removed in production

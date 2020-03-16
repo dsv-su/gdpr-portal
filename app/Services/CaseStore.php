@@ -155,13 +155,14 @@ class CaseStore extends Model
         $case = Searchcase::find($id);
         //Delete cpmpact zip-file
         //unlink($case->case_id.'.zip');
-        //Delete directory structure
+        //Delete entire directory structure
         Storage::deleteDirectory('/public/'.$case->case_id);
+        $case->delete(); //Added temp to test checkboxview uncomment down
         // Reset flags
-        $case->visability = 0;
+        //$case->visability = 0;
         //$case->registrar = 0;
         //$case->plugins_processed = 0;
-        $case->save();
+        //$case->save();
         //Delete status data
         $deletedRows = Status::where('searchcase_id', $id)->delete();
     }

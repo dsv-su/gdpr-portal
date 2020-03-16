@@ -1,4 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 form {
     //max-width: 450px;
@@ -110,7 +112,10 @@ form {
         padding: 10px;
         font-size: 1.0rem;
     }
-
+    >div.d {
+        display: inline-block;
+        border: 2px solid #41D873;
+    }
 }
 
 body {
@@ -135,6 +140,10 @@ table b {
     background-repeat: no-repeat;
     //background-position: 10px 10px;
     opacity: 100%;
+}
+table list {
+    font-size: 2.5rem;
+    box-shadow: 2px 2px 2px 2px #e5dfcc;
 }
 table tr th,
 table tr td {
