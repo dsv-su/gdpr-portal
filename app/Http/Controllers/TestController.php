@@ -19,14 +19,8 @@ use RecursiveIteratorIterator;
 
 class TestController extends Controller
 {
-    public function callback($provider)
+    public function auth()
     {
-        dd($provider);
-    }
-
-    public function gettoken()
-    {
-
         $case = Searchcase::latest()->first();
         $plugindriver = new Plugin();
         $plugin = $plugindriver->getPlugin('Scipro');
@@ -35,16 +29,47 @@ class TestController extends Controller
             ['plugin_id', '=', $plugin->id],
         ])->first();
 
+        $toker =new Toker($case, $plugin, $status);
+        $toker->auth();
+    }
+    public function callback()
+    {
+        //Retrive code from callback
+        $code = $_GET['code'];
+    }
+
+    public function gettoken()
+    {
+        //Retrive code from callback
+        $code = $_GET['code'];
+        $case = Searchcase::latest()->first();
+        $plugindriver = new Plugin();
+        $plugin = $plugindriver->getPlugin('Scipro');
+        $status = Status::where([
+            ['searchcase_id','=', $case->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
+        dd('Done');
         $token = new Toker($case, $plugin, $status);
-        $token->getToken($status->code);
+        $access_token = $token->getToken($code);
+        $status->token = $access_token;
+        $status->save();
+
 
     }
 
     //Test connection to scipro with auth-> and callback.
-    public function test_scipro(TestScipro $testscipro)
+    public function test_scipro()
     {
+        $case = Searchcase::latest()->first();
+        $plugindriver = new Plugin();
+        $plugin = $plugindriver->getPlugin('Scipro');
+        $status = Status::where([
+            ['searchcase_id','=', $case->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
         $testscipro = new TestScipro();
-        $testscipro->auth();
+        $testscipro->getResource($status->token);
     }
 
     public function callbackScipro()
@@ -96,8 +121,8 @@ class TestController extends Controller
         //var_dump($this->getDirContents(base_path().'/pluginconfig/'));
         //var_dump($this->getFiles(base_path().'/pluginconfig/'));
         $list = new ConfigurationHandler();
-        //$list->handle_system();
-        $list->handle_plugins();
+        $list->system();
+        //$list->handle_plugins();
     }
     private function getDirContents($dir, &$results=array())
     {

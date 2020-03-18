@@ -75,14 +75,59 @@ class ConfigurationHandler extends Model
         }
     }
 
+    public function system()
+    {
+        $plugindir = base_path().'/systemconfig/';
+        $list = $this->getFiles($plugindir);
+        foreach ($list as $filename) {
+            // Read the .ini file and store in table
+            if (substr($filename, -3) == 'ini') {
+                $file = $plugindir . $filename;
+                if (!file_exists($file)) {
+                    $file = $plugindir . $filename . '.example';
+                    }
+                $config = parse_ini_file($file, true);
+                $system = new System();
+                foreach ($config as $configkey => $configvalue) {
+                    //$pluginrow = array([$configkey => $configvalue]);
+                    //dd($configvalue);
+                        $config = json_encode($configvalue);
+                        $config = json_decode($config);
+                        //dd($config);
+                        //Store in Plugin
+                        $systemtable = $system->getFillable();
+                        foreach ($config as $key => $item) {
+                            //dd($key);
+                            //$plugin->name = $key;
+                            foreach ($systemtable as $systemitem) {
+                                    if ($systemitem == $key) {
+                                        $system->$systemitem = $item;
+                                        }
+                                    }
+                            }
+
+                        }
+                $system->save();
+                }
+
+            }
+
+    }
+
     public function handle_system()
     {
+        //Deprecated
         // Read gdpr.ini file and store id db
         $file = base_path().'/systemconfig/gdpr.ini';
         if (!file_exists($file)) {
             $file = base_path().'/systemconfig/gdpr.ini.example';
         }
         $system_config = parse_ini_file($file, true);
+        //dd($system_config);
+        foreach ($system_config as $system)
+        {
+            dd($system);
+        }
         $conf = new System();
         $conf->newSystem($system_config['case_start_id'], $system_config['case_ttl'], $system_config['registrator'], $system_config['db'], $system_config['db_host'], $system_config['db_port'], $system_config['db_database'], $system_config['db_username'], $system_config['db_password']);
     }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status', 'auth', 'auth_system', 'callback','que'];
+    protected $fillable = ['searchcase_id', 'plugin_id', 'plugin_name', 'status', 'progress_status', 'download_status', 'auth', 'auth_system', 'callback','que','token'];
 
     public function initPluginStatus($caseid)
     {

@@ -27,7 +27,7 @@ class CreateStatusesTable extends Migration
             $table->string('auth_system')->nullable();
             $table->integer('callback')->nullable();
             $table->integer('zip')->nullable();
-            $table->string('code')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }

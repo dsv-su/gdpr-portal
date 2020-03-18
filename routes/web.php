@@ -49,9 +49,10 @@ Route::post('upload', 'FileController@upload')->name('upload');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
-Route::get('/{provider}/callback', 'Testcontroller@callback')->name('callback');
+//Route::get('/{provider}/callback', 'Testcontroller@callback')->name('callback');
 Route::get('/video/', 'TestController@video');
-Route::get('/token', 'TestController@gettoken');
+Route::get('/token', 'TestController@auth');
+//Route::get('/token', 'TestController@gettoken');
 
 //Scipro dev test
 Route::get('/ts', 'TestController@test_scipro');

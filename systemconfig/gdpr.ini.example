@@ -1,9 +1,21 @@
+[case]
 case_start_id=2020-1
 case_ttl=30
+
+[registrator]
 registrator=ryan@dsv.su.se
+
+[database]
 db=mysql
 db_host=127.0.0.1
 db_port=3306
 db_database=
 db_username=
 db_password=
+
+[toker]
+client_id =
+client_secret =
+auth_url =
+base_uri =
+redirect_uri =

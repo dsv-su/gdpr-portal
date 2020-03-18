@@ -24,6 +24,11 @@ class CreateSystemsTable extends Migration
             $table->string('db_database');
             $table->string('db_username');
             $table->string('db_password');
+            $table->string('client_id');
+            $table->string('client_secret');
+            $table->string('auth_url');
+            $table->string('base_uri');
+            $table->string('redirect_uri');
             $table->timestamps();
         });
     }

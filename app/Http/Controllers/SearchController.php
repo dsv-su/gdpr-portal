@@ -40,14 +40,26 @@ class SearchController extends Controller
         $search_request[] = $request->input('gdpr_email');
         $search_request[] = $request->input('gdpr_uid');
 
+        /*************************************************************************************
+        //  2. Instances
+        /************************************************************************************/
+
+        // Plugins
         $plugins = Plugin::all();
+        // New status instance
+        $status = new Status();
+        //Get system configuration
+        $system = System::find(1);
+        //Init a new case
+
+
         foreach ($plugins as $plugin)
         {
             $plugin_activate[] = $request->input($plugin->name);
         }
 
         /*************************************************************************************
-        //  2. Check which server is running dev/methone to issue correct loginformation
+        //  3. Check which server is running dev/methone to issue correct loginformation
         /************************************************************************************/
 
         if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
@@ -65,24 +77,17 @@ class SearchController extends Controller
             return redirect()->route('home');
         }
 
-        // New status instance
-        $status = new Status();
-
         /*************************************************************************************
-        //  3. Generate unique request id
+        //  4. Generate unique request id
         /************************************************************************************/
 
         if(!$record = Searchcase::latest()->first())
         {
-            //Get system configuration
-            $system = System::find(1);
-            //Init a new case
             $request = new Searchcase();
             $request = $request->initCase($gdpr_userid,$search_request, $system->case_start_id);
 
             //Create plugin status
             $status->initPluginStatus($request->id);
-
         }
         else
         {
@@ -94,9 +99,8 @@ class SearchController extends Controller
             $caseid = $nextCaseNumber;
 
         /*************************************************************************************
-        //  4. Store initiate request data to Model
+        //  5. Store initiate request data to Model
         /************************************************************************************/
-
             $request = new Searchcase();
             $request = $request->initnewCase($gdpr_userid, $caseid, $search_request);
 
@@ -108,19 +112,19 @@ class SearchController extends Controller
 
         }
         /*************************************************************************************
-        //  5. Create folders
+        //  6. Create folders
         /************************************************************************************/
-
 
         //Create folders for retrieved data
         $dir = new CaseStore($request);
         $dir->makedfolders();
 
         /*************************************************************************************
-        //  6. Check which plugins to run
+        //  7. Check which plugins to run
         /************************************************************************************/
-        $plugins = Plugin::all();
+
         $x = 0;
+        $plugindisabled = 0;
         foreach ($plugins as $plugin)
         {
             $status = Status::where([
@@ -134,28 +138,32 @@ class SearchController extends Controller
                     $status->setStatus('not_selected');
                     $status->save();
                     $request->save();
+                    $plugindisabled++;
                 }
                 $x++;
         }
 
+        //Check to see if all plugins have been deactivated
+        $count = Plugin::count();
+        if ($count == $plugindisabled)
+        {
+            // Set status flags
+            $request->setProgress(0); //Kill progress flag
+            $request->setStatusFlag(2);
+
+            // Remove case folders
+
+            $dir->delete_empty_case($request->id);
+        }
+
         /*************************************************************************************
-        // 7. Get toker token for plugins
+        // 8. Get toker token for plugins
         /*************************************************************************************/
 
-        foreach ($plugins as $plugin)
-        {
-            if($plugin->auth == 'toker' or $plugin->auth == 'toker-test')
-            {
-                $status = Status::where([
-                    ['searchcase_id','=', $request->id],
-                    ['plugin_id', '=', $plugin->id],
-                ])->first();
-                $toker = new Toker($request, $plugin, $status);
+        $toker = new Toker($system);
+        $toker->auth();
+        exit;
 
-                $toker->auth();
-                exit;
-            }
-        }
         return redirect()->action('PluginController@run');
     }
 

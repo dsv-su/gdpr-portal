@@ -2,131 +2,76 @@
 
 namespace App\Plugin;
 
-use kamermans\OAuth2\GrantType\AuthorizationCode;
-use kamermans\OAuth2\GrantType\RefreshToken;
-use kamermans\OAuth2\OAuth2Middleware;
 use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 
 class Scipro extends GenericPlugin
 {
-            private $auth_url;
-            private $reauth_client, $reauth_config, $grant_type, $refresh_grant_type, $oauth;
-            private $stack, $client;
+    private $response;
 
-            private $id, $endpoint_url, $response;
-            private $body, $zip;
-            protected $code;
+    public function getResource()
+    {
 
-            public function auth()
+        $client = new Client(['base_uri' => $this->plugin->base_uri]);
+        $headers = [
+            'Authorization' => 'Bearer ' . $this->status->token,
+            'Accept' => 'application/json',
+        ];
+        try {
+            $this->response = $client->request('GET', $this->plugin->endpoint_url . '=' . $this->case->request_uid, [
+                'headers' => $headers
+            ]);
+        } catch (\Exception $e) {
+            /**
+             * If there is an exception; Client error;
+             */
+            if ($e->hasResponse()) {
+                $this->response = $e->getResponse();
+                switch ($this->response->getStatusCode()) {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400 or 401 or 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
+                }
+                //return $this->response->getStatusCode();
+                return 'error';
+            }
+        }
+
+        //Processing response from Scipro
+        if ($this->response) {
+            if ($this->response->getStatusCode() == 200)
             {
-                // If we have no access token or refresh token, we need to get user consent to obtain one
-                $this->auth_url = $this->plugin->auth_url.'?'.http_build_query([
-                        'client_id' => $this->plugin->client_id,
-                        'redirect_uri' => $this->plugin->redirect_uri,
-                        'response_type' => 'code',
-                        'scope' => '',
-                        'access_type' => '',
-                        //'principal' => 'rydi5898@dsv.su.se',
-                        //'entitlement' => 'dsv-user:gdpr',
-                    ]);
-
-                $this->status->auth = 1;
-                $this->status->save();
-
-                // Redirect to authorization endpoint
-                header('Location: '.$this->auth_url);
-
-                exit;
+                //If response == 200 then ->
+                $this->body = $this->response->getBody();
+                // Read contents of the body
+                $this->zip = $this->body->getContents();
+                $this->status->setZip();
+                return $this->zip;
             }
-
-
-            public function getResource() //getScipro()
-        {
-            // Authorization client - this is used to request OAuth access tokens
-            $this->reauth_client = new Client([
-                // URL for access_token request
-                'base_uri' => $this->plugin->base_uri,
-                // 'debug' => true,
-            ]);
-            $this->reauth_config = [
-                'code' => $this->status->code,
-                'client_id' => $this->plugin->client_id,
-                'client_secret' => $this->plugin->client_secret,
-                'redirect_uri' => $this->plugin->redirect_uri,
-            ];
-
-            $this->grant_type = new AuthorizationCode($this->reauth_client, $this->reauth_config);
-            $this->refresh_grant_type = new RefreshToken($this->reauth_client, $this->reauth_config);
-            $this->oauth = new OAuth2Middleware($this->grant_type, $this->refresh_grant_type);
-
-            $this->stack = HandlerStack::create();
-            $this->stack->push($this->oauth);
-
-            // This is the normal Guzzle client
-            $this->client = new Client([
-                'handler' => $this->stack,
-                'auth'    => 'oauth',
-            ]);
-            //
-            $this->id = $this->case->request_uid;
-
-            $this->endpoint_url = $this->plugin->endpoint_url. '=' . $this->id;
-
-            try {
-                $this->response = $this->client->get($this->endpoint_url);
-            }
-            catch (\Exception $e) {
-                /**
-                If there is an exception; Client error;
-                 */
-                if ($e->hasResponse()) {
-                    $this->response = $e->getResponse();
-                    switch($this->response->getStatusCode())
-                    {
-                        case 204:
-                            return 'not_found';
-                            break;
-                        case 400 or 401 or 404:
-                            return 'error';
-                            break;
-                        case 409:
-                            return 'mismatch';
-                            break;
-                    }
-                    //return $this->response->getStatusCode();
-                    return 'error';
-                }
-            }
-
-            //Processing response from Scipro
-            if($this->response) {
-                if ($this->response->getStatusCode() == 200) {
-                    //If response == 200 then ->
-                    $this->body = $this->response->getBody();
-                    // Read contents of the body
-                    $this->zip = $this->body->getContents();
-                    $this->status->setZip();
-                    return $this->zip;
-                } else {
-                    $this->status->setDownloadStatus(0);
-                    switch($this->response->getStatusCode())
-                    {
-                        case 204:
-                            return 'not_found';
-                            break;
-                        case 400 or 401 or 404:
-                            return 'error';
-                            break;
-                        case 409:
-                            return 'mismatch';
-                            break;
-                    }
-
-                    return 'error';
+            else
+                {
+                $this->status->setDownloadStatus(0);
+                switch ($this->response->getStatusCode()) {
+                    case 204:
+                        return 'not_found';
+                        break;
+                    case 400 or 401 or 404:
+                        return 'error';
+                        break;
+                    case 409:
+                        return 'mismatch';
+                        break;
                 }
 
+                return 'error';
             }
 
         }
+    }
+
 }
