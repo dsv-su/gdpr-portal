@@ -37,6 +37,28 @@ Composer
 
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
+        [case]
+        case_start_id=2020-1            //The starting case id (year-id)
+        case_ttl=30                     //Time to live for a case - not yet implemented
+        
+        [registrator]
+        registrator=ryan@dsv.su.se      //The email-address of registrar (change to your institution)
+        
+        [database]
+        db=mysql                        //Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
+        db_host=127.0.0.1               
+        db_port=3306
+        db_database=                    
+        db_username=
+        db_password=
+        
+        [toker]                         //Toker is the default access tokens system
+        client_id =
+        client_secret =
+        auth_url =
+        base_uri =
+        redirect_uri =
+
 * Either create application key manually or do that with a command `php artisan key:generate`
 
 * In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
@@ -126,9 +148,9 @@ The only compulsory attribute for a plugin is the Name attribute. This Name attr
 
     auth
 
-If a alternative token authentification system is used this attribute should be set to "other". The default authenification system used is toker.
+If a alternative token access system is used this attribute should be set to "other". The default authenification system used is toker.
 
-    auth = other
+    auth = 
     
 For systems that have not yet fully implemented a working source "plugin", there is the option to email the system owner. In this case, the auth attribute should be set to email. 
 
