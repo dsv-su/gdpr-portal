@@ -16,9 +16,19 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Illuminate\Support\Facades\URL;
 
 class TestController extends Controller
 {
+    public function sign()
+    {
+        $case = Searchcase::latest()->first();
+        $plugindriver = new Plugin();
+        $plugin = $plugindriver->getPlugin('MittSystem');
+        $link = URL::signedRoute('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);
+        return $link;
+        //echo route('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);
+    }
     public function auth()
     {
         $case = Searchcase::latest()->first();

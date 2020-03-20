@@ -39,13 +39,15 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
 //File upload
-Route::get('/file', 'FileController@index');
-Route::post('/file/upload', 'FileController@store')->name('file.upload');
-Route::post('upload', 'FileController@upload')->name('upload');
+Route::get('/upload/{case_id}/{system}', 'FileController@index')->name('upload');
+Route::post('/store', 'FileController@store')->name('store');
+
+
 
 //**********************************************************************************************
 //Testing routes - to be removed in production
 //**********************************************************************************************
+Route::get('/sign', 'TestController@sign');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');

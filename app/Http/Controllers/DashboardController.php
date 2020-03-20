@@ -7,6 +7,7 @@ use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Searchcase;
 use App\Plugin;
+use Illuminate\Support\Facades\DB;
 
 
 class DashboardController extends Controller
@@ -24,6 +25,12 @@ class DashboardController extends Controller
                 $collapse = 0;
             }
         }
+        //-----------------------------------------------
+        //Check if system and plugins have been modified or added
+        $init = new ConfigurationHandler();
+        $init->check_system();
+        $init->check_plugins();
+
         //-----------------------------------------------
 
         $data['systems'] = Plugin::count();

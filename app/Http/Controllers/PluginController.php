@@ -6,6 +6,7 @@ use App\Jobs\ProcessPlugin;
 use App\Mail\GDPRExtractRequest;
 use App\Searchcase;
 use App\Status;
+use App\System;
 use Illuminate\Http\Request;
 use App\Plugin;
 use Illuminate\Support\Facades\Mail;
@@ -25,6 +26,9 @@ class PluginController extends Controller
 
         //Get the plugins
         $plugins = Plugin::all();
+
+        //Get system settings
+        $system = System::find(1);
         //Loop to execute the auth method for each plugin
 
         foreach($plugins as $plugin)
@@ -37,14 +41,14 @@ class PluginController extends Controller
             if( $casestatus->auth == 0 and $casestatus->auth_system == null)
             {
                 // Dispatch to que
-                $pluginjob = new ProcessPlugin($case, $plugin, $casestatus);
+                $pluginjob = new ProcessPlugin($case, $plugin, $casestatus, $system);
                 dispatch($pluginjob);
             }
             elseif ( $casestatus->auth == 0 and $casestatus->auth_system == 'email')
             {
                 //Send email
                 Mail::to($plugin->owner_email)
-                    ->queue(new GDPRExtractRequest($case));
+                    ->queue(new GDPRExtractRequest($case, $plugin));
 
                 $casestatus->setProgressStatus(100);
                 $casestatus->setStatus('pending');

@@ -17,6 +17,8 @@ class CreateSystemsTable extends Migration
             $table->bigIncrements('id');
             $table->string('case_start_id');
             $table->integer('case_ttl');
+            $table->integer('plugin_tries');
+            $table->integer('plugin_request_timeout');
             $table->string('registrator');
             $table->string('db');
             $table->string('db_host');

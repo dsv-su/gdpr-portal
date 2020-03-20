@@ -19,16 +19,18 @@ class ProcessPlugin implements ShouldQueue
      *
      * @return void
      */
+
     public $tries = 3;
 
     public $timeout = 7200;
     protected $case, $plugin, $status;
 
-    public function __construct($case, $plugin, $status)
+    public function __construct($case, $plugin, $status, $system)
     {
         $this->case = $case;
         $this->plugin = $plugin;
         $this->status = $status;
+        $this->system = $system;
     }
 
     /**

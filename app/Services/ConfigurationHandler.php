@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Plugin;
 use App\System;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -75,6 +76,14 @@ class ConfigurationHandler extends Model
         }
     }
 
+    public function check_system()
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('systems')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        $this->system();
+    }
+
     public function system()
     {
         $plugindir = base_path().'/systemconfig/';
@@ -113,22 +122,85 @@ class ConfigurationHandler extends Model
             }
 
     }
-
-    public function handle_system()
+    public function check_plugins()
     {
-        //Deprecated
-        // Read gdpr.ini file and store id db
-        $file = base_path().'/systemconfig/gdpr.ini';
-        if (!file_exists($file)) {
-            $file = base_path().'/systemconfig/gdpr.ini.example';
+        $plugindir = base_path().'/pluginconfig/';
+        $list = $this->getFiles($plugindir);
+        //dd($list);
+        foreach ($list as $filename) {
+            // Read the .ini file and store in table
+            if (substr($filename, -3) == 'ini') {
+                $plugin_files[] =  $filename;
+            }
+
         }
-        $system_config = parse_ini_file($file, true);
-        //dd($system_config);
-        foreach ($system_config as $system)
+        $loaded_plugins = Plugin::all()->pluck('name');
+        if($loaded_plugins->count() != count($plugin_files))
         {
-            dd($system);
+            //Insert the new pluginconf
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            DB::table('plugins')->truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            $this->handle_plugins();
         }
-        $conf = new System();
-        $conf->newSystem($system_config['case_start_id'], $system_config['case_ttl'], $system_config['registrator'], $system_config['db'], $system_config['db_host'], $system_config['db_port'], $system_config['db_database'], $system_config['db_username'], $system_config['db_password']);
+        else
+        {
+            //Update the existing pluginconf
+            $this->update_plugins();
+        }
+        //dd($loaded_plugins);
+        //dd($plugin_files);
+    }
+    public function update_plugins()
+    {
+        $plugindir = base_path().'/pluginconfig/';
+        $list = $this->getFiles($plugindir);
+        $x = 1;
+        foreach ($list as $filename) {
+            // Read the .ini file and store in table
+            if (substr($filename, -3) == 'ini') {
+
+                $file = $plugindir . $filename;
+                if (!file_exists($file)) {
+                    $file = $plugindir . $filename . '.example';
+                }
+                $config = parse_ini_file($file, true);
+
+                foreach ($config as $configkey=>$configvalue) {
+                    $pluginrow = array([$configkey => $configvalue]);
+
+                    foreach ($pluginrow as $config) {
+
+                        $config = json_encode($config);
+
+                        $config = json_decode($config);
+
+                        //Update in Plugin
+                        //$plugin = new Plugin();
+                        $plugin_instance = new Plugin();
+
+                        $plugintable = $plugin_instance->getFillable();
+                        foreach ($config as $key => $item) {
+                            $plugin = Plugin::find($x);
+                            $plugin->name = $key;
+                            foreach ($plugintable as $pluginitem) {
+                                foreach ($item as $key2 => $item2) {
+                                    if ($pluginitem == $key2) {
+                                        $plugin->$pluginitem = $item2;
+                                    }
+
+                                }
+
+                            }
+                            $plugin->save();
+                            $x++;
+                        }
+
+                    }
+
+                }
+
+            }
+        }
     }
 }

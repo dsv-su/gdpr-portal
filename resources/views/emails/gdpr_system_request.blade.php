@@ -36,24 +36,30 @@
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 0px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    Ärendemening:
+                                    Ärende:
                                 </td>
                             </tr>
                             <tr>
                                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    GDPR utdrag begärt för <strong>{{$case['request_pnr']}} {{$case['request_email']}} {{$case['request_uid']}} </strong>
+
+                                    Ett GDPR utdrag har begärts för <strong>{{$case['request_pnr']}} {{$case['request_email']}} {{$case['request_uid']}} </strong>
+
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                    <strong>Använd nedanstående länk för att ladda upp utdraget:</strong>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 0px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
                                     Länk:
+
+                                    {{ $link }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                    <strong>Här kommer sedan länken </strong>
-                                </td>
-                            </tr>
+
                         </table>
                     </td>
                 </tr>
