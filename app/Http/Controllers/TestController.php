@@ -24,7 +24,7 @@ class TestController extends Controller
     {
         $case = Searchcase::latest()->first();
         $plugindriver = new Plugin();
-        $plugin = $plugindriver->getPlugin('MittSystem');
+        $plugin = $plugindriver->getPlugin('MittSystem1');
         $link = URL::signedRoute('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);
         return $link;
         //echo route('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);

@@ -14,7 +14,7 @@ class FileController extends Controller
     public function index(Request $request, $id, $system)
     {
         if (! $request->hasValidSignature()) {
-            abort(401);
+            abort(401,'GDPR Portal - Ogiltig länk');
         }
         else
         {
@@ -55,8 +55,7 @@ class FileController extends Controller
             //Send notificcation mail
             $request_finished = new ProcessFinished($case);
             dispatch($request_finished);
-
-            return 'Tack, nu är utdraget uppladdat!';
+            return view('file.done');
         }
         else
         {

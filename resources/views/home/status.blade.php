@@ -35,17 +35,17 @@
                                     @elseif ($plugin->status == 307)
                                     class="progress-bar bg-info"
                                     @endif
-                                    role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}:
+                                    role="progressbar" style="width: {{ $plugin->progress_status }}%;" aria-valuenow="{{ $plugin->progress_status }}" aria-valuemin="0" aria-valuemax="100">{{$plugin->plugin_name}}
                                     @if ($plugin->status == 204)
-                                    Personen kan inte hittas
+                                     : Personen kan inte hittas
                                     @elseif ($plugin->status == 400 or $plugin->status == 404)
-                                        Systemfel
+                                     : Systemfel
                                     @elseif ($plugin->status == 300)
-                                        Väntar
+                                     : Väntar
                                     @elseif ($plugin->status == 301)
-                                        Kontaktar
+                                     : Kontaktar
                                     @elseif ($plugin->status == 307)
-                                        Inte vald
+                                     : Inte vald
                                     @endif
 
                                 </div>

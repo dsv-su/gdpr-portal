@@ -37,22 +37,22 @@ Composer
 
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
-        [case]
-        case_start_id=2020-1            //The starting case id (year-id)
-        case_ttl=30                     //Time to live for a case - not yet implemented
-        
-        [registrator]
-        registrator=ryan@dsv.su.se      //The email-address of registrar (change to your institution)
+        [global]
+        case_start_id=2020-1             # The starting case id (year-id)
+        case_ttl=30                      # Time to live for a case - not yet implemented
+        plugin_tries=3                   # Number of tries a plugin tries to contact a system before reporting error
+        plugin_request_timeout=7200      # Timeout before a plugin reports error
+        registrator=ryan@dsv.su.se       # Email address of registrar (change to your institution)
         
         [database]
-        db=mysql                        //Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
+        db=mysql                        # Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
         db_host=127.0.0.1               
         db_port=3306
         db_database=                    
         db_username=
         db_password=
         
-        [toker]                         //Toker is the default access tokens system
+        [oauth]                         # Toker is the default access tokens system
         client_id =
         client_secret =
         auth_url =
@@ -107,7 +107,6 @@ The following configuration and credential attributes are allowed:
     [Name of the system]
     client_id =
     client_secret =
-    auth =
     auth_url =
     base_uri =
     redirect_uri =
@@ -120,7 +119,6 @@ e.g.
     [System1]
     client_id =
     client_secret =
-    auth =
     auth_url =
     base_uri =
     redirect_uri =
@@ -130,7 +128,6 @@ e.g.
     [System2]
     client_id =
     client_secret =
-    auth =
     auth_url =
     base_uri =
     redirect_uri =

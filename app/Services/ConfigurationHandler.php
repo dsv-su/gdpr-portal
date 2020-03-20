@@ -135,19 +135,19 @@ class ConfigurationHandler extends Model
 
         }
         $loaded_plugins = Plugin::all()->pluck('name');
-        if($loaded_plugins->count() != count($plugin_files))
-        {
+        //if($loaded_plugins->count() != count($plugin_files))
+        //{
             //Insert the new pluginconf
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             DB::table('plugins')->truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             $this->handle_plugins();
-        }
-        else
-        {
+        //}
+        //else
+        //{
             //Update the existing pluginconf
-            $this->update_plugins();
-        }
+          //  $this->update_plugins();
+        //}
         //dd($loaded_plugins);
         //dd($plugin_files);
     }

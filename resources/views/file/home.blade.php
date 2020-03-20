@@ -14,6 +14,6 @@
            <input type="submit"  value="Submit" class="btn btn-success">
         </div>
         </form>
-
+    </div>
 
 @endsection
