@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Upload extends Model
 {
-    protected $fillable = ['filename'];
+    protected $fillable = ['case_id','system','hash'];
 
-    public function case()
-    {
-        return $this->belongsTo(Searchcase::class);
-    }
+
 }

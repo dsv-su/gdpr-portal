@@ -6,21 +6,22 @@ use App\Jobs\ProcessFinished;
 use App\Plugin;
 use App\Searchcase;
 use App\Status;
+use App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    public function index(Request $request, $id, $system)
+    public function index($id)
     {
-        if (! $request->hasValidSignature()) {
+
+        if (!$upload = Upload::where('hash', '=', $id)->first()) {
             abort(401,'GDPR Portal - Ogiltig länk');
         }
         else
         {
-            $data['case_id'] = $id;
-            $data['system'] = $system;
-
+            $data['case_id'] = $upload->case_id;
+            $data['system'] = $upload->system;
             return view('file.home', $data);
         }
 
@@ -62,7 +63,5 @@ class FileController extends Controller
             return 'Ingen fil vald';
         }
 
-
-        //return response()->json(['success'=>'Filen har laddats upp!']);
     }
 }

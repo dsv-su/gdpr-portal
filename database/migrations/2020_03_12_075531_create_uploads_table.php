@@ -15,15 +15,11 @@ class CreateUploadsTable extends Migration
     {
         Schema::create('uploads', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('case_id')->index();
-            $table->string('filename');
+            $table->string('case_id');
+            $table->string('system');
+            $table->string('hash');
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('case_id')
-                ->references('id')
-                ->on('searchcases')
-                ->onDelete('cascade');
         });
     }
 

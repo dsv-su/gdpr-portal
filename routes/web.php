@@ -39,7 +39,7 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
 //File upload
-Route::get('/upload/{case_id}/{system}', 'FileController@index')->name('upload');
+Route::get('/upload/{id}', 'FileController@index')->name('upload');
 Route::post('/store', 'FileController@store')->name('store');
 
 

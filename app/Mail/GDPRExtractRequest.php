@@ -2,10 +2,12 @@
 
 namespace App\Mail;
 
+use App\Upload;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 
 class GDPRExtractRequest extends Mailable
@@ -30,8 +32,14 @@ class GDPRExtractRequest extends Mailable
      */
     public function build()
     {
-        $link = URL::signedRoute('upload', ['case_id' => $this->case->case_id, 'system' => $this->plugin->name]);
-        //$link = 'https://methone.dsv.su.se/upload/'.$this->case->case_id.'/'. $this->plugin->name;
+        $hash = Hash::make($this->case->case_id.$this->plugin->name);
+        $upload = new Upload();
+        $upload->case_id = $this->case->case_id;
+        $upload->system = $this->plugin->name;
+        $upload->hash = $hash;
+        $upload->save();
+        $link = 'https://methone.dsv.su.se/upload/'. $hash;
+
         return $this->view('emails.gdpr_system_request')
                      ->with([
                         'case' => $this->case,

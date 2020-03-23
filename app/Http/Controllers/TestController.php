@@ -11,8 +11,10 @@ use App\Services\CaseStore;
 use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Toker;
+use App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -22,12 +24,15 @@ class TestController extends Controller
 {
     public function sign()
     {
-        $case = Searchcase::latest()->first();
-        $plugindriver = new Plugin();
-        $plugin = $plugindriver->getPlugin('MittSystem1');
-        $link = URL::signedRoute('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);
-        return $link;
-        //echo route('upload', ['case_id' => $case->case_id, 'system' => $plugin->name]);
+        $hash = Hash::make('2020-1'.'MittSystem1');
+        $upload = new Upload();
+        $upload->case_id = '2020-1';
+        $upload->system = 'MittSystem1';
+        $upload->hash = $hash;
+        $upload->save();
+        $upload = new Upload();
+
+        return $link = 'https://gdpr.dev/upload/'. $hash;
     }
     public function auth()
     {
