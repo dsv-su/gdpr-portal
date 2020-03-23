@@ -47,11 +47,9 @@ class ProcessPlugin implements ShouldQueue
         //Prepare reporting
         $dir = new CaseStore($this->case);
 
-        $system = 'App\Plugin\\'. $this->plugin->name;
+        $system = 'App\Plugin\\'. $this->plugin->plugin;
         $system_instance = new $system($this->case, $this->plugin, $this->status);
-        //For classname = methodname
-        //$getPlugin = 'get'. $this->plugin->name;
-        //$response = $system_instance->$getPlugin();
+        echo $system;
         $response = $system_instance->getResource();
 
         if ( $response == 'not_found')
@@ -86,7 +84,19 @@ class ProcessPlugin implements ShouldQueue
 
             $dir->errorMessage($this->plugin, $response);
             $this->case->setStatusFlag(0); //Download error
-            $this->status->setStatus('mismatch'); // 404
+            $this->status->setStatus('mismatch'); // 409
+            $this->status->setProgressStatus(100); //Progressbar
+            $this->status->setDownloadStatus(0);
+        }
+        else if(  $response == 'pending')
+        {
+            //*********************************************************************
+            //Request Pending
+            //*********************************************************************
+
+            //$dir->errorMessage($this->plugin, $response);
+            //$this->case->setStatusFlag(0); //Download error
+            $this->status->setStatus('pending'); // 300
             $this->status->setProgressStatus(100); //Progressbar
             $this->status->setDownloadStatus(0);
         }

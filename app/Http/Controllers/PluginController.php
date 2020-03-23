@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessPlugin;
-use App\Mail\GDPRExtractRequest;
 use App\Searchcase;
 use App\Status;
 use App\System;
 use Illuminate\Http\Request;
 use App\Plugin;
-use Illuminate\Support\Facades\Mail;
 
 class PluginController extends Controller
 {
@@ -38,22 +36,13 @@ class PluginController extends Controller
                 ['searchcase_id', '=', $case->id],
                 ['plugin_name', '=', $plugin->name],
             ])->first();
-            if( $casestatus->auth == 0 and $casestatus->auth_system == null)
+            if( $casestatus->auth == 0 )
             {
                 // Dispatch to que
                 $pluginjob = new ProcessPlugin($case, $plugin, $casestatus, $system);
                 dispatch($pluginjob);
             }
-            elseif ( $casestatus->auth == 0 and $casestatus->auth_system == 'email')
-            {
-                //Send email
-                Mail::to($plugin->owner_email)
-                    ->queue(new GDPRExtractRequest($case, $plugin));
 
-                $casestatus->setProgressStatus(100);
-                $casestatus->setStatus('pending');
-                $case->setPluginSuccess(); //Plugin processed successful
-            }
         }
         return redirect()->route('home');
 
@@ -69,15 +58,7 @@ class PluginController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $plugin = Plugin::find($id);
 
-        $plugin->name = request('pluginname');
-        $plugin->client_id = request('plugin_client_id');
-        $plugin->status = request('pluginstatus');
-
-        $plugin->save();
-
-        return redirect()->route('plugin');
     }
 
     /**

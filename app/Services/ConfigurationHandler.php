@@ -39,7 +39,7 @@ class ConfigurationHandler extends Model
         foreach ($list as $filename) {
             // Read the .ini file and store in table
             if (substr($filename, -3) == 'ini') {
-
+                $pluginname = preg_replace('/\.[^.]+$/','',$filename);
                 $file = $plugindir . $filename;
                 if (!file_exists($file)) {
                     $file = $plugindir . $filename . '.example';
@@ -59,6 +59,7 @@ class ConfigurationHandler extends Model
                         $plugin = new Plugin();
                         $plugintable = $plugin->getFillable();
                         foreach ($config as $key => $item) {
+                            $plugin->plugin = $pluginname;
                             $plugin->name = $key;
                             foreach ($plugintable as $pluginitem) {
                                 foreach ($item as $key2 => $item2) {
@@ -122,34 +123,14 @@ class ConfigurationHandler extends Model
             }
 
     }
-    public function check_plugins()
+    public function reset_plugins()
     {
-        $plugindir = base_path().'/pluginconfig/';
-        $list = $this->getFiles($plugindir);
-        //dd($list);
-        foreach ($list as $filename) {
-            // Read the .ini file and store in table
-            if (substr($filename, -3) == 'ini') {
-                $plugin_files[] =  $filename;
-            }
-
-        }
-        $loaded_plugins = Plugin::all()->pluck('name');
-        //if($loaded_plugins->count() != count($plugin_files))
-        //{
             //Insert the new pluginconf
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             DB::table('plugins')->truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             $this->handle_plugins();
-        //}
-        //else
-        //{
-            //Update the existing pluginconf
-          //  $this->update_plugins();
-        //}
-        //dd($loaded_plugins);
-        //dd($plugin_files);
+
     }
     public function update_plugins()
     {

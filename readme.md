@@ -149,9 +149,8 @@ If a alternative token access system is used this attribute should be set to "ot
 
     auth = 
     
-For systems that have not yet fully implemented a working source "plugin", there is the option to email the system owner. In this case, the auth attribute should be set to email. 
+For systems that have not yet fully implemented a working source "plugin", there is the option to email the system owner. In this case, the owner_email attribute should be set to the email-address of the system responsible owner. 
 
-    auth = email
     owner_email =
 
 

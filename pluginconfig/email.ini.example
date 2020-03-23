@@ -1,3 +1,5 @@
-[MySystem]
-auth = email
+[MySystem1]
+owner_email = ryan@dsv.su.se
+
+[MySystem2]
 owner_email = ryan@dsv.su.se

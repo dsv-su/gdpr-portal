@@ -29,7 +29,7 @@ class DashboardController extends Controller
         //Check if system and plugins have been modified or added
         $init = new ConfigurationHandler();
         $init->check_system();
-        $init->check_plugins();
+        $init->reset_plugins();
 
         //-----------------------------------------------
 

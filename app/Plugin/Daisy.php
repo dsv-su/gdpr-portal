@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 class Daisy extends GenericPlugin
 {
 
-    public function getResource() //getDaisy()
+    public function getResource()
     {
         $client = new Client();
         try {
