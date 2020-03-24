@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Plugin;
 use App\Searchcase;
 use App\Status;
+use App\Upload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
@@ -135,7 +136,10 @@ class CaseStore extends Model
         $case->save();
         //Delete status data
         $deletedRows = Status::where('searchcase_id', $id)->delete();
-
+        //Delete sent system email requests
+        if(Upload::where('case_id','=',$case->case_id)){
+            $email = Upload::where('case_id', $case->case_id)->delete();
+        }
     }
 
     public function delete_empty_case($id)
@@ -156,6 +160,7 @@ class CaseStore extends Model
         //Delete cpmpact zip-file
         //unlink($case->case_id.'.zip');
         //Delete entire directory structure
+
         Storage::deleteDirectory('/public/'.$case->case_id);
         $case->delete(); //Added temp to test checkboxview uncomment down
         // Reset flags
@@ -165,6 +170,11 @@ class CaseStore extends Model
         //$case->save();
         //Delete status data
         $deletedRows = Status::where('searchcase_id', $id)->delete();
+        if(Upload::where('case_id','=',$case->case_id)){
+            $email = Upload::where('case_id', $case->case_id)->delete();
+        }
+
+
     }
 
     //Only during developing and deploying testing

@@ -153,7 +153,7 @@ For systems that have not yet fully implemented a working source "plugin", there
 
     owner_email =
 
-
+The GDPR portal will send an email to the system owner requesting a file upload (the email is secured with a hash). The status of the plugin will be set to Completed once the system owner has uploaded a file( the requested extract). The uploaded extract will be stored and bundled with the other extracts.
 ### Plugin core file
 
 The plugin core file should establish a connection to the provider-system and return one or more files.
