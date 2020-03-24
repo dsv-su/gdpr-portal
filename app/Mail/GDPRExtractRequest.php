@@ -33,11 +33,15 @@ class GDPRExtractRequest extends Mailable
     public function build()
     {
         $hash = Hash::make($this->case->case_id.$this->plugin->name);
+        //Remove forward- and backslashes
+        $hash = preg_replace('/\\\\/', '', $hash);
+        $hash = preg_replace('/\\//', '', $hash);
         $upload = new Upload();
         $upload->case_id = $this->case->case_id;
         $upload->system = $this->plugin->name;
         $upload->hash = $hash;
         $upload->save();
+        //TODO->
         $link = 'https://methone.dsv.su.se/upload/'. $hash;
 
         return $this->view('emails.gdpr_system_request')
