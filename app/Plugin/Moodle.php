@@ -8,7 +8,7 @@ class Moodle extends GenericPlugin
 {
     private $response;
 
-    public function getResource() //getMoodle()
+    public function getResource()
     {
         $client = new Client();
         try {

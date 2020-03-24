@@ -108,14 +108,17 @@ class TestController extends Controller
 
     public function test_otrs()
     {
-        $test = new Otrs();
-        $status = $test->getOtrs('test', 'http://otrs-stage.dsv.su.se/otrs/index.pl', 'otrs');
-        //Create folders for retrived data
-        $dir = new CaseStore();
-        $dir->makesystemfolder('otrs');
+        $case = Searchcase::latest()->first();
+        $plugin = Plugin::where('name','=','Otrs')->first();
+        $status = Status::where([
+            ['searchcase_id','=', $case->id],
+            ['plugin_id', '=', $plugin->id],
+        ])->first();
 
-        //Store zipfile in directory
-        $dir->storePdf('otrs', $status);
+        $test = new Otrs($case, $plugin,$status);
+        $status = $test->getResource();
+        dd('Done');
+
     }
 
     public function plugin_ini()

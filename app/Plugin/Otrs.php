@@ -9,7 +9,7 @@ class Otrs extends GenericPlugin
 {
     private $response;
 
-    public function getResource() //getOtrs()
+    public function getResource()
     {
         $client = new Client(['cookies' => true]);
 
@@ -18,8 +18,8 @@ class Otrs extends GenericPlugin
                 'form_params' => [
                     'Action' => 'Login',
                     'RequestedURL' => 'Action=AgentGdprHandler&Subaction=Search&Fulltext=' .$this->case->request_email. '&OutputFormat=JSON',
-                    'User' => 'devtest',
-                    'Password' => 'hunter2'
+                    'User' => $this->plugin->client_id,
+                    'Password' => $this->plugin->client_secret
                 ]
             ]);
             $this->status->setProgressStatus(15);
@@ -39,17 +39,10 @@ class Otrs extends GenericPlugin
         //Processing response
         if ($this->response) {
             $body = $this->response->getBody();
-            //Removing trash from string to return a valid json
-            $body = substr($body, 0, -10);
-            //echo '<br><hr>';
-            $body = $body.']}';
-            //echo '<br><hr>';
+            //Remove comma and whitespace from json string
+            $body = preg_replace('/},\s+]/', '}]', $body);
             $json = json_decode($body);
-            /*
-            echo '<br><hr>';
-            echo json_last_error();
-            echo '<br><hr>';
-            */
+            //echo json_last_error();
             //dd($json);
             if ($json == null)
             {

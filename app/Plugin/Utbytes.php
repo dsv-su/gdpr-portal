@@ -8,7 +8,7 @@ class Utbytes extends GenericPlugin
 {
     private $response;
 
-    public function getResource() //getUtbytes()
+    public function getResource()
     {
         $client = new Client();
         try {
