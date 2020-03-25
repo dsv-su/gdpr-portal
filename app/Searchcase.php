@@ -111,6 +111,12 @@ class Searchcase extends Model
         $this->save();
     }
 
+    public function setPluginPending()
+    {
+        $this->plugins_processed--;
+        $this->save();
+    }
+
     public function setPluginFail()
     {
         $this->plugins_processed = 0;

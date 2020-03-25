@@ -24,12 +24,12 @@ class TestController extends Controller
 {
     public function sign()
     {
-        $hash = Hash::make('2020-1'.'MittSystem1');
+        $hash = Hash::make('2020-2'.'MittSystem1');
         //Remove forward- and backslashes
         $hash = preg_replace('/\\\\/', '', $hash);
         $hash = preg_replace('/\\//', '', $hash);
         $upload = new Upload();
-        $upload->case_id = '2020-1';
+        $upload->case_id = '2020-2';
         $upload->system = 'MittSystem1';
         $upload->hash = $hash;
         $upload->save();

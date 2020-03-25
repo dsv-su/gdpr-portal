@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 
 class ProcessPlugin implements ShouldQueue
 {
@@ -40,6 +41,8 @@ class ProcessPlugin implements ShouldQueue
      */
     public function handle()
     {
+        //Store case_id in cache
+        Cache::put('caseid', $this->case->id);
         //Start request to Plugin
         $this->status->setProgressStatus(100);
         $this->status->setDownloadStatus(5);
@@ -99,6 +102,7 @@ class ProcessPlugin implements ShouldQueue
             $this->status->setStatus('pending'); // 300
             $this->status->setProgressStatus(100); //Progressbar
             $this->status->setDownloadStatus(0);
+            $this->case->setPluginPending(); //Reduce plugins_processed counter
         }
         else
         {
@@ -127,9 +131,6 @@ class ProcessPlugin implements ShouldQueue
                 $this->status->setProgressStatus(100);
                 //$this->status->setDownloadStatus(0); //Moved to plugin
             }
-            //Status flags
-
-
 
         }
         $this->case->setPluginSuccess(); //Plugin processed successful

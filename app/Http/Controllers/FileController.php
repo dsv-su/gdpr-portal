@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\ProcessFinished;
 use App\Plugin;
 use App\Searchcase;
+use App\Services\CheckProcessedStatus;
 use App\Status;
 use App\Upload;
 use Illuminate\Http\Request;
@@ -51,11 +52,13 @@ class FileController extends Controller
                 ['searchcase_id','=', $case->id],
                 ['plugin_id', '=', $plugin->id],
             ])->first();
+            //Set status flags
             $status->setStatus('ok'); //$response
             $status->setProgressStatus(100);
-            //Send notificcation mail
-            $request_finished = new ProcessFinished($case);
-            dispatch($request_finished);
+            $case->setPluginSuccess(); //Plugin processed successful
+            $check = new CheckProcessedStatus($case);
+            $check->status();
+
             return view('file.done');
         }
         else

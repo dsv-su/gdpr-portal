@@ -55,14 +55,14 @@ class CaseStore extends Model
 
     public function storeZip($system, $file)
     {
-        //Store retried zipfile in directory
+        //Store retrived zipfile in directory
         Storage::disk('public')->put($this->case->case_id.'/zip/'.$this->case->case_id.'_'.$system.'.zip', $file);
     }
 
-    public function storePdf($system, $file)
+    public function storePdf($system, $filename, $file)
     {
-        //Store retried zipfile in directory
-        Storage::disk('public')->put($this->case->case_id.'/zip/'.$this->case->case_id.'_'.$system.'.pdf', $file);
+        //Store retrived pdffile directly in directory
+        Storage::disk('public')->put($this->case->case_id.'/raw/'.$system.'/'.$filename.'.pdf', $file);
     }
 
     public function unzip($system)

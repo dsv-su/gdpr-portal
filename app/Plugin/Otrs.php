@@ -2,8 +2,8 @@
 
 namespace App\Plugin;
 
+use App\Services\CaseStore;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Storage;
 
 class Otrs extends GenericPlugin
 {
@@ -22,8 +22,8 @@ class Otrs extends GenericPlugin
                     'Password' => $this->plugin->client_secret
                 ]
             ]);
-            $this->status->setProgressStatus(15);
-            $this->status->setDownloadStatus(15);
+            //$this->status->setProgressStatus(15);
+            //$this->status->setDownloadStatus(15);
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;
@@ -61,7 +61,7 @@ class Otrs extends GenericPlugin
                                                     'TicketID' => $value->TicketID,
                                                 ]
                                             ]);
-                                            $progress = $progress + (85/$files);
+                                            $progress = $progress + (95/$files);
                                             $this->status->setProgressStatus($progress);
                                             $this->status->setDownloadStatus($progress);
                                             }
@@ -77,7 +77,7 @@ class Otrs extends GenericPlugin
                                                 }
 
                                          }
-
+                                    $store = new CaseStore($this->case);
                                     //Processing response from Otrs
                                     if ($this->response) {
                                         if ($this->response->getStatusCode() == 200) {
@@ -87,8 +87,8 @@ class Otrs extends GenericPlugin
 
                                             // Read contents of the body
                                             $pdf = $body->getContents();
-                                            //Temp storing pdf to disk
-                                            Storage::disk('public')->put($this->case->case_id . '/raw/'.$this->plugin->name. '/' . $value->TicketID . '.pdf', $pdf);
+                                            //Store pdf to disk
+                                            $store->storePdf($this->plugin->name, $value->TicketID, $pdf);
 
                                         } else
                                         {
