@@ -11,7 +11,9 @@
              <input type="hidden" name="system" value="{{$system}}">
            <input name="file" id="poster" type="file" class="form-control">
              <br>
-           <input type="submit"  value="Submit" class="btn btn-success">
+             <button type="submit" name="submit" value="upload" class="btn btn-success">Ladda upp</button>
+             <button type="submit" name="submit" value="not_found" class="btn btn-outline-warning">Användaren saknas</button>
+
         </div>
         </form>
     </div>

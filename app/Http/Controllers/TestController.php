@@ -16,8 +16,8 @@ class TestController extends Controller
 {
     public function sign()
     {
-        $case = '2020-3';
-        $system = 'MittSystem2';
+        $case = '2020-2';
+        $system = 'MittSystem1';
         $hash = Hash::make($case.$system);
         //Remove forward- and backslashes
         $hash = preg_replace('/\\\\/', '', $hash);

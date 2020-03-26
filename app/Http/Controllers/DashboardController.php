@@ -151,7 +151,8 @@ class DashboardController extends Controller
     public function dev()
     {
         //Delete zip and retrived files and folder
-        $zip = new CaseStore();
+        $case = new Searchcase();
+        $zip = new CaseStore($case);
         $zip->dev_delete();
 
         return redirect()->route('home');
