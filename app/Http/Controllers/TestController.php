@@ -9,6 +9,7 @@ use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Upload;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -16,9 +17,10 @@ class TestController extends Controller
 {
     public function sign()
     {
-        $case = '2020-2';
+        $case = '2020-1';
         $system = 'MittSystem1';
-        $hash = Hash::make($case.$system);
+        $salt = Str::random(32);
+        $hash = Hash::make($case.$system.$salt);
         //Remove forward- and backslashes
         $hash = preg_replace('/\\\\/', '', $hash);
         $hash = preg_replace('/\\//', '', $hash);

@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class GDPRExtractRequest extends Mailable
 {
@@ -32,7 +33,8 @@ class GDPRExtractRequest extends Mailable
      */
     public function build()
     {
-        $hash = Hash::make($this->case->case_id.$this->plugin->name);
+        $salt = Str::random(32);
+        $hash = Hash::make($this->case->case_id.$this->plugin->name.$salt);
         //Remove forward- and backslashes
         $hash = preg_replace('/\\\\/', '', $hash);
         $hash = preg_replace('/\\//', '', $hash);
