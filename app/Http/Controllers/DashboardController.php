@@ -7,7 +7,6 @@ use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Searchcase;
 use App\Plugin;
-use Illuminate\Support\Facades\DB;
 
 
 class DashboardController extends Controller

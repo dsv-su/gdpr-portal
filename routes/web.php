@@ -51,17 +51,8 @@ Route::get('/sign', 'TestController@sign');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
-//Route::get('/{provider}/callback', 'Testcontroller@callback')->name('callback');
+
 Route::get('/video/', 'TestController@video');
-Route::get('/token', 'TestController@auth');
-//Route::get('/token', 'TestController@gettoken');
-
-//Scipro dev test
-Route::get('/ts', 'TestController@test_scipro');
-//Route::get('/oauth/callback', 'TestController@callbackScipro');
-
-//Moodle-test
-//Route::get('/moodle', 'TestController@test_moodle');
 
 //Otrs-test
 Route::get('/otrs', 'TestController@test_otrs');

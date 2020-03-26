@@ -40,7 +40,7 @@ Class CheckProcessedStatus extends Model
 
             $count = 0;
             foreach ($statuses as $status) {
-                if ($status->status == 204) {
+                if ($status->status == 204 or $status->status == 307) {
                     $count++;
                 }
 
@@ -74,7 +74,7 @@ Class CheckProcessedStatus extends Model
                 dispatch($request_finished);
             }
 
-        } //elseif ($update->plugins_processed == $systems && $update->status_flag == 0 && $update->progress > 0)
+        }
         elseif ($update->status_flag == 0 && $update->progress > 0) {
             //| ----------------------------------------------------------------
             //| Unsuccessfull -> notify

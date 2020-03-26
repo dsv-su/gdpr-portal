@@ -225,9 +225,6 @@ pending | (300) | Waiting for manual upload of data.
 
 ####  for each case
 
-status_processed | .
------------------|-------
-number of plugins + 1 (notification) |
 
 status_flag
 
