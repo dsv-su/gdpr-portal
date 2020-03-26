@@ -38,7 +38,7 @@ class RegistrarSend extends Mailable
             'Content-Type' => 'application/octet-stream',
         );
         $filetopath = $public_dir.$zipFileName;
-        return $this->view('emails.registrar')
+        return $this->text('emails.registrar_text')
             ->with('details', $this->details)
             ->attach($filetopath, [
                 'as' => $zipFileName,

@@ -28,7 +28,7 @@ class GDPRNotifyError extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.error_swe')
+        return $this->text('emails.error_swe_text')
             ->with('details', $this->details);;
     }
 }

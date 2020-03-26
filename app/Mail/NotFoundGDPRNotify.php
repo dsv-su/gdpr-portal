@@ -28,7 +28,7 @@ class NotFoundGDPRNotify extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.finished_withnothing_swe')
+        return $this->text('emails.not_found')
             ->with('details', $this->details);
     }
 }

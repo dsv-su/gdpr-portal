@@ -46,7 +46,7 @@ class GDPRExtractRequest extends Mailable
         //TODO->
         $link = 'https://methone.dsv.su.se/upload/'. $hash;
 
-        return $this->view('emails.gdpr_system_request')
+        return $this->text('emails.gdpr_system_request_text')
                      ->with([
                         'case' => $this->case,
                         'link'=> $link,
