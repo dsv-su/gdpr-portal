@@ -1,8 +1,23 @@
-@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
-form {
-  font-family: Roboto;
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,700);
+div.wrapper {
+  background-image: url("../images/container-repeater.gif");
+  background-repeat: repeat-x; }
+
+div.welcome {
+  font-family: Roboto, "Segoe UI", serif;
+  padding: 10px;
+  margin: 0 auto; }
+
+div.searchrequest {
+  font-family: Nunito, sans-serif;
   border-radius: 25px;
-  border: 2px solid #41D873;
+  border: 2px solid #002e5f;
+  padding: 20px;
+  margin: 0 auto; }
+
+form {
+  font-family: Nunito, sans-serif;
+  border-radius: 25px;
   padding: 20px;
   margin: 0 auto; }
   form > div.a {
@@ -82,33 +97,39 @@ form {
   form button[type="submit"] {
     display: inline-block;
     margin: 0 40px 0;
-    background: #41D873;
+    background-image: url("../images/button-background-repeater.gif");
+    background-repeat: repeat-x;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     color: white;
     border: 0;
     padding: 10px;
     font-size: 1.0rem; }
   form > div.d {
     display: inline-block;
-    border: 2px solid #41D873; }
+    border: 2px solid #002e5f; }
 
 body {
   background: #FFF;
-  font-family: Roboto;
+  font-family: Nunito, sans-serif;
   padding: 10px; }
 
 /* --- The Table Structure --- */
 table {
-  font-family: Roboto;
+  font-family: Nunito, sans-serif;
   border-collapse: separate; }
 
 table b {
   background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/check.svg);
+  font-size: 1rem;
   background-size: 18px;
   background-repeat: no-repeat;
   opacity: 100%; }
 
 table list {
-  font-size: 2.5rem;
+  font-size: 1rem;
   box-shadow: 2px 2px 2px 2px #e5dfcc; }
 
 table tr th,
@@ -135,13 +156,13 @@ table tr:last-child td:last-child {
 body {
   margin: 30px;
   background: #F8F8FF;
-  font-family: 'Muli', Serif; }
+  font-family: 'Muli', serif; }
 
 th, td {
   padding: 8px 20px; }
 
 th {
-  background: #41D873;
+  background: #002e5f;
   color: #fff;
   border: 0; }
 

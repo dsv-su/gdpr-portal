@@ -1,12 +1,33 @@
-@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,700);
 // Fonts
-//@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+div.wrapper{
+    background-image: url("../images/container-repeater.gif");
+    background-repeat: repeat-x;
+}
+div.welcome {
+    font-family: Roboto, "Segoe UI", serif;
+    //border-radius: 10px;
+    //border: 2px solid #41D873; //Green
+    //border: 2px solid #002e5f;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+div.searchrequest {
+    font-family: Nunito, sans-serif;
+    border-radius: 25px;
+    //border: 2px solid #41D873; //Green
+    border: 2px solid #002e5f;
+    padding: 20px;
+    margin: 0 auto;
+}
 
 form {
     //max-width: 450px;
-    font-family: Roboto;
+    font-family: Nunito, sans-serif;
     border-radius: 25px;
-    border: 2px solid #41D873;
+    //border: 2px solid #41D873;
     padding: 20px;
     margin: 0 auto;
 
@@ -49,6 +70,7 @@ form {
 
             &:valid {
                 background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/check.svg);
+                //background: url("../images/check.svg");
                 background-size: 20px;
                 background-repeat: no-repeat;
                 background-position: 10px 10px;
@@ -106,7 +128,13 @@ form {
     button[type="submit"]{
         display: inline-block;
         margin: 0 40px 0;
-        background: #41D873;
+        //background: #002e5f; //Green 41D873
+        background-image: url("../images/button-background-repeater.gif");
+        background-repeat: repeat-x;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
         color: white;
         border: 0;
         padding: 10px;
@@ -114,13 +142,13 @@ form {
     }
     >div.d {
         display: inline-block;
-        border: 2px solid #41D873;
+        border: 2px solid #002e5f; //Green 41D873
     }
 }
 
 body {
     background: #FFF;
-    font-family: Roboto;
+    font-family: Nunito, sans-serif;
     padding: 10px;
 }
 
@@ -129,26 +157,26 @@ body {
 }
 /* --- The Table Structure --- */
 table {
-    font-family: Roboto;
+    font-family: Nunito, sans-serif;
     border-collapse: separate;
     //border-spacing: 0;
     //border: 2px solid #41D873;
 }
 table b {
     background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/check.svg);
+    //background: url("../images/check.svg");
+    font-size: 1rem;
     background-size: 18px;
     background-repeat: no-repeat;
     //background-position: 10px 10px;
     opacity: 100%;
 }
 table list {
-    font-size: 2.5rem;
+    font-size: 1rem;
     box-shadow: 2px 2px 2px 2px #e5dfcc;
 }
 table tr th,
 table tr td {
-    //border-right: 1px solid #bbb;
-    //border-bottom: 1px solid #bbb;
     box-shadow: 2px 2px 1px #e5dfcc;
 }
 table tr th:first-child,
@@ -183,15 +211,14 @@ table tr:last-child td:last-child {
 /* -- The Styles -- */
 body {
     margin: 30px;
-    //background: #ECEAE3;
     background: #F8F8FF;
-    font-family: 'Muli', Serif;
+    font-family: 'Muli', serif;
 }
 th, td{
     padding: 8px 20px;
 }
 th {
-    background: #41D873;
+    background: #002e5f; //Green 41D873
     color: #fff;
     border: 0;
 }

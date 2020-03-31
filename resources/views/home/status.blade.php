@@ -1,24 +1,24 @@
 <table class="table table-sm table-fixed" id="cases">
         <thead>
-        <tr>
-            <th scope="col"><i class="fas fa-barcode"></i> ÄrendeId:</th>
-            <th scope="col"><i class="fas fa-search"></i> Förfrågan</th>
-            <th scope="col"><i class="fas fa-spinner"></i> Status</th>
-            <th scope="col"><i class="fas fa-file-upload"></i> Registrator</th>
-            <th scope="col"><i class="far fa-trash-alt"></i> Radera</th>
-            <th scope="col"><i class="fas fa-download"></i> Ladda ner</th>
+        <tr class="row m-0">
+            <th class="d-inline-block col-1">ÄrendeId:</th>
+            <th class="d-inline-block col-2 text-center"><i class="fas fa-search"></i>Förfrågan</th>
+            <th class="d-inline-block col-3 text-center"><i class="fas fa-spinner"></i> Status</th>
+            <th class="d-inline-block col-2 text-center"><i class="fas fa-file-upload"></i> Registrator</th>
+            <th class="d-inline-block col-2"><i class="far fa-trash-alt"></i> Radera</th>
+            <th class="d-inline-block col-2"><i class="fas fa-download"></i> Ladda ner</th>
         </tr>
         </thead>
         @foreach ($cases as $case)
             <tbody>
             @if ($case->visability == 1)
-                <tr>
-                    <td scope="row">{{ $case->case_id }}</td>
-                    <td class="small text-center">@if (!$case->request_pnr==null){{ $case->request_pnr }} <br> @endif @if (!$case->request_email==null) {{$case->request_email}} <br> @endif @if (!$case->request_uid==null) {{$case->request_uid}} @endif</td>
-                    <td>
+                <tr class="row m-0">
+                    <td class="d-inline-block col-1">{{ $case->case_id }}</td>
+                    <td class="d-inline-block col-2 small text-center">@if (!$case->request_pnr==null){{ $case->request_pnr }} <br> @endif @if (!$case->request_email==null) {{$case->request_email}} <br> @endif @if (!$case->request_uid==null) {{$case->request_uid}} @endif</td>
+                    <td class="d-inline-block col-3 text center">
                         @foreach ($pluginstatuses as $plugin)
                             @if ($case->id == $plugin->searchcase_id)
-                            <div class="progress">
+                            <div class="progress" id="status">
                                 <div
                                     @if ($plugin->status == 200)
                                     class="progress-bar"
@@ -53,7 +53,7 @@
                             @endif
                         @endforeach
                     </td>
-                    <td>
+                    <td class="d-inline-block col-2 small text-center">
                         @if ( $case->registrar == 1)
                             <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> Skickat: {{ $case->sent_registrar }}
                         @elseif ($case->registrar == 0 && $case->status_flag == 3 && $case->downloaded == 1)
@@ -62,12 +62,12 @@
                             <i class="fas fa-times"></i>
                         @endif
                     </td>
-                    <td>@if ($case->downloaded == 1)
+                    <td class="d-inline-block col-2">@if ($case->downloaded == 1)
                             <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Radera</a>
                         @endif
                         <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
                     </td>
-                    <td>
+                    <td class="d-inline-block col-2">
                         @if ($case->status_flag == 0)
                             <span class="badge badge-danger">Misslyckades</span> <a href="{{ route('override', ['id'=>$case->id ]) }}" type="button" class="btn btn-outline-primary btn-sm">Override</a>
                         @elseif ($case->downloaded == 1)

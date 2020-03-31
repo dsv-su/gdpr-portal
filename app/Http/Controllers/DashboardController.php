@@ -7,6 +7,7 @@ use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Searchcase;
 use App\Plugin;
+use Illuminate\Support\Facades\DB;
 
 
 class DashboardController extends Controller
@@ -36,6 +37,8 @@ class DashboardController extends Controller
         $data['cases'] = Searchcase::all();
         $data['plugins'] = Plugin::all();
         $data['pluginstatuses'] = Status::all();
+        $data['system_name'] = DB::table('plugins')->distinct()->pluck('plugin');
+
 
         //TODO -> This should be reworked <- Check download status
         if(!$record = Searchcase::latest()->first()) {
@@ -47,7 +50,11 @@ class DashboardController extends Controller
             $plugins = Plugin::count();
             $cases = Searchcase::all();
             if (!empty($cases))
+            {
                 $data['init'] = 1;
+                $collapse = 1;
+            }
+
             foreach ($cases as $case)
             {
                 if($case->status_flag == 3)
