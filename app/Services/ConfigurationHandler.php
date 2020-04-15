@@ -97,6 +97,7 @@ class ConfigurationHandler extends Model
                     $file = $plugindir . $filename . '.example';
                     }
                 $config = parse_ini_file($file, true);
+                //dd($config);
                 $system = new System();
                 foreach ($config as $configkey => $configvalue) {
                     //$pluginrow = array([$configkey => $configvalue]);

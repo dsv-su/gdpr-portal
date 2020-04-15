@@ -1036,7 +1036,8 @@
                 "name": "Jakub Onderka",
                 "email": "jakub.onderka@gmail.com"
             }
-        ]
+        ],
+        "abandoned": "php-parallel-lint/php-console-color"
     },
     {
         "name": "jakub-onderka/php-console-highlighter",
@@ -1084,7 +1085,8 @@
                 "homepage": "http://www.acci.cz/"
             }
         ],
-        "description": "Highlight PHP code in terminal"
+        "description": "Highlight PHP code in terminal",
+        "abandoned": "php-parallel-lint/php-console-highlighter"
     },
     {
         "name": "kamermans/guzzle-oauth2-subscriber",
@@ -1340,6 +1342,63 @@
             "Tinker",
             "laravel",
             "psysh"
+        ]
+    },
+    {
+        "name": "lcobucci/jwt",
+        "version": "3.3.1",
+        "version_normalized": "3.3.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/lcobucci/jwt.git",
+            "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+            "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "ext-openssl": "*",
+            "php": "^5.6 || ^7.0"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "~1.5",
+            "phpmd/phpmd": "~2.2",
+            "phpunit/php-invoker": "~1.1",
+            "phpunit/phpunit": "^5.7 || ^7.3",
+            "squizlabs/php_codesniffer": "~2.3"
+        },
+        "time": "2019-05-24T18:30:49+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Lcobucci\\JWT\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Luís Otávio Cobucci Oblonczyk",
+                "email": "lcobucci@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+        "keywords": [
+            "JWS",
+            "jwt"
         ]
     },
     {
@@ -1724,6 +1783,104 @@
         ]
     },
     {
+        "name": "mrclay/shibalike",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mrclay/shibalike.git",
+            "reference": "04242301ed18f5a1b02493bcc193f5efd255112e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mrclay/shibalike/zipball/04242301ed18f5a1b02493bcc193f5efd255112e",
+            "reference": "04242301ed18f5a1b02493bcc193f5efd255112e",
+            "shasum": ""
+        },
+        "require": {
+            "mrclay/userland-session": "3.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-08-24T05:06:41+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Shibalike\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Steve Clay",
+                "homepage": "http://www.mrclay.org/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Provides a PHP library for emulating a Shibboleth environment.",
+        "homepage": "https://github.com/mrclay/shibalike",
+        "keywords": [
+            "SSO",
+            "http",
+            "session",
+            "shibboleth",
+            "single sign-on"
+        ]
+    },
+    {
+        "name": "mrclay/userland-session",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mrclay/UserlandSession.git",
+            "reference": "12f2604248e9db03bee334612580574e9d776eed"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mrclay/UserlandSession/zipball/12f2604248e9db03bee334612580574e9d776eed",
+            "reference": "12f2604248e9db03bee334612580574e9d776eed",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "1.3.*@dev",
+            "php": ">=5.4.0"
+        },
+        "time": "2014-05-25T01:38:09+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "UserlandSession\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Steve Clay",
+                "homepage": "http://www.mrclay.org/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Provides a an HTTP cookie-based session in plain PHP, allowing concurrent use with existing native sessions.",
+        "homepage": "https://github.com/mrclay/UserlandSession",
+        "keywords": [
+            "SSO",
+            "http",
+            "session",
+            "single sign-on"
+        ]
+    },
+    {
         "name": "myclabs/deep-copy",
         "version": "1.9.5",
         "version_normalized": "1.9.5.0",
@@ -1771,6 +1928,71 @@
             "duplicate",
             "object",
             "object graph"
+        ]
+    },
+    {
+        "name": "namshi/jose",
+        "version": "7.2.3",
+        "version_normalized": "7.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/namshi/jose.git",
+            "reference": "89a24d7eb3040e285dd5925fcad992378b82bcff"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/namshi/jose/zipball/89a24d7eb3040e285dd5925fcad992378b82bcff",
+            "reference": "89a24d7eb3040e285dd5925fcad992378b82bcff",
+            "shasum": ""
+        },
+        "require": {
+            "ext-date": "*",
+            "ext-hash": "*",
+            "ext-json": "*",
+            "ext-pcre": "*",
+            "ext-spl": "*",
+            "php": ">=5.5",
+            "symfony/polyfill-php56": "^1.0"
+        },
+        "require-dev": {
+            "phpseclib/phpseclib": "^2.0",
+            "phpunit/phpunit": "^4.5|^5.0",
+            "satooshi/php-coveralls": "^1.0"
+        },
+        "suggest": {
+            "ext-openssl": "Allows to use OpenSSL as crypto engine.",
+            "phpseclib/phpseclib": "Allows to use Phpseclib as crypto engine, use version ^2.0."
+        },
+        "time": "2016-12-05T07:27:31+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Namshi\\JOSE\\": "src/Namshi/JOSE/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Alessandro Nadalin",
+                "email": "alessandro.nadalin@gmail.com"
+            },
+            {
+                "name": "Alessandro Cinelli (cirpo)",
+                "email": "alessandro.cinelli@gmail.com"
+            }
+        ],
+        "description": "JSON Object Signing and Encryption library for PHP.",
+        "keywords": [
+            "JSON Web Signature",
+            "JSON Web Token",
+            "JWS",
+            "json",
+            "jwt",
+            "token"
         ]
     },
     {
@@ -4883,6 +5105,64 @@
         ]
     },
     {
+        "name": "symfony/polyfill-php56",
+        "version": "v1.15.0",
+        "version_normalized": "1.15.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-php56.git",
+            "reference": "d51ec491c8ddceae7dca8dd6c7e30428f543f37d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/d51ec491c8ddceae7dca8dd6c7e30428f543f37d",
+            "reference": "d51ec491c8ddceae7dca8dd6c7e30428f543f37d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "symfony/polyfill-util": "~1.0"
+        },
+        "time": "2020-03-09T19:04:49+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.15-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Php56\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill backporting some PHP 5.6+ features to lower PHP versions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
         "name": "symfony/polyfill-php72",
         "version": "v1.15.0",
         "version_normalized": "1.15.0.0",
@@ -4996,6 +5276,60 @@
             "compatibility",
             "polyfill",
             "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-util",
+        "version": "v1.15.0",
+        "version_normalized": "1.15.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-util.git",
+            "reference": "d8e76c104127675d0ea3df3be0f2ae24a8619027"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/d8e76c104127675d0ea3df3be0f2ae24a8619027",
+            "reference": "d8e76c104127675d0ea3df3be0f2ae24a8619027",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2020-03-02T11:55:35+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.15-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Util\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony utilities for portability of PHP codes",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compat",
+            "compatibility",
+            "polyfill",
             "shim"
         ]
     },
@@ -5495,6 +5829,147 @@
         ],
         "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
         "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles"
+    },
+    {
+        "name": "tymon/jwt-auth",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tymondesigns/jwt-auth.git",
+            "reference": "d4cf9fd2b98790712d3e6cd1094e5ff018431f19"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tymondesigns/jwt-auth/zipball/d4cf9fd2b98790712d3e6cd1094e5ff018431f19",
+            "reference": "d4cf9fd2b98790712d3e6cd1094e5ff018431f19",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/auth": "^5.2|^6|^7",
+            "illuminate/contracts": "^5.2|^6|^7",
+            "illuminate/http": "^5.2|^6|^7",
+            "illuminate/support": "^5.2|^6|^7",
+            "lcobucci/jwt": "^3.2",
+            "namshi/jose": "^7.0",
+            "nesbot/carbon": "^1.0|^2.0",
+            "php": "^5.5.9|^7.0"
+        },
+        "require-dev": {
+            "illuminate/console": "^5.2|^6|^7",
+            "illuminate/database": "^5.2|^6|^7",
+            "illuminate/routing": "^5.2|^6|^7",
+            "mockery/mockery": ">=0.9.9",
+            "phpunit/phpunit": "~4.8|~6.0"
+        },
+        "time": "2020-03-04T11:21:28+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-develop": "1.0-dev"
+            },
+            "laravel": {
+                "aliases": {
+                    "JWTAuth": "Tymon\\JWTAuth\\Facades\\JWTAuth",
+                    "JWTFactory": "Tymon\\JWTAuth\\Facades\\JWTFactory"
+                },
+                "providers": [
+                    "Tymon\\JWTAuth\\Providers\\LaravelServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Tymon\\JWTAuth\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sean Tymon",
+                "email": "tymon148@gmail.com",
+                "homepage": "https://tymon.xyz",
+                "role": "Developer"
+            }
+        ],
+        "description": "JSON Web Token Authentication for Laravel and Lumen",
+        "homepage": "https://github.com/tymondesigns/jwt-auth",
+        "keywords": [
+            "Authentication",
+            "JSON Web Token",
+            "auth",
+            "jwt",
+            "laravel"
+        ]
+    },
+    {
+        "name": "uabookstores/laravel-shibboleth",
+        "version": "3.1.1",
+        "version_normalized": "3.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/uabookstores/laravel-shibboleth.git",
+            "reference": "b556909d0494edd5f276af2526567c6b17291f92"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/uabookstores/laravel-shibboleth/zipball/b556909d0494edd5f276af2526567c6b17291f92",
+            "reference": "b556909d0494edd5f276af2526567c6b17291f92",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "5.* || ^6.0 || ^7.0",
+            "laravel/framework": "^5.4 || ^6.0 || ^7.0",
+            "mrclay/shibalike": "1.0.0",
+            "tymon/jwt-auth": "^1.0.0"
+        },
+        "require-dev": {
+            "orchestra/testbench": "^3.4|^4.0|^5.0",
+            "phpunit/phpunit": "^6.0|^7.0|^8.0"
+        },
+        "time": "2020-03-05T19:06:52+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "StudentAffairsUwm\\Shibboleth\\ShibbolethServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "StudentAffairsUwm\\Shibboleth\\": "src/StudentAffairsUwm/Shibboleth"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Christopher Maio",
+                "email": "cjmaio@uwm.edu"
+            },
+            {
+                "name": "Michael Schuett",
+                "email": "michaeljs1990@gmail.com"
+            },
+            {
+                "name": "Taylor Donald Harvey Smith",
+                "email": "smit2482@uwm.edu"
+            },
+            {
+                "name": "Jeff Puckett",
+                "email": "jpucket@uark.edu"
+            },
+            {
+                "name": "Brandon Williams",
+                "email": "brandonwilliams@email.arizona.edu"
+            }
+        ],
+        "description": "Enable basic Shibboleth support for Laravel 5.x"
     },
     {
         "name": "vlucas/phpdotenv",

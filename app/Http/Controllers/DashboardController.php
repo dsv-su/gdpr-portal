@@ -113,6 +113,10 @@ class DashboardController extends Controller
         $data['collapse'] = $collapse;
         return view('home.status', $data);
     }
+    public function login()
+    {
+        return redirect('/');
+    }
 
     public function download($id)
     {

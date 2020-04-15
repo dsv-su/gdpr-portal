@@ -67,7 +67,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'shibboleth', //Changed from elouquent to shibboleth
             'model' => App\User::class,
         ],
 

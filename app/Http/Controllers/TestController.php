@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use StudentAffairsUwm\Shibboleth\Entitlement;
 
 class TestController extends Controller
 {
+
     public function sign()
     {
         $case = '2020-1';

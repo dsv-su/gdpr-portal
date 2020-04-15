@@ -176,7 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,
         ZanySoft\Zip\ZipServiceProvider::class,
-
+        StudentAffairsUwm\Shibboleth\ShibbolethServiceProvider::class,
+        StudentAffairsUwm\Shibboleth\ShibalikeServiceProvider::class,
     ],
 
     /*
