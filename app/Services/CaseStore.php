@@ -183,9 +183,9 @@ class CaseStore extends Model
     //Delete directory structure
     //Storage::deleteDirectory('/public/raw');
     //Storage::deleteDirectory('/public/zip');
-    //Storage::deleteDirectory('/public/2020-1');
-    Storage::deleteDirectory('/public/2020-6');
-    Storage::deleteDirectory('/public/2020-7');
+    Storage::deleteDirectory('/public/2020-1');
+    //Storage::deleteDirectory('/public/2020-6');
+    //Storage::deleteDirectory('/public/2020-7');
     dd('Done');
     }
 }

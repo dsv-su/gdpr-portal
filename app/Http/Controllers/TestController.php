@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Plugin;
 use App\Plugin\Otrs;
 use App\Searchcase;
+use App\Services\AuthHandler;
 use App\Services\ConfigurationHandler;
 use App\Status;
 use App\Upload;
@@ -69,8 +70,14 @@ class TestController extends Controller
     {
         //var_dump($this->getDirContents(base_path().'/pluginconfig/'));
         //var_dump($this->getFiles(base_path().'/pluginconfig/'));
+        if(class_exists(AuthHandler::class))
+             dd($system = app()->make('SystemService')->authorize());
+        /*
+        $test = new AuthHandler();
+        dd($test->authorize());
         $list = new ConfigurationHandler();
         $list->system();
+        */
         //$list->handle_plugins();
     }
     private function getDirContents($dir, &$results=array())

@@ -10,8 +10,14 @@
 | Endpoint upload-route
 |
 */
+
+use App\Services\AuthHandler;
+
+if(class_exists(AuthHandler::class))
+    $login = app()->make('SystemService')->authorize()->global->login_route;
 //Endpoint
-Route::get('/login', 'DashboardController@login')->name('login');
+Route::get($login, 'DashboardController@login')->name('login');
+
 
 Route::middleware('gdpr')->group(function () {
 

@@ -8,45 +8,49 @@ use RecursiveIteratorIterator;
 
 class AuthHandler extends Model
 {
+    private $process, $files, $file;
+    protected $plugindir, $list, $filename;
+    public $config;
+
     private function getFiles($dir)
     {
         //Get list of filenames
-        $process = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+        $this->process = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
 
-        $files = array();
+        $this->files = array();
 
-        foreach ($process as $file) {
+        foreach ($this->process as $this->file) {
 
-            if ($file->isDir()){
+            if ($this->file->isDir()){
                 continue;
             }
 
             //$files[] = $file->getPathname();
-            $files[] = $file->getFilename();
+            $this->files[] = $this->file->getFilename();
 
         }
-        return $files;
+        return $this->files;
     }
 
     public function authorize()
     {
-        $plugindir = base_path().'/systemconfig/';
-        $list = $this->getFiles($plugindir);
-        foreach ($list as $filename) {
+        $this->plugindir = base_path().'/systemconfig/';
+        $this->list = $this->getFiles($this->plugindir);
+        foreach ($this->list as $this->filename) {
             // Read the .ini file and store in table
-            if (substr($filename, -3) == 'ini') {
-                $file = $plugindir . $filename;
-                if (!file_exists($file)) {
-                    $file = $plugindir . $filename . '.example';
+            if (substr($this->filename, -3) == 'ini') {
+                $this->file = $this->plugindir . $this->filename;
+                if (!file_exists($this->file)) {
+                    $this->file = $this->plugindir . $this->filename . '.example';
                 }
-                $config = parse_ini_file($file, true);
+                $this->config = parse_ini_file($this->file, true);
 
-                $config = json_encode($config);
-                $config = json_decode($config);
+                $this->config = json_encode($this->config);
+                $this->config = json_decode($this->config);
 
             }
         }
-        return $config;
+        return $this->config;
 
     }
 }

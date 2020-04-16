@@ -19,6 +19,7 @@ class CreateSystemsTable extends Migration
             $table->integer('case_ttl');
             $table->string('authorization_parameter');
             $table->string('authorization', 200);
+            $table->string('login_route');
             $table->integer('plugin_tries');
             $table->integer('plugin_request_timeout');
             $table->string('registrator');
