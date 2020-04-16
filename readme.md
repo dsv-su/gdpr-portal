@@ -38,14 +38,16 @@ Composer
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
         [global]
-        case_start_id=2020-1             # The starting case id (year-id)
-        case_ttl=30                      # Time to live for a case - not yet implemented
-        plugin_tries=3                   # Number of tries a plugin tries to contact a system before reporting error
-        plugin_request_timeout=7200      # Timeout before a plugin reports error
-        registrator=ryan@dsv.su.se       # Email address of registrar (change to your institution)
+        case_start_id=2020-1                    # The starting case id (year-id)
+        case_ttl=30                             # Time to live for a case - not yet implemented
+        authorization_parameter=entitlement     # The authorization parameter
+        authorization=                          # Authorization entitlements
+        plugin_tries=3                          # Number of tries a plugin tries to contact a system before reporting error
+        plugin_request_timeout=7200             # Timeout before a plugin reports error
+        registrator=ryan@dsv.su.se              # Email address of registrar (change to your institution)
         
         [database]
-        db=mysql                        # Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
+        db=mysql                                # Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
         db_host=127.0.0.1               
         db_port=3306
         db_database=                    
