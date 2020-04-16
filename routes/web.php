@@ -5,15 +5,15 @@
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Endpoint SSO-Route
+| Routes secured by middleware
+| Endpoint upload-route
 |
 */
 //Endpoint
 Route::get('/login', 'DashboardController@login')->name('login');
 
-//Route::middleware('gdpr')->group(function () {
+Route::middleware('gdpr')->group(function () {
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/status','DashboardController@status')->name('home_status');
@@ -42,7 +42,7 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 //Email registrar
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
-//});
+});
 
 //File upload
 Route::get('/upload/{id}', 'FileController@index')->name('upload');
