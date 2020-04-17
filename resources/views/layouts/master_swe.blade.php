@@ -9,7 +9,7 @@
     <div id="top-links">&nbsp;</div>
     @include('layouts.partials.header_swe')
     <div id="contents">
-        <a class="accessibility-link" name="content-top"></a>
+        <a class="accessibility-link" ></a>
         @yield('content')
         <div class="clear">
         </div>

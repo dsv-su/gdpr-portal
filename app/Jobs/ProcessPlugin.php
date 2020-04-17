@@ -126,10 +126,8 @@ class ProcessPlugin implements ShouldQueue
             }
             else
             {
-
                 $this->status->setStatus('ok'); //$response
                 $this->status->setProgressStatus(100);
-                //$this->status->setDownloadStatus(0); //Moved to plugin
             }
 
         }

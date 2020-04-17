@@ -10,10 +10,18 @@ class Moodle extends GenericPlugin
 
     public function getResource()
     {
-        $client = new Client();
+        $client = new Client(['base_uri' => $this->plugin->base_uri]);
+        $headers = [
+            'Authorization' =>  $this->status->token,
+            'Accept' => 'application/json',
+        ];
         try {
-            $this->response = $client->get($this->plugin->base_uri .'=1&username='. $this->case->request_uid);
-
+            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid. '&ticket='.$this->status->token);
+            /*
+            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid, [
+                'headers' => $headers
+            ]);
+            */
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;
