@@ -10,9 +10,15 @@ class Utbytes extends GenericPlugin
 
     public function getResource()
     {
-        $client = new Client();
+        $client = new Client(['base_uri' => $this->plugin->base_uri]);
+        $headers = [
+            'Authorization' =>  $this->status->token,
+            'Accept' => 'application/json',
+        ];
         try {
-            $this->response = $client->get($this->plugin->base_uri . 'email=' . $this->case->request_email . '&pn=' . $this->case->request_pnr);
+            $this->response = $client->request('GET', $this->plugin->base_uri . 'email=' . $this->case->request_email . '&pn=' . $this->case->request_pnr, [
+                'headers' => $headers
+            ]);
         } catch (\Exception $e) {
             /**
              * If there is an exception; Client error;

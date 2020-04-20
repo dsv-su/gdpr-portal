@@ -16,9 +16,10 @@ class Moodle extends GenericPlugin
             'Accept' => 'application/json',
         ];
         try {
-            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid. '&ticket='.$this->status->token);
+            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid. '&email=' .$this->case->request_email. '&ticket=' .$this->status->token);
+
             /*
-            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid, [
+            $this->response = $client->request('GET', $this->plugin->base_uri .'=1&username='. $this->case->request_uid. '&email=' .$this->case->request_email, [
                 'headers' => $headers
             ]);
             */
