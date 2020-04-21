@@ -115,6 +115,7 @@ The following configuration and credential attributes are allowed:
     redirect_uri =
     endpoint_url =
     owner_email =
+    search =
 
 If you have systems that use the same plugin you can stack them in the same configuration file.
 e.g.
@@ -127,6 +128,7 @@ e.g.
     redirect_uri =
     endpoint_url =
     owner_email =
+    search =
     
     [System2]
     client_id =
@@ -136,6 +138,7 @@ e.g.
     redirect_uri =
     endpoint_url =
     owner_email =
+    search =
     
     
 1.) Necessary attributes:
@@ -145,6 +148,20 @@ e.g.
 The only compulsory attribute for a plugin is the Name attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file (plugin.php -> system1.php)
 
 2.) Alternative attributes:
+
+    search
+    
+The search attribute tells the portal which input queries are allowed. Consider the input form as a binary number with three binary digits. | social security number | email | user ID | if the system you are designing a plugin only can accept a single parameter you give the search attribute that value e.g. if the system only accepts a userId you assign search=1, if the system accepts both userid and email, search=3 etc.
+
+    search=1 ; only userID
+    search=2 ; only email
+    search=3 ; email and uid
+    search=4 ; only personnummer
+    search=5 ; personnummer and uid
+    search=6 ; personnr and email
+    search=7 ; personummer, email and uid
+    
+    
 
     auth
 

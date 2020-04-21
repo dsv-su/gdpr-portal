@@ -81,6 +81,7 @@ class DashboardController extends Controller
 
         $data['collapse'] = $collapse;
 
+
         return view('home.dashboard', $data);
     }
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="welcome">
-    <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
+        <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
     </div>
         <div class="searchrequest">
     <!-- Form -->
@@ -56,9 +56,11 @@
                         <ul class="list-group list-group-flush">
                             <input type="hidden" name="{{ $plugin->name }}" value=1>
 
-                            <li class="list-group-item">{{$plugin->name}} <input type="checkbox" id="{{ $plugin->name }}" name=" {{ $plugin->name }}" value=0 checked></li>
+                            <li class="list-group-item">{{$plugin->name}} <input type="checkbox" id="{{ $plugin->name }}" name=" {{ $plugin->name }}" value=0 checked disabled></li>
 
                         </ul>
+                                <datalist id="huge_list">
+                                </datalist>
                             @endif
                         @endforeach
                     </div>
@@ -171,24 +173,48 @@
                 </tbody>
         </table>
     </div>
+            <script>
+                $(document).ready(function () {
+                        <?php if ($init == 1) { ?>
+                    var auto_refresh = setInterval(
+                        function() {
+                            $('#cases').load('<?php echo url('/status');?>').fadeIn("slow");
+                        },1000);
+                    <?php } ?>
+                    $( "#gdpr_pnr" ).change(function() {
+                        $('.collapse').show();
+                        //
+                        <?php foreach($plugins as $plugin) {
+                            if (in_array($plugin->search,array(4,5,6,7))) { ?>
+                                var plugin = document.getElementById('<?php echo $plugin->name ?>');
+                                plugin.removeAttribute('disabled');
+                        <?php }
+                            } ?>
+                        //
+                    });
+                    $( "#gdpr_email" ).change(function() {
+                        $('.collapse').show();
+                        //
+                            <?php foreach($plugins as $plugin) {
+                            if (in_array($plugin->search,array(2,3,6,7))) { ?>
+                        var plugin = document.getElementById('<?php echo $plugin->name ?>');
+                        plugin.removeAttribute('disabled');
+                        <?php }
+                        } ?>
+                        //
+                    });
+                    $( "#gdpr_uid" ).change(function() {
+                        $('.collapse').show();
+                        //
+                            <?php foreach($plugins as $plugin) {
+                            if (in_array($plugin->search,array(1,3,5,7))) { ?>
+                        var plugin = document.getElementById('<?php echo $plugin->name ?>');
+                        plugin.removeAttribute('disabled');
+                        <?php }
+                        } ?>
+                        //
+                    });
 
-    <script>
-        $(document).ready(function () {
-            <?php if ($init == 1) { ?>
-            var auto_refresh = setInterval(
-                function() {
-                    $('#cases').load('<?php echo url('/status');?>').fadeIn("slow");
-                },1000);
-            <?php } ?>
-            $( "#gdpr_pnr" ).change(function() {
-                $('.collapse').show();
-            });
-            $( "#gdpr_email" ).change(function() {
-                $('.collapse').show();
-            });
-            $( "#gdpr_uid" ).change(function() {
-                $('.collapse').show();
-            });
-        });
-    </script>
+                });
+            </script>
 @endsection
