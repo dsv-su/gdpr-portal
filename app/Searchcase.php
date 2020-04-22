@@ -6,28 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Searchcase extends Model
 {
-    protected $fillable = ['case_id', 'visability', 'gdpr_userid','gdpr_useremail', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'plugins_processed', 'download_status', 'downloaded'];
+    protected $fillable = ['case_id', 'visability', 'gdpr_userid','gdpr_useremail','gdpr_server', 'request_pnr','request_email','request_uid', 'status_processed', 'status_flag', 'registrar', 'progress', 'plugins_processed', 'download_status', 'downloaded'];
     private $request;
 
     public function initCase($user, $search, $case_id)
     {
-        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        if(app()->environment('local'))
         {
-
-           $requester_email = $_SERVER['mail'];
-
-        }
-        else {
-
             $requester_email = 'ryan@dsv.su.se';
         }
-
+        else {
+            $requester_email = $_SERVER['mail'];
+        }
+        $server = $_SERVER['HTTP_HOST'];
         //Store initial request data to model
         $this->request = Searchcase::create([
             'case_id' => $case_id,
             'visability' => 1,
             'gdpr_userid' => $user,
             'gdpr_useremail' => $requester_email,
+            'gdpr_server' => $server,
             'request_pnr' => $search[0],
             'request_email' => $search[1],
             'request_uid' => $search[2],
@@ -44,22 +42,21 @@ class Searchcase extends Model
 
     public function initnewCase($user, $caseid, $search)
     {
-        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        if(app()->environment('local'))
         {
-
-            $requester_email = $_SERVER['mail'];
-
-        }
-        else {
-
             $requester_email = 'ryan@dsv.su.se';
         }
+        else {
+            $requester_email = $_SERVER['mail'];
+        }
+        $server = $_SERVER['HTTP_HOST'];
         //Store initial request data to model
         $this->request = Searchcase::create([
             'case_id' => $caseid,
             'visability' => 1,
             'gdpr_userid' => $user,
             'gdpr_useremail' => $requester_email,
+            'gdpr_server' => $server,
             'request_pnr' => $search[0],
             'request_email' => $search[1],
             'request_uid' => $search[2],

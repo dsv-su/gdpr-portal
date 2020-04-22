@@ -33,7 +33,7 @@ Composer
 
 * Install the dependencies. `composer install`
 
-* Make sure that .env file is present (copy .env.example to .env)
+* Make sure that .env file is present (copy .env.example to .env). 
 
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
 
@@ -64,7 +64,9 @@ Composer
 
 * Either create application key manually or do that with a command `php artisan key:generate`
 
-* In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (this should prevent unneeded error detailed data exposure)
+* In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (Default setting. this should prevent unneeded error detailed data exposure). NOTE! For developing enviroment the settings should be set to: APP_ENV=local and APP_DEBUG=true.
+
+* In the `.env` file, change the APP_URL= parameter to your server domain-address.
 
 * The redirect URL addresses are in the form BASE-URL/PLUGIN-name/callback if you need to define a callback
 

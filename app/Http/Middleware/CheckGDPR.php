@@ -32,8 +32,8 @@ class CheckGDPR
         else
         {
             $server = explode(";", $_SERVER[$auth_param]);
-            //foreach ($auth as $entitlement)
-            //{
+            //foreach ($auth as $entitlement)  //For multiple entitlements
+            //{                                 //For multiple entitlements
                 foreach($server as $server_entitlement)
                 {
                     if($entitlement == $server_entitlement)
@@ -41,7 +41,7 @@ class CheckGDPR
                         $match++;
                     }
                 }
-            //}
+            //} //For multiple entitlements
         }
 
         if ($match !== 1)

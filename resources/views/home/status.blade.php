@@ -65,7 +65,9 @@
                     <td class="d-inline-block col-2">@if ($case->downloaded == 1)
                             <a href="{{ route('delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Radera</a>
                         @endif
+                        @if ($debug == true)
                         <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
+                        @endif
                     </td>
                     <td class="d-inline-block col-2">
                         @if ($case->status_flag == 0)

@@ -2,3 +2,4 @@
 client_id =
 client_secret =
 endpoint_url =
+search=2                        ; Search for Email

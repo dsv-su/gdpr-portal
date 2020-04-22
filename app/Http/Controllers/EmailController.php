@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class EmailController extends Controller
 {
-    //To test email settings on server
+    //Send email to registrar
     public function sendEmail($id)
     {
         $system = System::find(1);

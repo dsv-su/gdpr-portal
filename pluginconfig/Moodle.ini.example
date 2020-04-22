@@ -1,2 +1,3 @@
-[Moodle]
+[MoodleTest]
 base_uri =
+search=3                                ;Search for email and userId

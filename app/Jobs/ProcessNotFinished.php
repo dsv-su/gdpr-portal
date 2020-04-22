@@ -38,7 +38,7 @@ class ProcessNotFinished implements ShouldQueue
 
         $details = [
             'title' => 'Meddelande från GDPR portalen',
-            'url' => 'https://methone.dsv.su.se',
+            'url' => 'https://'.$this->case->gdpr_server,
             'case' => $this->case->case_id
         ];
         Mail::to($user)->send(new GDPRNotifyError($details));

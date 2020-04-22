@@ -1,3 +1,4 @@
 [Daisy]
 client_secret =
 base_uri =
+search=7                ;Search for personnummer, email or userID

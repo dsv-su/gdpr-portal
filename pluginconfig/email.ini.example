@@ -1,5 +1,7 @@
 [MySystem1]
 owner_email = ryan@dsv.su.se
+search=2                            ;Email
 
 [MySystem2]
 owner_email = ryan@dsv.su.se
+search=2                            ;Email

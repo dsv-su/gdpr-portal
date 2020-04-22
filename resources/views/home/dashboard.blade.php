@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="welcome">
-        <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px">{{ $systems }}</code></span></h5>
+        <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px" id="antal">{{ $systems }}</code></span></h5>
     </div>
         <div class="searchrequest">
     <!-- Form -->
@@ -149,7 +149,9 @@
                             @if ($case->downloaded == 1)
                                 <a href="{{ route('delete', ['id'=>$case->id ]) }}" id="delete" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Radera</a>
                             @endif
+                            @if ($debug == true)
                             <a href="{{ route('dev_delete', ['id'=>$case->id ]) }}" id="forcedelete" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> ForceDelete</a>
+                            @endif
                         </td>
                         <td class="d-inline-block col-2">
                             @if ($case->status_flag == 0)
@@ -182,7 +184,7 @@
                         },1000);
                     <?php } ?>
                     $( "#gdpr_pnr" ).change(function() {
-                        $('.collapse').show();
+                        $('#collapse').show();
                         //
                         <?php foreach($plugins as $plugin) {
                             if (in_array($plugin->search,array(4,5,6,7))) { ?>
@@ -193,7 +195,7 @@
                         //
                     });
                     $( "#gdpr_email" ).change(function() {
-                        $('.collapse').show();
+                        $('#collapse').show();
                         //
                             <?php foreach($plugins as $plugin) {
                             if (in_array($plugin->search,array(2,3,6,7))) { ?>
@@ -204,7 +206,7 @@
                         //
                     });
                     $( "#gdpr_uid" ).change(function() {
-                        $('.collapse').show();
+                        $('#collapse').show();
                         //
                             <?php foreach($plugins as $plugin) {
                             if (in_array($plugin->search,array(1,3,5,7))) { ?>

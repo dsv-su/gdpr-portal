@@ -40,7 +40,7 @@ class ProcessFinished implements ShouldQueue
         $user = $this->case->gdpr_useremail;
         $details = [
             'title' => 'Meddelande från GDPR portalen',
-            'url' => 'https://methone.dsv.su.se',
+            'url' => 'https://'.$this->case->gdpr_server,
             'case' => $this->case->case_id
         ];
         Mail::to($user)->send(new MailGDPRNotify($details));

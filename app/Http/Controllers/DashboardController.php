@@ -12,10 +12,14 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function login()
+    {
+        return redirect('/');
+    }
+
     public function index(Searchcase $searchcase)
     {
-        //Initiate testing plugins at first boot
-        //-----------------------------------------------
+        //Initiate plugins at first boot
         if(!$record = Searchcase::latest()->first()) {
             if (!$plugin = Plugin::latest()->first()) {
                 //Load system and plugins configuration
@@ -25,13 +29,13 @@ class DashboardController extends Controller
                 $collapse = 0;
             }
         }
-        //-----------------------------------------------
+
         //Check if system and plugins have been modified or added
         $init = new ConfigurationHandler();
         $init->check_system();
         $init->reset_plugins();
 
-        //-----------------------------------------------
+        //Load data for view
 
         $data['systems'] = Plugin::count();
         $data['cases'] = Searchcase::all();
@@ -40,7 +44,7 @@ class DashboardController extends Controller
         $data['system_name'] = DB::table('plugins')->distinct()->pluck('plugin');
 
 
-        //TODO -> This should be reworked <- Check download status
+        //Check download status
         if(!$record = Searchcase::latest()->first()) {
             $collapse = 0;
             $data['init'] = 0;
@@ -70,14 +74,21 @@ class DashboardController extends Controller
 
         }
 
-
-        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        // If the environment is local
+        if(app()->environment('local'))
         {
-            $data['gdpr_user'] = $_SERVER['displayName'];
+            $data['gdpr_user'] = 'Testuser';
         }
         else {
-            $data['gdpr_user'] = 'Ryan Dias';
+
+            $data['gdpr_user'] = $_SERVER['displayName'];
         }
+        // If the enviroment is in debug=true
+        if(config('app.debug') == true)
+        {
+            $data['debug'] = true;
+        }
+        else $data['debug'] = false;
 
         $data['collapse'] = $collapse;
 
@@ -89,7 +100,7 @@ class DashboardController extends Controller
     {
         $data['cases'] = Searchcase::all();
         $data['pluginstatuses'] = Status::all();
-        //TODO -> Check download status
+        //Check download status
         if(!$record = Searchcase::latest()->first()) {
             $data['init'] = 0;
         }
@@ -111,12 +122,15 @@ class DashboardController extends Controller
             }
 
         }
+        // If the enviroment is in debug=true
+        if(config('app.debug') == true)
+        {
+            $data['debug'] = true;
+        }
+        else $data['debug'] = false;
+
         $data['collapse'] = $collapse;
         return view('home.status', $data);
-    }
-    public function login()
-    {
-        return redirect('/');
     }
 
     public function download($id)
@@ -146,38 +160,55 @@ class DashboardController extends Controller
     }
     //-----------------------------------------------
     //
-    // Developing and testing functions
+    // Developing and testing functions when debug=true
     //
     //-----------------------------------------------
 
     public function dev_delete($id)
     {
         //Delete zip and retrived files and folder
-        $case = Searchcase::find($id);
-        $zip = new CaseStore($case);
-        $zip->dev_delete_case($id);
+        if(config('app.debug') == true)
+        {
+            $case = Searchcase::find($id);
+            $zip = new CaseStore($case);
+            $zip->dev_delete_case($id);
 
-        return redirect()->route('home');
+            return redirect()->route('home');
+        }
+        else return redirect()->back();
+
     }
 
     public function dev()
     {
         //Delete zip and retrived files and folder
-        $case = new Searchcase();
-        $zip = new CaseStore($case);
-        $zip->dev_delete();
+        if(config('app.debug') == true)
+        {
+            $case = new Searchcase();
+            $zip = new CaseStore($case);
+            $zip->dev_delete();
 
-        return redirect()->route('home');
+            return redirect()->route('home');
+        }
+        else return redirect()->back();
     }
 
     public function test()
     {
-        return $_SERVER;
+        if(config('app.debug') == true)
+        {
+            return $_SERVER;
+        }
+        else return redirect()->back();
     }
 
     public function phpinfo()
     {
-        return phpinfo();
+        if(config('app.debug') == true)
+        {
+            return phpinfo();
+        }
+        else return redirect()->back();
     }
 
 

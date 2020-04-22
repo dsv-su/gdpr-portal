@@ -10,6 +10,13 @@ use App\Toker;
 
 class CallbackController extends Controller
 {
+    /****************************
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * Handles Callback from Toker and stores token
+     *
+     */
+
     public function callback()
     {
         //Retrive code from callback

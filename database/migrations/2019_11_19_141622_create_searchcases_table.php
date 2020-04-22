@@ -18,6 +18,7 @@ class CreateSearchcasesTable extends Migration
             $table->integer('visability');
             $table->string('gdpr_userid');
             $table->string('gdpr_useremail');
+            $table->string('gdpr_server');
             $table->string('case_id');
             $table->string('request_pnr')->nullable();
             $table->string('request_email')->nullable();

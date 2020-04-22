@@ -59,21 +59,22 @@ class SearchController extends Controller
         }
 
         /*************************************************************************************
-        //  3. Check which server is running dev/methone to issue correct loginformation
+        //  3. Check which server is running dev/production to issue correct loginformation
         /************************************************************************************/
 
-        if($_SERVER['SERVER_NAME'] == 'methone.dsv.su.se')
+        if(app()->environment('local'))
         {
-            $gdpr_userid = $_SERVER['eppn'];
+            $gdpr_userid = 'devuser';
         }
         else {
-            $gdpr_userid = 'devuser';
+
+            $gdpr_userid = $_SERVER['eppn'];
         }
 
         //Check that plugins have been loaded
         if( Plugin::count() == 0 )
         {
-            dd('Please initiate script first by going back and refreshing page!');
+            dd('Please initiate script first by going back and refreshing page!'); //Only on first time boot
             return redirect()->route('home');
         }
 

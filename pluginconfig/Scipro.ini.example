@@ -5,3 +5,4 @@ auth_url =
 base_uri =
 redirect_uri =
 endpoint_url =
+search=1                            ; Search enabled for userId

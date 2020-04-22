@@ -19,7 +19,7 @@ if(class_exists(AuthHandler::class))
 Route::get($login, 'DashboardController@login')->name('login');
 
 
-//Route::middleware('gdpr')->group(function () {
+Route::middleware('gdpr')->group(function () {
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/status','DashboardController@status')->name('home_status');
@@ -29,7 +29,6 @@ Route::get('/download/{id}', 'DashboardController@download')->name('download');
 
 //Delete completed gdpr-request
 Route::get('/delete/{id}', 'DashboardController@delete')->name('delete');
-Route::get('/dev-delete/{id}', 'DashboardController@dev_delete')->name('dev_delete');
 
 //Override failed gdpr-request
 Route::get('/override/{id}', 'DashboardController@override')->name('override');
@@ -48,21 +47,23 @@ Route::post('/plugin_configuration/{plugin}', 'PluginController@update')->name('
 //Email registrar
 Route::get('/emailregistrar/{id}', 'EmailController@sendEmail')->name('send');
 
-//});
+});
 
 //File upload
 Route::get('/upload/{id}', 'FileController@index')->name('upload');
 Route::post('/store', 'FileController@store')->name('store');
 
 //**********************************************************************************************
-//Testing routes - to be removed in production
+//Testing routes - only active in local development enviroment
 //**********************************************************************************************
-Route::get('/sign', 'TestController@sign');
+
+Route::get('/dev-delete/{id}', 'DashboardController@dev_delete')->name('dev_delete');
 Route::get('/dev-delete-raw/', 'DashboardController@dev');
+
+Route::get('/sign', 'TestController@sign');
+
 Route::get('/test', 'DashboardController@test')->name('test');
 Route::get('/php', 'DashboardController@phpinfo')->name('php');
-
-Route::get('/video/', 'TestController@video');
 
 //Otrs-test
 Route::get('/otrs', 'TestController@test_otrs');
