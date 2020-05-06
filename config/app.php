@@ -1,5 +1,13 @@
 <?php
 
+use Illuminate\Support\Str;
+
+$file = base_path().'/systemconfig/gdpr.ini';
+if (!file_exists($file)) {
+    $file = base_path().'/systemconfig/gdpr.ini.example';
+}
+$system_config = parse_ini_file($file, true);
+
 return [
 
     /*
@@ -26,7 +34,8 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    //'env' => env('APP_ENV', 'production'),
+    'env' => $system_config['global']['app_env'],
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +48,8 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    //'debug' => env('APP_DEBUG', false),
+    'debug' => $system_config['global']['app_debug'],
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +62,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    //'url' => env('APP_URL', 'http://localhost'),
+    'url' => $system_config['global']['app_url'],
 
     'asset_url' => env('ASSET_URL', null),
 

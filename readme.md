@@ -29,46 +29,43 @@ Composer
 
 * Clone the repository
 
-* Move into the directory
+* Move into the directory. Move into the `/systemconfig folder.
 
-* Install the dependencies. `composer install`
+* Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for your requirements and for the server (copy gdpr.ini.example to .ini and fill in with your data)
+
+        [global]
+        app_env=production                      ; Make sure this is set to production NOTE! For developing enviroment the settings should be set to: app_env=local and app_debug=true.
+        app_debug=false                         ; Make sure this is set to false for production enviroments
+        app_url=http://localhost                ; Set this to your domain
+        case_start_id=2020-1                    ; The starting case id (year-id)
+        case_ttl=30                             ; Time to live for a case - not yet implemented
+        authorization_parameter=entitlement     ; The authorization parameter
+        authorization=                          ; Authorization entitlements
+        login_route=/login                      ; The SSO login route for your application (Server)
+        plugin_tries=3                          ; Number of tries a plugin tries to contact a system before reporting error
+        plugin_request_timeout=7200             ; Timeout before a plugin reports error
+        registrator=registrator@dsv.su.se       ; Email address of registrar (change to your institution)
+        
+        [database]
+        db=mysql                                ; Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
+        db_host=127.0.0.1                       ; DB host address
+        db_port=3306                            ; DB port
+        db_database=                            ; Database used     
+        db_username=                            ; DB user
+        db_password=                            ; secret
+        
+        [oauth]                                 ; Toker is the default access tokens system
+        client_id =                             ; The id given to your system
+        client_secret =                         ; Secret
+        auth_url =                              ; The toker auth url
+        base_uri =                              ; The toker base uri
+        redirect_uri =                          ; The Toker redirect uri
+        
+* Once the global settings are entered you can install the dependencies. `composer install`
 
 * Make sure that .env file is present (copy .env.example to .env). 
 
-* Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for the server and your requirements (copy gdpr.ini.example to .ini and fill in with your data)
-
-        [global]
-        case_start_id=2020-1                    # The starting case id (year-id)
-        case_ttl=30                             # Time to live for a case - not yet implemented
-        authorization_parameter=entitlement     # The authorization parameter
-        authorization=                          # Authorization entitlements
-        login_route=/login                      # The SSO login route for your application (Server)
-        plugin_tries=3                          # Number of tries a plugin tries to contact a system before reporting error
-        plugin_request_timeout=7200             # Timeout before a plugin reports error
-        registrator=ryan@dsv.su.se              # Email address of registrar (change to your institution)
-        
-        [database]
-        db=mysql                                # Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis 
-        db_host=127.0.0.1               
-        db_port=3306
-        db_database=                    
-        db_username=
-        db_password=
-        
-        [oauth]                         # Toker is the default access tokens system
-        client_id =
-        client_secret =
-        auth_url =
-        base_uri =
-        redirect_uri =
-
 * Either create application key manually or do that with a command `php artisan key:generate`
-
-* In the `.env` file, make sure that APP_ENV=production and APP_DEBUG=false for production environments (Default setting. this should prevent unneeded error detailed data exposure). NOTE! For developing enviroment the settings should be set to: APP_ENV=local and APP_DEBUG=true.
-
-* In the `.env` file, change the APP_URL= parameter to your server domain-address.
-
-* The redirect URL addresses are in the form BASE-URL/PLUGIN-name/callback if you need to define a callback
 
 * If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 

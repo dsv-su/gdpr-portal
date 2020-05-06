@@ -55,8 +55,12 @@ class Moodle extends GenericPlugin
                 // Read contents of the body
                 $zip = $body->getContents();
 
-                //dd($response->getStatusCode());
-                $this->status->setZip();
+                if(!empty($zip))
+                {
+                    $this->status->setZip();
+                }
+                else abort;
+
                 return $zip;
             } else
             {

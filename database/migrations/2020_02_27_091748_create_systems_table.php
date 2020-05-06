@@ -15,6 +15,9 @@ class CreateSystemsTable extends Migration
     {
         Schema::create('systems', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('app_env');
+            $table->string('app_debug');
+            $table->string('app_url');
             $table->string('case_start_id');
             $table->integer('case_ttl');
             $table->string('authorization_parameter');
