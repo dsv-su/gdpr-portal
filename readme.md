@@ -147,7 +147,7 @@ e.g.
     [Name]
     search
 
-The only two compulsory attributes for a plugin is the `Name` and `Search` attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file (plugin.php -> system1.php)    
+The only two compulsory attributes for a plugin is the `Name` and `Search` attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file.    
     
 The search attribute tells the portal which input queries are allowed. Consider the input form as a binary number with three binary digits. | social security number | email | user ID | if the system you are designing a plugin only can accept a single parameter you give the search attribute that value e.g. if the system only accepts a userId you assign search=1, if the system accepts both userid and email, search=3 etc.
 

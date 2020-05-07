@@ -85,7 +85,7 @@ class SearchController extends Controller
         if(!$record = Searchcase::latest()->first())
         {
             $request = new Searchcase();
-            $request = $request->initCase($gdpr_userid,$search_request, $system->case_start_id);
+            $request = $request->initCase($gdpr_userid,$search_request, 1 ); //$system->case_start_id
 
             //Create plugin status
             $status->initPluginStatus($request->id);
@@ -93,8 +93,15 @@ class SearchController extends Controller
         else
         {
             //NextcaseId
+            /***
+             * For case_id format year-no
+             */
+            /*
             $expNum = explode('-', $record->case_id);
             $nextCaseNumber = $expNum[0].'-'. (string)((int)$expNum[1]+1);
+            */
+            /** Else standard format */
+            $nextCaseNumber = $record->id + 1;
 
             // Request case_id
             $caseid = $nextCaseNumber;

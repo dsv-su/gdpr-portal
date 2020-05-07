@@ -18,7 +18,7 @@ class CreateSystemsTable extends Migration
             $table->string('app_env');
             $table->string('app_debug');
             $table->string('app_url');
-            $table->string('case_start_id');
+            $table->string('case_start_id')->nullable();
             $table->integer('case_ttl');
             $table->string('authorization_parameter');
             $table->string('authorization', 200);

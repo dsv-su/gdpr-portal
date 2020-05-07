@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class System extends Model
 {
-    protected $fillable = ['app_env', 'app_debug', 'app_url', 'case_start_id', 'case_ttl','authorization_parameter','authorization','login_route', 'plugin_tries', 'plugin_request_timeout', 'registrator', 'db', 'db_host', 'db_port', 'db_database', 'db_username', 'db_password', 'client_id',
+    protected $fillable = ['app_env', 'app_debug', 'app_url', 'case_ttl','authorization_parameter','authorization','login_route', 'plugin_tries', 'plugin_request_timeout', 'registrator', 'db', 'db_host', 'db_port', 'db_database', 'db_username', 'db_password', 'client_id',
         'client_secret', 'auth_url', 'base_uri', 'redirect_uri'];
 
     public function newSystem($case_start_id, $case_ttl, $plugin_tries, $plugin_request_timeout, $registrator, $db, $db_host, $db_port, $db_database, $db_username, $db_password)
