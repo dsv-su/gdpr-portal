@@ -29,7 +29,7 @@ Composer
 
 * Clone the repository
 
-* Move into the directory. Move into the `/systemconfig folder.
+* Move into the directory. Move into the `/systemconfig` folder.
 
 * Make sure that `/systemconfig/gdpr.ini` file is present and configured with the configuration details for your requirements and for the server (copy gdpr.ini.example to .ini and fill in with your data)
 
