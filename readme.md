@@ -83,10 +83,12 @@ Composer
 
 ## 5. Plugins
 
+The plugin handles connection to given systems to request GDPR extracts from various systems. The Portal comes with built-in plugins for the following systems: Scipro, Moodle, Drupal, Daisy and OTRS. The systems must be installed with a custom GDPR extension. In order to connect to another system, a new plugin must be implemented.
+
 ## Implementing a new plugin
 
 ### Plugin pattern/structure
-The plugin handles connection to given systems to request GDPR extracts from various systems. The Plugin for each system consists basically of two files; A main file with a class that establishes a connection to a system and returns one or more files and a configurations file containing credential- and configuration information to the system. All plugins are handled by the PluginController.
+The Plugin for each system consists basically of two files; A main file with a class that establishes a connection to a system and returns one or more files and a configurations file containing credential- and configuration information to the system. Plugins are handled by the PluginController.
 
 ### Plugin workflow
 The Plugincontroller dispatches each plugin in order to a job process (que). Database tables is used to hold the jobs processes, failed processes (e.g. unable to connect to a system or server), progress and log information.
@@ -94,15 +96,15 @@ Through the Plugin a connection to external systems should be achieved and a zip
 Once the zip file has been retrieved from the external system it is stored and unpacked on the server disc identified by its case id. Once the entire queue has been processed and all files have been stored and unpacked the entire retrieved data will be packed and ready for downloading by the user. A mail will be sent to notify the user that the download is ready or if an error has occurred a mail will be sent to notify the user about the current status.
 
 ### Plugin configuration file
-For each Plugin you need a plugin configuration file. The plugin configuration file must be stored in the folder `/pluginconfig` and suffixed `.ini` for the system to not know the file and accept it.
+For each Plugin you need a plugin configuration file. All plugin-configuration files must be stored in the folder `/pluginconfig` and suffixed `.ini` for the system to recognise the file and accept it.
 
 e.g.
 
-`/pluginconfig/plugin.ini` (configuration- and credentials file)
+`/pluginconfig/PluginName.ini` (configuration- and credentials file)
 
 It is also good to create an example file with the same name but with a suffix .example that describes what attributes are needed for the given system.
 
-`/pluginconfig/plugin.example` (example-file)
+`/pluginconfig/PluginName.example` (example-file)
 
 The following configuration and credential attributes are allowed:
 
@@ -142,13 +144,10 @@ e.g.
     
 1.) Necessary attributes:
 
-[Name]
-
-The only compulsory attribute for a plugin is the Name attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file (plugin.php -> system1.php)
-
-2.) Alternative attributes:
-
+    [Name]
     search
+
+The only two compulsory attributes for a plugin is the `Name` and `Search` attribute. This Name attribute should be the same as the filename for the Class, the Plugin-core file (plugin.php -> system1.php)    
     
 The search attribute tells the portal which input queries are allowed. Consider the input form as a binary number with three binary digits. | social security number | email | user ID | if the system you are designing a plugin only can accept a single parameter you give the search attribute that value e.g. if the system only accepts a userId you assign search=1, if the system accepts both userid and email, search=3 etc.
 
@@ -161,8 +160,7 @@ The search attribute tells the portal which input queries are allowed. Consider 
     search=7 ; personummer, email and uid
     
     
-
-    auth
+2.) Alternative attributes:
 
 If a alternative token access system is used this attribute should be set to "other". The default authenification system used is toker.
 
@@ -177,7 +175,7 @@ The GDPR portal will send an email to the system owner requesting a file upload 
 
 The plugin core file should establish a connection to the provider-system and return one or more files.
 
-Plugin.php (core) should be named after the systems it connects to.
+PluginName.php (core) should be named after the systems it connects to.
 
     Important! The class must have the same name as the filename for the plugin-autoloader to recognize it.
 
@@ -191,11 +189,11 @@ The GenricPlugin class injects the following  instances to your subclass via the
     
     Case $case, Plugin $plugin, Status $status
     
-The Case $case instance holds the latest generated case.
+The `Case $case` instance holds the latest generated case.
 
-The Plugin $plugin instance holds the called plugin.
+The `Plugin $plugin` instance holds the called plugin.
 
-The Status $status instance holds the plugin-case-status.
+The `Status $status` instance holds the plugin-case-status.
 
 #### Plugin Authorization
 
@@ -291,14 +289,18 @@ value | state
 1| Yes
 
 #### statuses
-//TODO
+searchcase_id | plugin_id | plugin_name | status | progress_status | download_status | auth | auth_system | callback | zip | token |
+--------------|-----------|-------------|--------|-----------------|-----------------|------|-------------|----------|-----|-------|
+
 
 #### plugin
-//TODO
+plugin | name | client_id | client_secret | auth | auth_url | base_uri | redirect_uri | endpoint_url | owner_email | search |
+-------|------|-----------|---------------|------|----------|----------|--------------|--------------|-------------|--------|
+
 
 
 ## 7. User guide
-The trialversion (release candidate) of the portal can be found under the following url:
+The development version of the portal can be found under the following url:
 
 https://methone.dsv.su.se
 
