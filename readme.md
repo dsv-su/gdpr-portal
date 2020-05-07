@@ -37,7 +37,6 @@ Composer
         app_env=production                      ; Make sure this is set to production NOTE! For developing enviroment the settings should be set to: app_env=local and app_debug=true.
         app_debug=false                         ; Make sure this is set to false for production enviroments
         app_url=http://localhost                ; Set this to your domain
-        case_start_id=2020-1                    ; The starting case id (year-id)
         case_ttl=30                             ; Time to live for a case - not yet implemented
         authorization_parameter=entitlement     ; The authorization parameter
         authorization=                          ; Authorization entitlements
