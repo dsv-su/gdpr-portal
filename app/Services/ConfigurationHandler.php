@@ -112,6 +112,10 @@ class ConfigurationHandler extends Model
                             //$plugin->name = $key;
                             foreach ($systemtable as $systemitem) {
                                     if ($systemitem == $key) {
+                                        if (empty($item))
+                                        {
+                                            $item = 'startup';
+                                        }
                                         $system->$systemitem = $item;
                                         }
                                     }
