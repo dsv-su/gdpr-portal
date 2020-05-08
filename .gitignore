@@ -16,5 +16,6 @@ yarn-error.log
 /systemconfig/*.ini
 /app/configuration.php
 /pluginconfig/*.ini
+gdpr.ini
 .DS_Store
 *~
