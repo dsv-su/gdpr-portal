@@ -1,10 +1,10 @@
-[global]
+[global]                                ; NOTE All these attributes have to be filled in
 app_env=production                      ; Make sure this is set to production
 app_debug=false                         ; Make sure this is set to false for production enviroments
 app_url=http://localhost                ; Set this to your domain
 case_ttl=30                             ; Time to live for a case - not yet implemented
 authorization_parameter=entitlement     ; The authorization parameter
-authorization=                          ; Authorization entitlements
+authorization=200                       ; Authorization entitlements
 login_route=/login                      ; The SSO login route for your application (Server)
 plugin_tries=3                          ; Number of tries a plugin tries to contact a system before reporting error
 plugin_request_timeout=7200             ; Timeout before a plugin reports error
@@ -12,15 +12,15 @@ registrator=registrator@dsv.su.se       ; Email address of registrar
 
 [database]
 db=mysql                                ; Here you can specify which database you use: mysql, sqlite, pgsql, sqlsrv or redis
-db_host=127.0.0.1
-db_port=3306
-db_database=
-db_username=
-db_password=
+db_host=127.0.0.1                       ; DB host address
+db_port=3306                            ; DB port
+db_database=your_database_name          ; Database used
+db_username=your_user_name              ; DB user
+db_password=db_password                 ; secret
 
-[toker]
-client_id =
-client_secret =
-auth_url =
-base_uri =
-redirect_uri =
+[toker]                                 ; Toker is the default access tokens system
+client_id=your_toker_client_id          ; The id given to your system
+client_secret=your_toker_secret         ; Secret
+auth_url=your_toker_auth_url            ; The toker auth url
+base_uri=your_base_uri                  ; The toker base uri
+redirect_uri=your_redirect_uri          ; The Toker redirect uri
