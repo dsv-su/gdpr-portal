@@ -5,6 +5,7 @@ app_url=http://localhost                ; Set this to your domain
 case_ttl=30                             ; Time to live for a case - not yet implemented
 authorization_parameter=entitlement     ; The authorization parameter
 authorization=                          ; Authorization entitlements
+login_route=/login                      ; The SSO login route for your application (Server)
 plugin_tries=3                          ; Number of tries a plugin tries to contact a system before reporting error
 plugin_request_timeout=7200             ; Timeout before a plugin reports error
 registrator=registrator@dsv.su.se       ; Email address of registrar
