@@ -108,14 +108,11 @@ class ConfigurationHandler extends Model
                         //Store in Plugin
                         $systemtable = $system->getFillable();
                         foreach ($config as $key => $item) {
-                            //dd($key);
+                            //dd($item);
                             //$plugin->name = $key;
                             foreach ($systemtable as $systemitem) {
                                     if ($systemitem == $key) {
-                                        if ($item == '')
-                                        {
-                                            $item = 'startup';
-                                        }
+                                        if($item == "") $item = 'https://dsv.su.se';
                                         $system->$systemitem = $item;
                                         }
                                     }
