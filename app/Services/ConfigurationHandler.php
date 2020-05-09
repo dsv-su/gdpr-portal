@@ -112,7 +112,7 @@ class ConfigurationHandler extends Model
                             //$plugin->name = $key;
                             foreach ($systemtable as $systemitem) {
                                     if ($systemitem == $key) {
-                                        if($item == "") $item = 'https://dsv.su.se';
+                                        if($item == "") $item = 'null';
                                         $system->$systemitem = $item;
                                         }
                                     }

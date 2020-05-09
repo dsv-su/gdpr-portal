@@ -74,7 +74,7 @@ class SearchController extends Controller
         //Check that plugins have been loaded
         if( Plugin::count() == 0 )
         {
-            dd('Please initiate script first by going back and refreshing page!'); //Only on first time boot
+            abort(501,'GDPR Portal - Inga plugins har konfigurerats'); //Only on first time boot
             return redirect()->route('home');
         }
 
