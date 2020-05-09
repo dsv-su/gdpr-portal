@@ -15,10 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleEvent;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-use Symfony\Component\Debug\ErrorHandler as LegacyErrorHandler;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\ErrorHandler\ErrorHandler;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
@@ -29,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class DebugHandlersListener implements EventSubscriberInterface
 {
@@ -65,7 +62,7 @@ class DebugHandlersListener implements EventSubscriberInterface
     /**
      * Configures the error handler.
      */
-    public function configure(Event $event = null)
+    public function configure(object $event = null)
     {
         if ($event instanceof ConsoleEvent && !\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             return;
@@ -80,7 +77,7 @@ class DebugHandlersListener implements EventSubscriberInterface
         restore_exception_handler();
 
         if ($this->logger || null !== $this->throwAt) {
-            if ($handler instanceof ErrorHandler || $handler instanceof LegacyErrorHandler) {
+            if ($handler instanceof ErrorHandler) {
                 if ($this->logger) {
                     $handler->setDefaultLogger($this->logger, $this->levels);
                     if (\is_array($this->levels)) {
@@ -126,27 +123,19 @@ class DebugHandlersListener implements EventSubscriberInterface
                     $output = $output->getErrorOutput();
                 }
                 $this->exceptionHandler = static function (\Throwable $e) use ($app, $output) {
-                    if (method_exists($app, 'renderThrowable')) {
-                        $app->renderThrowable($e, $output);
-                    } else {
-                        if (!$e instanceof \Exception) {
-                            $e = new FatalThrowableError($e);
-                        }
-
-                        $app->renderException($e, $output);
-                    }
+                    $app->renderThrowable($e, $output);
                 };
             }
         }
         if ($this->exceptionHandler) {
-            if ($handler instanceof ErrorHandler || $handler instanceof LegacyErrorHandler) {
+            if ($handler instanceof ErrorHandler) {
                 $handler->setExceptionHandler($this->exceptionHandler);
             }
             $this->exceptionHandler = null;
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events = [KernelEvents::REQUEST => ['configure', 2048]];
 

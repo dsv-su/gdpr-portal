@@ -51,7 +51,7 @@ class RemoveEmptyControllerArgumentLocatorsPass implements CompilerPassInterface
                     }
                 }
                 if (!$reason) {
-                    // Deprecated since Symfony 4.1. See Symfony\Component\HttpKernel\Controller\ContainerControllerResolver
+                    // see Symfony\Component\HttpKernel\Controller\ContainerControllerResolver
                     $controllers[$id.':'.$action] = $argumentRef;
 
                     if ('__invoke' === $action) {
