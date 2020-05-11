@@ -14,8 +14,8 @@
 The main objective of the GDPR portal is to intergrate existing systems GDPR dataextracts through a common tool.
 
 ## 2. Requirements
-Requirements are best determined using Server Requirements page of corresponding Laravel 6 version
-Currently used version is 6.5.1
+Requirements are best determined using Server Requirements page of corresponding Laravel 7 version
+Currently used version is 7.10.3
 
 PHP version 7.3.*
 
