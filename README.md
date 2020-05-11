@@ -17,11 +17,29 @@ The main objective of the GDPR portal is to intergrate existing systems GDPR dat
 Requirements are best determined using Server Requirements page of corresponding Laravel 7 version
 Currently used version is 7.10.3
 
-PHP version 7.3.*
+- PHP version 7.3.*
 
-SSH access to the server
+- BCMath PHP Extension
 
-Composer
+- Ctype PHP Extension
+
+- Fileinfo PHP extension
+
+- JSON PHP Extension
+
+- Mbstring PHP Extension
+
+- OpenSSL PHP Extension
+
+- PDO PHP Extension
+
+- Tokenizer PHP Extension
+
+- XML PHP Extension
+
+- SSH access to the server
+
+- Composer
 
 ## 3. Installation (for deploying your own application)
 
@@ -66,7 +84,14 @@ Composer
 
 * Either create application key manually or do that with a command `php artisan key:generate`
 
-* Make sure the subdirectory `/storage` is writable by your web server user.
+* Make sure the subdirectories `bootstrap/cache` and `/storage` is writable by your web server user.
+
+* When using Apache the `mod_rewrite` module should be enabled. If you are using Nginx, the following directive in your site configuration will direct all requests to the index.php front controller:
+
+     `location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }`
+     
 
 * If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 
