@@ -185,7 +185,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        //Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,
         ZanySoft\Zip\ZipServiceProvider::class,
         App\Providers\SystemServiceProvider::class,
     ],
