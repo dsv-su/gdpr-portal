@@ -66,6 +66,8 @@ Composer
 
 * Either create application key manually or do that with a command `php artisan key:generate`
 
+* Make sure the subdirectory `/storage` is writable by your web server user.
+
 * If you need to change the email configuration. Open the config/mail.php file and set the needed values within the from element
 
 * Create the database with `php artisan migrate` (this should create database tables needed)
