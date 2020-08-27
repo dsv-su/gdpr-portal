@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="welcome">
-        <h5>GDRP Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px" id="antal">{{ $systems }}</code></span></h5>
+        <h5>GDPR Portal - Välkommen {{ $gdpr_user }}  <span style="float:right; font-size: 15px">Antal tillgängliga system: <code style="font-size: 20px" id="antal">{{ $systems }}</code></span></h5>
     </div>
         <div class="searchrequest">
     <!-- Form -->
