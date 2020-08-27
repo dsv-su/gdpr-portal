@@ -273,7 +273,7 @@ status_flag
 
 value | state
 ------|------
-0 | System error; One or more systems reported a 400 or 404
+0 | System error; One or more systems reported a 400 or 404.
 1 | Initial status
 2 | User not found
 3 | Request successful
