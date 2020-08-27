@@ -363,4 +363,4 @@ A system error is indicated in red and then the entire request must be performed
 
 ![Dashboard](./public/images/guide/error_status.png)
 
-After the request is completed and downloaded, cases can be removed manually.
+After the request completed and downloaded, cases can be removed manually.
