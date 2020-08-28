@@ -246,7 +246,7 @@ The Plugin should receive information from the PluginController by passing argum
 
 ### Response Status Codes
 
-The Plugin should return a status code if the resource is not returned and report a status.  The message codes below have been designed for this purpose:
+The Plugin should return a status code if the of the resource and report a status.  The message codes below have been designed for this purpose:
 
 
 Message code | corresponds to HTTP Status code |  Description
