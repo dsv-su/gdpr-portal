@@ -31,6 +31,6 @@ class MailGDPRNotify extends Mailable
     {
         //return $this->view('emails.finished_swe_text')
         return $this->text('emails.finished_swe_text')
-            ->with('details', $this->details);;
+            ->with('details', $this->details);
     }
 }
